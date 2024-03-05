@@ -2,5 +2,5 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def ventas(request):
-    return render(request,"ventas.html")
+def PageInicio(request):
+    return render(request,"inicio.html")

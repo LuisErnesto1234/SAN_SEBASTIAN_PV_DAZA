@@ -2,5 +2,5 @@ from django.urls import path,include
 from . import views
 
 urlpatterns = [
-    path('',views.ventas,name="Ventas"),
+    path('',views.PageInicio,name="PageInicioLink"),
 ]
