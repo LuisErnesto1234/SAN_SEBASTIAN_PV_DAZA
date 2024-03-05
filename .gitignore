@@ -1,0 +1,12 @@
+# Ignorar archivos .pyc (archivos compilados de Python)
+*.pyc
+
+# Ignorar el directorio "venv" (entorno virtual de Python)
+entorno/
+
+# Ignorar archivos de configuración local
+settings_local.py
+
+# Ignorar archivos de caché
+__pycache__/
+
