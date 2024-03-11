@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="productos-page">
+        <header class="header">
+            <h1 class="header-title">Catalogo</h1>
+            <nav class="header-nav">
+                <a href="#" class="header-nav-box">
+                    <i class="ti ti-box header-nav-box-icon"></i>
+                    <h3 class="header-nav-box-text">Productos</h3>
+                </a>
+                <a href="#" class="header-nav-box">
+                    <i class="ti ti-list-check header-nav-box-icon"></i>
+                    <h3 class="header-nav-box-text">Categorias</h3>
+                </a>
+                <a href="#" class="header-nav-box">
+                    <i class="ti ti-shirt header-nav-box-icon"></i>
+                    <h3 class="header-nav-box-text">Marcas</h3>
+                </a>
+                <a href="#" class="header-nav-box">
+                    <i class="ti ti-truck header-nav-box-icon"></i>
+                    <h3 class="header-nav-box-text">Proovedores</h3>
+                </a>
+            </nav>
+        </header>
+        
+        <article class="productos-section">
+            <div class="header-table">
+                <h2>Productos</h2>
+                <form action="" method="post">
+                    <input type="search" name="" id="">
+                    {% csrf_token %}
+                </form>
+            </div>
+            <div class="box-table-productos">
+                <form action="" method="post" class="form-new-producto">
+                    <h4>Nuevo Producto</h4>
+                    <input type="email" name="" id="">
+                    <input type="email" name="" id="">
+                    <input type="email" name="" id="">
+                    <input type="email" name="" id="">
+                    <button>fdffd</button>
+                    {% csrf_token %}
+                </form>
+                <div class="box-table-productos-scroll">
+                    <table class="table-productos">
+                        <thead>
+                            <tr>
+                                <th>Columna 1</th>
+                                <th>Columna 2</th>
+                                <th>Columna 3</th>
+                                <th>Columna 4</th>
+                                <th>Columna 5</th>
+                                <th>Columna 6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>7</td>
+                                <td>1</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>4</td>
+                                <td>6</td>
+                                <td>1</td>
+                                <td>3</td>
+                                <td>2</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </article>
+        
+    </section>
+
+{% endblock %}

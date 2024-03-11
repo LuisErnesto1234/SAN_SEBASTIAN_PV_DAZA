@@ -120,15 +120,121 @@
     opacity: 1;
     pointer-events: auto;
   }
-
-  
-
-
-
-
   .contenido{
     margin-left: 50px;
-    background-color: #adadad;
+    background-color:var(--color1);
     min-height: 100vh;
     padding: 10px;
   }
+
+
+  
+  /* PAGINA DE PRODUCTOS */
+  .header{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* background: #00000046; */
+  }
+  .header-title{
+    font-size: xx-large;
+    color: var(--color2);
+    text-align: center;
+    
+  }
+  .header-nav{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    
+  }
+  .header-nav-box{
+    flex-basis: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color:var(--color3);
+    flex-wrap: wrap;
+    text-decoration: none;
+    text-transform: capitalize;
+    gap: 10px;
+    box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+  
+  }
+  .header-nav-box-text{
+    font-size:small;
+    font-weight: bold;
+  }
+  .header-nav-box-icon{
+   font-size: 30px;
+   color: var(--color2);
+  }
+
+  .productos-section{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+ .box-table-productos{
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  flex-wrap: wrap-reverse;
+  gap: 10px;
+ }
+ .box-table-productos .form-new-producto{
+  width: 250px;
+  height: fit-content;
+  background-color: #EBFF00;
+ }
+ .box-table-productos .box-table-productos-scroll{
+  width: 1000px;
+  height: 400px;
+  overflow: scroll;
+ }
+ .box-table-productos .box-table-productos-scroll .table-productos{
+  width: 100%;
+  
+ }
+/* Estilo para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo para las celdas de cabecera */
+th {
+  background-color: var(--color2);
+  border: 1px solid var(--color1);
+  padding: 8px;
+  text-align: left;
+  color: var(--color1);
+}
+
+/* Estilo para las celdas de datos */
+td {
+  border: 1px solid var(--color2);
+  padding: 8px;
+  text-align: left;
+}
+
+/* Estilo para las filas impares */
+tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+/* Estilo para las filas pares */
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Estilo para cuando el ratón está sobre una fila */
+tr:hover {
+  background-color: var(--color3);
+  font-weight: bold;
+}

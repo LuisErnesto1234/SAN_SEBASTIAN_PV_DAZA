@@ -4,3 +4,7 @@ from django.shortcuts import render
 
 def PageInicio(request):
     return render(request,"inicio.html")
+
+
+def PageProductos(request):
+    return render(request,"productos.html")
