@@ -9,6 +9,7 @@
     min-height: 100vh;
     width: 100%;
     background: #e7e9f5;
+    position: relative;
   }
   :root{
     --color1:#FFFFFF;
@@ -130,6 +131,33 @@
 
   
   /* PAGINA DE PRODUCTOS */
+.botonAgregarProducto{
+  width: 50px;
+  height: 50px;
+  background-color: var(--color2);
+  padding: 20px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+.botonAgregarProducto a{
+  text-decoration: none;
+  color: var(--color1);
+}
+.botonAgregarProducto i{
+  font-size: 25px;
+}
+.botonAgregarProducto:hover{
+  background-color: var(--color3);
+  color: var(--color2);
+}
+
+
   .productos-page{
     display: flex;
     flex-direction: column;
@@ -237,6 +265,142 @@
   width: 100%;
   
  }
+ .box-table-productos .box-table-productos-scroll .table-productos .nuevoProducto{
+  text-align: center;
+ }
+ .box-table-productos .box-table-productos-scroll .table-productos .nuevoProducto a{
+  color: var(--color1);
+
+  text-decoration: none;
+ }
+
+ /* PAGINA DE CATEGORIAS   y MARCA*/
+
+.seccion-categoria,.seccion-marca{
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding-top: 50px;
+}
+
+.box-left .seccion-categoria-formulario form{
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+  background-color:var(--color2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  color: var(--color1);
+}
+.box-left .seccion-marca-formulario form{
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
+  background-color:var(--color2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  color: var(--color1);
+}
+
+.box-left .seccion-categoria-formulario form  h2,label{
+  text-align: center;
+  color: var(--color3);
+}
+.box-left .seccion-marca-formulario form  h2,label{
+  text-align: center;
+  color: var(--color3);
+}
+
+.box-left .seccion-categoria-formulario form input{
+  padding: 10px;
+  border: none;
+}
+.box-left .seccion-marca-formulario form input{
+  padding: 10px;
+  border: none;
+}
+
+.box-left .seccion-categoria-formulario form  button{
+  padding: 10px;
+  background: var(--color3);
+  color: var(--color2);
+  border: none;
+  border-radius: 20px;
+}
+.box-left .seccion-marca-formulario form  button{
+  padding: 10px;
+  background: var(--color3);
+  color: var(--color2);
+  border: none;
+  border-radius: 20px;
+}
+
+
+.box-right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.box-right h2{
+  font-size: 25px;
+  color: var(--color2);
+}
+
+/* 
+PAGINA DE PROVEEDORES */
+.seccion-proveedores{
+  padding-top: 50px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 50px;
+}
+.box-top{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.seccion-proveedor-formulario {
+  max-width: 600px;
+  padding: 50px;
+  background: var(--color2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+
+}
+.seccion-proveedor-formulario  .union{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+.seccion-proveedor-formulario  .union label{
+  font-weight: bold;
+}
+.seccion-proveedor-formulario  .union input{
+  padding: 10px;
+  border: none;
+}
+.seccion-proveedor-formulario  .btn-agregar{
+  padding: 10px;
+  background: var(--color3);
+  color: var(--color2);
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+}
+
+
 /* Estilo para la tabla */
 table {
   width: 100%;
@@ -272,5 +436,18 @@ tr:nth-child(even) {
 
 /* Estilo para cuando el ratón está sobre una fila */
 tr:hover {
-  background-color: var(--color3);
+  background-color:#bdb8b8;
+}
+
+.icono-editar, .icono-borrar, .icono-detalle{
+  text-decoration: none;
+  color:blue ;
+  font-size: 30px;
+  font-weight: bold;
+}
+.icono-borrar{
+  color: red;
+}
+.icono-detalle{
+  color: green;
 }

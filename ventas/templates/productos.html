@@ -1,28 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="botonAgregarProducto">
+    <a href="">
+        <i class="ti ti-plus"></i>
+    </a>
+</div>
     <section class="productos-page">
-        <header class="header">
-            <h1 class="header-title">Catalogo</h1>
-            <nav class="header-nav">
-                <a href="#" class="header-nav-box">
-                    <i class="ti ti-box header-nav-box-icon"></i>
-                    <h3 class="header-nav-box-text">Productos</h3>
-                </a>
-                <a href="#" class="header-nav-box">
-                    <i class="ti ti-list-check header-nav-box-icon"></i>
-                    <h3 class="header-nav-box-text">Categorias</h3>
-                </a>
-                <a href="#" class="header-nav-box">
-                    <i class="ti ti-shirt header-nav-box-icon"></i>
-                    <h3 class="header-nav-box-text">Marcas</h3>
-                </a>
-                <a href="#" class="header-nav-box">
-                    <i class="ti ti-truck header-nav-box-icon"></i>
-                    <h3 class="header-nav-box-text">Proovedores</h3>
-                </a>
-            </nav>
-        </header>
+        {% include 'includesTemplates/catalogo_productos.html' %}
         
         <article class="productos-section">
             <div class="header-table">
@@ -49,6 +34,7 @@
                                 <th>Categoria</th>
                                 <th>Marca</th>
                                 <th>Proovedor</th>
+                                <!-- <th>Imagen</th> -->
                                 <th>Acciones</th> 
                             </tr>
                             
@@ -65,12 +51,18 @@
                                 <td>{{prod.categoria}}</td>
                                 <td>{{prod.marca}}</td>
                                 <td>{{prod.proveedor}}</td>
+                                <!-- <td>
+                                    <img src="{{prod.imagen.url}}" alt="{{prod.nombre}}" width="30px" height="30px">
+                                </td> -->
                                 <td>
-                                    <a href="">
+                                    <a href="" class="icono-editar">
                                         <i class="ti ti-edit"></i>
                                     </a>
-                                    <a href="">
+                                    <a href="" class="icono-borrar">
                                         <i class="ti ti-trash"></i>
+                                    </a>
+                                    <a href="" class="icono-detalle">
+                                        <i class="ti ti-eye"></i>
                                     </a>
                                 </td>
                             </tr>

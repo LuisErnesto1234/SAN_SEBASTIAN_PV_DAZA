@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'includesTemplates/catalogo_productos.html' %}
+
+<section class="seccion-categoria">
+    <div class="box-left">
+        <div class="seccion-categoria-formulario">
+            <form action="" method="post">
+                <h2>Nueva Categoria</h2>
+                <label for="codigo">Codigo</label>
+                <input type="number" name="" id="codigo" placeholder="00">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="" id="nombre" placeholder="Nombre">
+                <button type="submit">Crear Categoria</button>
+            </form>
+        </div>
+    </div>
+    <div class="box-right">
+        <h2>Categorias</h2>
+
+        <form action="" method="post" class="buscador">
+            <input type="search" name="" id="" placeholder="Buscar">
+            {% csrf_token %}
+        </form>
+        <div class="descargas">
+            <button>Descargar csv</button>
+            <button>Imprimir</button>
+        </div>
+    
+        <div class="seccion-categoria-tabla">
+            <table>
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cat in categorias %}
+                        <tr>
+                            <td>{{cat.codigo_categoria}}</td>
+                            <td>{{cat.nombre_categoria}}</td>
+                            <td>
+                                <a href="" class="icono-editar">
+                                    <i class="ti ti-edit"></i>
+                                </a>
+                                <a href="" class="icono-borrar">
+                                    <i class="ti ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    
+</section>
+
+{% endblock %}

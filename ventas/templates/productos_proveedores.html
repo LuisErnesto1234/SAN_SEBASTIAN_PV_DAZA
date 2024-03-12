@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'includesTemplates/catalogo_productos.html' %}
+
+<section class="seccion-proveedores">
+    <div class="box-top"> 
+        <h2>Nuevo Proveedor</h2>
+        <form action="" method="post" class="seccion-proveedor-formulario">
+               <div class="union">
+                    <label for="codigo">Codigo de Proveedor</label>
+                    <input type="number" name="" id="codigo" placeholder="00">
+               </div>
+
+                <div class="union">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="" id="nombre" placeholder="Nombre">
+                </div>
+
+                <div class="union">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" name="" id="apellido" placeholder="Apellido">
+                </div>
+
+                <div class="union">
+                    <label for="ruc-dni">RUC o DNI</label>
+                    <input type="number" name="" id="ruc-dni" placeholder="0000000000000">
+                </div>
+
+                <div class="union">
+                    <label for="direccion">Direccion</label>
+                    <input type="text" name="" id="direccion" placeholder="Av Example 121 - Lorem">
+                </div>
+
+                <div class="union">
+                    <label for="correo">Correo</label>
+                    <input type="email" name="" id="correo" placeholder="@example.com">
+                </div>
+
+                <div class="union">
+                    <label for="telefono">Telefono</label>
+                    <input type="number" name="" id="telefono" placeholder="000000000">
+                </div>
+                <div class="union">
+                    <button type="submit" class="btn-agregar">Crear Categoria</button>
+                </div>
+                
+            </form>
+    </div>
+    <div class="box-button">
+        <h2>Categorias</h2>
+
+        <form action="" method="post" class="buscador">
+            <input type="search" name="" id="" placeholder="Buscar">
+            {% csrf_token %}
+        </form>
+        <div class="descargas">
+            <button>Descargar csv</button>
+            <button>Imprimir</button>
+        </div>
+    
+        <div class="seccion-categoria-tabla">
+            <table>
+                    <thead>
+                        <tr>
+                            <th>Codigo de Proveedor</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>RUC/DNI</th>
+                            <th>Direccion</th>
+                            <th>Correo Electronico</th>
+                            <th>Numero de Telefono</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pro in proveedores %}
+                        <tr>
+                            <td>{{ pro.codigo_proveedor }}</td>
+                            <td>{{ pro.nombres }}</td>
+                            <td>{{ pro.apellidos }}</td>
+                            <td>{{ pro.ruc_dni }}</td>
+                            <td>{{ pro.direccion }}</td>
+                            <td>{{ pro.correo_electronico }}</td>
+                            <td>{{ pro.numero_telefono }}</td>                        
+                            <td>
+                                <a href="" class="icono-editar">
+                                    <i class="ti ti-edit"></i>
+                                </a>
+                                <a href="" class="icono-borrar">
+                                    <i class="ti ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    
+</section>
+
+
+{% endblock %} 
