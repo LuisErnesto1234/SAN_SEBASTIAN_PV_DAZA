@@ -27,51 +27,54 @@
         <article class="productos-section">
             <div class="header-table">
                 <h2>Productos</h2>
-                <form action="" method="post">
-                    <input type="search" name="" id="">
+                <form action="" method="post" class="buscador">
+                    <input type="search" name="" id="" placeholder="Buscar">
                     {% csrf_token %}
                 </form>
+                <div class="descargas">
+                    <button>Descargar csv</button>
+                    <button>Imprimir</button>
+                </div>
             </div>
             <div class="box-table-productos">
-                <form action="" method="post" class="form-new-producto">
-                    <h4>Nuevo Producto</h4>
-                    <input type="email" name="" id="">
-                    <input type="email" name="" id="">
-                    <input type="email" name="" id="">
-                    <input type="email" name="" id="">
-                    <button>fdffd</button>
-                    {% csrf_token %}
-                </form>
                 <div class="box-table-productos-scroll">
                     <table class="table-productos">
                         <thead>
                             <tr>
-                                <th>Columna 1</th>
-                                <th>Columna 2</th>
-                                <th>Columna 3</th>
-                                <th>Columna 4</th>
-                                <th>Columna 5</th>
-                                <th>Columna 6</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>3</td>
-                                <td>5</td>
-                                <td>2</td>
-                                <td>7</td>
-                                <td>1</td>
-                                <td>8</td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td>4</td>
-                                <td>6</td>
-                                <td>1</td>
-                                <td>3</td>
-                                <td>2</td>
+                                <th>Cod. Producto</th>
+                                <th>Cod. Barra</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Stok</th>
+                                <th>Categoria</th>
+                                <th>Marca</th>
+                                <th>Proovedor</th>
+                                <th>Acciones</th> 
                             </tr>
                             
+                        </thead>
+                        <tbody>
+                            {% for prod in productos %}
+                            <tr>
+                                <!-- <td>{{prod.codigo}}</td> -->
+                                <td>{{prod.codigo_producto}}</td>
+                                <td>{{prod.codigo_barras}}</td>
+                                <td>{{prod.nombre}}</td>
+                                <td>{{prod.precio}}</td>
+                                <td>{{prod.stock}}</td>
+                                <td>{{prod.categoria}}</td>
+                                <td>{{prod.marca}}</td>
+                                <td>{{prod.proveedor}}</td>
+                                <td>
+                                    <a href="">
+                                        <i class="ti ti-edit"></i>
+                                    </a>
+                                    <a href="">
+                                        <i class="ti ti-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor  %}
                         </tbody>
                     </table>
                 </div>

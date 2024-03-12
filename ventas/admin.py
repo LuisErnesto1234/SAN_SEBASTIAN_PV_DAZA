@@ -1,10 +1,14 @@
 from django.contrib import admin
-from .models import Categoria, Marca, Proveedor, Producto
+from .models import Categoria, Marca, Proveedor, Producto,Inventario,Factura,Producto_vendido
 
 admin.site.register(Categoria)
 admin.site.register(Marca)
 admin.site.register(Proveedor)
 admin.site.register(Producto)
+admin.site.register(Inventario)
+admin.site.register(Factura)
+admin.site.register(Producto_vendido)
+
 
 
 

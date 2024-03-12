@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import *
 
 # Create your views here.
 
@@ -7,4 +8,10 @@ def PageInicio(request):
 
 
 def PageProductos(request):
-    return render(request,"productos.html")
+    productos = Producto.objects.all()
+    
+    contex={
+        'productos':productos,
+    }
+    
+    return render(request,"productos.html",contex)
