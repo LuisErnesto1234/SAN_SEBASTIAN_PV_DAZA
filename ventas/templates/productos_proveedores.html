@@ -1,67 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<button class="btn-abrir">
+    <i class="ti ti-plus"></i>
+</button>
+
+<div class="modal">
+    <div class="content-modal modal-proveedor">
+      <h2>Nuevo Proveedor</h2> 
+    
+      <form  action="{% url 'crearProveedorink' %}" method="post" class="form-proveedor">
+        {% csrf_token %}
+        <p>
+            {{formulario.codigo_proveedor}}
+            {{formulario.nombres}}
+            {{formulario.apellidos}}
+            {{formulario.ruc_dni}}
+            {{formulario.direccion}}
+            {{formulario.correo_electronico}}
+            {{formulario.numero_telefono}}
+        </p>
+        <button type="submit" class="btn-guardar">Guardar Producto</button>
+        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+    </form>
+    </div>
+</div>
 
 {% include 'includesTemplates/catalogo_productos.html' %}
 
 <section class="seccion-proveedores">
-    <div class="box-top"> 
-        <h2>Nuevo Proveedor</h2>
-        <form action="" method="post" class="seccion-proveedor-formulario">
-               <div class="union">
-                    <label for="codigo">Codigo de Proveedor</label>
-                    <input type="number" name="" id="codigo" placeholder="00">
-               </div>
-
-                <div class="union">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" name="" id="nombre" placeholder="Nombre">
-                </div>
-
-                <div class="union">
-                    <label for="apellido">Apellido</label>
-                    <input type="text" name="" id="apellido" placeholder="Apellido">
-                </div>
-
-                <div class="union">
-                    <label for="ruc-dni">RUC o DNI</label>
-                    <input type="number" name="" id="ruc-dni" placeholder="0000000000000">
-                </div>
-
-                <div class="union">
-                    <label for="direccion">Direccion</label>
-                    <input type="text" name="" id="direccion" placeholder="Av Example 121 - Lorem">
-                </div>
-
-                <div class="union">
-                    <label for="correo">Correo</label>
-                    <input type="email" name="" id="correo" placeholder="@example.com">
-                </div>
-
-                <div class="union">
-                    <label for="telefono">Telefono</label>
-                    <input type="number" name="" id="telefono" placeholder="000000000">
-                </div>
-                <div class="union">
-                    <button type="submit" class="btn-agregar">Crear Categoria</button>
-                </div>
-                
-            </form>
-    </div>
     <div class="box-button">
-        <h2>Categorias</h2>
+        <h2>Proveedores</h2>
 
         <form action="" method="post" class="buscador">
             <input type="search" name="" id="" placeholder="Buscar">
             {% csrf_token %}
         </form>
+        
         <div class="descargas">
             <button>Descargar csv</button>
             <button>Imprimir</button>
         </div>
     
-        <div class="seccion-categoria-tabla">
-            <table>
+        <div class="seccion-proveedor-tabla">
+            <table >
                     <thead>
                         <tr>
                             <th>Codigo de Proveedor</th>

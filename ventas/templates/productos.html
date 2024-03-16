@@ -1,11 +1,42 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="botonAgregarProducto">
-    <a href="">
-        <i class="ti ti-plus"></i>
-    </a>
+<!-- seccion de agregar nuevo producto -->
+
+<button class="btn-abrir">
+    <i class="ti ti-plus"></i>
+</button>
+
+<div class="modal">
+    <div class="content-modal modal-productos">
+      <h2>Nuevo Producto</h2>
+
+      <form action="{% url 'crearProductosLink' %}"  method="post" enctype="multipart/form-data" class="form-productos">
+        {% csrf_token %}
+        <p>
+            {{formulario.codigo_producto}}
+            {{formulario.codigo_barras}}
+            {{formulario.nombre}}
+            {{formulario.precio}}
+            {{formulario.stock}}
+            <label >Categoria:</label>
+            {{formulario.categoria}}
+            <label >Marca:</label>
+            {{formulario.marca}}
+            <label >Proveedor:</label>
+            {{formulario.proveedor}}
+            <label >Imagen:</label>
+            {{formulario.imagen}}
+        </p>
+        <button type="submit"  class="btn-guardar">Guardar Producto</button>
+        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+    </form>
+    </div>
 </div>
+
+  <!-- seccion de productos -->
+
     <section class="productos-page">
         {% include 'includesTemplates/catalogo_productos.html' %}
         
@@ -52,7 +83,11 @@
                                 <td>{{prod.marca}}</td>
                                 <td>{{prod.proveedor}}</td>
                                 <!-- <td>
-                                    <img src="{{prod.imagen.url}}" alt="{{prod.nombre}}" width="30px" height="30px">
+                                    {% if prod.imagen %}
+                                        <img src="{{prod.imagen.url}}" alt="{{prod.nombre}}" width="30px" height="30px">
+                                    {% else %}
+                                        <img src="" alt="{{prod.nombre}}" width="30px" height="30px">
+                                    {% endif %}
                                 </td> -->
                                 <td>
                                     <a href="" class="icono-editar">
