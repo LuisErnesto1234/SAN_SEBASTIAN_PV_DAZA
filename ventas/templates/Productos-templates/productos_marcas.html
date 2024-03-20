@@ -44,7 +44,7 @@
                             <td>{{mar.codigo_marca}}</td>
                             <td>{{mar.nombre_marca}}</td>
                             <td>
-                                <a href="" class="icono-editar">
+                                <a href="{% url 'editarMarcaLink' codigo_marca=mar.codigo %}" class="icono-editar">
                                     <i class="ti ti-edit"></i>
                                 </a>
                                 <a href="" class="icono-borrar">

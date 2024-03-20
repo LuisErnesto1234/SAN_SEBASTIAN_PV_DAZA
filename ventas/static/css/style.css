@@ -363,7 +363,91 @@ PAGINA DE PROVEEDORES */
   overflow: scroll;
   margin: auto;
 }
+/* PAGINA DE EDITAR PRODUCTOS */
+.editar-producto{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  gap: 30px;
+}
+.editar-titulo{
+  font-size: xx-large;
+  text-align: center;
+  margin: 20px;
+  color: var(--color2);
+  font-weight: bold;
+}
+.box-2-columns{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.formulario-editar{
+  height: fit-content;
+  background-color: var(--color1);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+}
 
+.formulario-editar label{
+  color: var(--color2);
+  font-weight: bold;
+}
+.formulario-editar input,select{
+  outline: none;
+  padding: 5px;
+  border: none;
+  border-bottom: solid 1px var(--color2);
+  width: 100%;
+}
+.formulario-editar select{
+  border: none;
+  background-color: #f9f9f9;
+  border: none;
+}
+.editar-imagen{
+  width: 350px;
+  height: fit-content;
+  background-color: var(--color1);
+  padding: 5px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+}
+.editar-imagen img{
+  width: 100%;
+  height: auto;
+}
+/* PAGINA DE EDITAR CATEGORIAS,MARCAS,PROVEEDOR */
+.categoria-editar, .marca-editar, .editar-proveedor{
+  display: flex;
+  flex-direction: column;
+  align-items:center ;
+}
+.categoria-editar h2{
+  text-transform: capitalize;
+  text-align: center;
+  color: var(--color2);
+  font-size: xx-large;
+  padding: 20px;
+}
+/* PAGINA DE EDITAR MARCAS */
+.marca-editar h2{
+  text-transform: capitalize;
+  text-align: center;
+  color: var(--color2);
+  font-size: xx-large;
+  padding: 20px;
+}
+/* PAGINA EDITAR PROVEEDOR */
+.editar-proveedor h2{
+  text-transform: capitalize;
+  text-align: center;
+  color: var(--color2);
+  font-size: xx-large;
+  padding: 20px;
+}
 /* Estilo para la tabla */
 table {
   width: 100%;

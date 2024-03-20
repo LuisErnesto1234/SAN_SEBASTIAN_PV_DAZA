@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includesTemplates/catalogo_productos.html' %}
+<div class="marca-editar">
+    <h2>{{marca.nombre_marca}}</h2>
+    <form  method="post" class="formulario-editar">
+        {% csrf_token %}
+        <label for="codigo">Codigo</label>
+        <input type="number" name="int-codigo" id="codigo" value="{{marca.codigo_marca}}">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="txt-nombre" id="nombre" value="{{marca.nombre_marca}}">
+        <button type="submit" class="btn-guardar" >Guardar</button>
+    </form>
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@ def PageProductos(request):
         'productos':productos,
         'formulario':form,
     }
-    return render(request,"productos.html",contex)
+    return render(request,"Productos-templates/productos.html",contex)
 
 ######  PAGINAS RELACIONADAS A PRODUCTOS  ######
 def PageProductosCategorias(request):
@@ -22,14 +22,14 @@ def PageProductosCategorias(request):
     contex={
         'categorias':categorias,
     }
-    return render(request,"productos_categorias.html",contex)
+    return render(request,"Productos-templates/productos_categorias.html",contex)
 
 def PageProductosMarcas(request):
     marcas = Marca.objects.all()
     contex={
         'marcas':marcas,
     }
-    return render(request,"productos_marcas.html",contex)
+    return render(request,"Productos-templates/productos_marcas.html",contex)
 
 def PageProductosProveedores(request):
     proveedores = Proveedor.objects.all()
@@ -38,7 +38,7 @@ def PageProductosProveedores(request):
         'proveedores':proveedores,
         'formulario':form,
     }
-    return render(request,"productos_proveedores.html",contex)
+    return render(request,"Productos-templates/productos_proveedores.html",contex)
 
 # crear
 def crearProducto(request):
@@ -75,14 +75,62 @@ def crearProveedor(request):
        return render(request,'estadisticas.html')
 
 # editar
-def editarProducto(request,id):
-    pass
-def editarCategoria(request,id):
-    pass
-def editarMarca(request,id):
-    pass
-def editarProveedor(request,id):
-    pass
+def editarProducto(request,codigo_producto):
+    producto = Producto.objects.get(codigo=codigo_producto)
+    formulario = ProductoForm(instance=producto)
+    
+    if request.method == 'POST':
+        form = ProductoForm(request.POST ,request.FILES,instance=producto) 
+        if form.is_valid():
+            form.save()
+            return redirect('PageProductosLink') 
+    context={
+        'producto':producto,
+        'formulario':formulario,
+        }
+    return render(request,'Productos-templates/productos-editar.html',context=context)
+
+def editarCategoria(request,codigo_categoria):
+    categoria = Categoria.objects.get(codigo=codigo_categoria)
+    if request.method == 'POST':
+        dato1 = request.POST.get('int-codigo')
+        dato2 = request.POST.get('txt-nombre')
+        Categoria.objects.filter(codigo=categoria.codigo).update(codigo_categoria=dato1,nombre_categoria=dato2)
+
+        return redirect('PageProductosCategoriasLink')
+    context={
+        'categoria':categoria,
+    }
+    return render(request,'Productos-templates/producto_categorias-editar.html',context)
+
+def editarMarca(request,codigo_marca):
+    marca = Marca.objects.get(codigo=codigo_marca)
+    if request.method == 'POST':
+        dato1 = request.POST.get('int-codigo')
+        dato2 = request.POST.get('txt-nombre')
+        Marca.objects.filter(codigo=marca.codigo).update(codigo_marca=dato1,nombre_marca=dato2)
+
+        return redirect('PageProductosMarcasLink')
+    context={
+        'marca':marca,
+    }
+    return render(request,'Productos-templates/producto_marcas-editar.html',context)
+
+def editarProveedor(request,codigo_proveedor):
+    proveedor = Proveedor.objects.get(codigo=codigo_proveedor)
+    formulario = ProveedorForm(instance=proveedor)
+    
+    if request.method == 'POST':
+        form = ProveedorForm(request.POST,instance=proveedor) 
+        if form.is_valid():
+            form.save()
+            return redirect('PageProductosProveedoresLink') 
+    context={
+        'proveedor':proveedor,
+        'formulario':formulario,
+        }
+    return render(request,'Productos-templates/producto_proveedor-editar.html',context=context)
+
 # eliminar
 def eliminarProducto(request,id):
     pass

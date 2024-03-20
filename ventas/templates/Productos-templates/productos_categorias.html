@@ -45,7 +45,7 @@
                             <td>{{cat.codigo_categoria}}</td>
                             <td>{{cat.nombre_categoria}}</td>
                             <td>
-                                <a href="" class="icono-editar">
+                                <a href="{% url 'editarCategoriaLink' codigo_categoria=cat.codigo %}" class="icono-editar">
                                     <i class="ti ti-edit"></i>
                                 </a>
                                 <a href="" class="icono-borrar">

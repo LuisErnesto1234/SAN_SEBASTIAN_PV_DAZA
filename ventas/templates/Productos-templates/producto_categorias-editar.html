@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includesTemplates/catalogo_productos.html' %}
+<div class="categoria-editar">
+    <h2>{{categoria.nombre_categoria}}</h2>
+    <form  method="post" class="formulario-editar">
+        {% csrf_token %}
+        <label for="codigo">Codigo</label>
+        <input type="number" name="int-codigo" id="codigo" placeholder="00" value="{{categoria.codigo_categoria}}">
+        <label for="nombre">Nombre</label>
+        <input type="text" name="txt-nombre" id="nombre" placeholder="Nombre" value="{{categoria.nombre_categoria}}">
+        <button type="submit" class="btn-guardar" >Guardar</button>
+    </form>
+</div>
+{% endblock %}

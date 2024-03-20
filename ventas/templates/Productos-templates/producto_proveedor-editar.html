@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includesTemplates/catalogo_productos.html' %}
+<div class="editar-proveedor">
+    <h2 >{{proveedor.nombres}}</h2>
+        <form action="" class="formulario-editar" method="post" >
+            {% csrf_token %}
+            <label >Codigo Producto:</label>
+            {{formulario.codigo_proveedor}}
+            <label >Nombres:</label>
+            {{formulario.nombres}}
+            <label >Apellidos:</label>
+            {{formulario.apellidos}}
+            <label >Ruc - DNI:</label>
+            {{formulario.ruc_dni}}
+            <label >Direccion:</label>
+            {{formulario.direccion}}
+            <label >Correo:</label>
+            {{formulario.correo_electronico}}
+            <label >Numero:</label>
+            {{formulario.numero_telefono}}
+
+            <button type="submit" class="btn-guardar">Guardar</button>
+            
+        </form>
+</div>
+{% endblock %}

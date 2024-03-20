@@ -67,7 +67,7 @@
                             <td>{{ pro.correo_electronico }}</td>
                             <td>{{ pro.numero_telefono }}</td>                        
                             <td>
-                                <a href="" class="icono-editar">
+                                <a href="{% url 'editarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-editar">
                                     <i class="ti ti-edit"></i>
                                 </a>
                                 <a href="" class="icono-borrar">

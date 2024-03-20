@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includesTemplates/catalogo_productos.html' %}
+<div class="editar-producto">
+    <h1 class="editar-titulo">{{producto}}</h1>
+    <div class="box-2-columns">
+        <form action="" class="formulario-editar" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label >Codigo Producto:</label>
+            {{formulario.codigo_producto}}
+            <label >Codigo Barras:</label>
+            {{formulario.codigo_barras}}
+            <label >Nombre:</label>
+            {{formulario.nombre}}
+            <label >Precio:</label>
+            {{formulario.precio}}
+            <label >Stock:</label>
+            {{formulario.stock}}
+            <label >Categoria:</label>
+            {{formulario.categoria}}
+            <label >Marca:</label>
+            {{formulario.marca}}
+            <label >Proveedor:</label>
+            {{formulario.proveedor}}
+            <label >Imagen:</label>
+            {{formulario.imagen}}
+            <button type="submit" class="btn-guardar">Guardar</button>
+            
+        </form>
+        
+        <div class="editar-imagen">
+            {% if producto.imagen %}
+                <img src="{{producto.imagen.url}}" alt="{{producto.nombre}}" class="img">
+            {% else %}
+                <img src="{% static 'img/img-default.jpg' %}" alt="{{prod.nombre}}" width="30px" height="30px">
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
