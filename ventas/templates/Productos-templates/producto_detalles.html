@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'includesTemplates/catalogo_productos.html' %}
+
+<div class="detalle-producto">
+    <div class="informacion-producto">
+        <table>
+            <thead>
+              <tr>
+                <th colspan="2">especificaciones</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>Codigo:</td>
+                <td>{{producto.codigo}}</td>
+                </tr>
+                <tr>
+                <td>Cod Barras:</td>
+                <td>{{producto.codigo_barras}}</td>
+            </tr>
+              <tr>
+                <td>Nombre:</td>
+                <td>{{producto.nombre}}</td>
+              </tr>
+              <tr>
+                <td>Precio:</td>
+                <td>S/ {{producto.precio}}</td>
+              </tr>
+              <tr>
+                <td>Categoria:</td>
+                <td>{{producto.categoria}}</td>
+              </tr>
+              <tr>
+                <td>Marca:</td>
+                <td>{{producto.marca}}</td>
+              </tr>
+              <tr>
+                <td>Proveedor:</td>
+                <td>{{producto.proveedor}}</td>
+              </tr>
+              <tr>
+                <td>Stock:</td>
+                <td>{{producto.stock}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="imagen-producto">
+        <h1>{{producto.nombre}}</h1>
+            {% if producto.imagen %}
+                <img src="{{producto.imagen.url}}" alt="{{producto.nombre}}" class="img">
+            {% else %}
+                <img src="{% static 'img/img-default.jpg' %}" alt="{{producto.nombre}}" >
+            {% endif %}
+    </div>
+</div>
+
+{% endblock %} 

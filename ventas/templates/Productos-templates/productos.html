@@ -93,10 +93,10 @@
                                     <a href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}" class="icono-editar">
                                         <i class="ti ti-edit"></i>
                                     </a>
-                                    <a href="" class="icono-borrar">
+                                    <a href="{% url 'eliminarProductoLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
                                         <i class="ti ti-trash"></i>
                                     </a>
-                                    <a href="" class="icono-detalle">
+                                    <a href="{% url 'detalleProductoLink' codigo_producto=prod.codigo %}" class="icono-detalle">
                                         <i class="ti ti-eye"></i>
                                     </a>
                                 </td>
@@ -109,5 +109,12 @@
         </article>
         
     </section>
-
+    <!-- Modal -->
+<div  class="modalDelete">
+    <div class="modal-content">
+      <p>¿Estás seguro de eliminar este registro?</p>
+      <button id="btnSi" class="btn">Sí</button>
+      <button id="btnNo" class="btn">No</button>
+    </div>
+  </div>
 {% endblock %}

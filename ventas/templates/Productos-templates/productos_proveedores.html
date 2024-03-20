@@ -20,7 +20,7 @@
             {{formulario.correo_electronico}}
             {{formulario.numero_telefono}}
         </p>
-        <button type="submit" class="btn-guardar">Guardar Producto</button>
+        <button type="submit" class="btn-guardar">Guardar Proveedor</button>
         <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
     </form>
     </div>
@@ -70,7 +70,7 @@
                                 <a href="{% url 'editarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-editar">
                                     <i class="ti ti-edit"></i>
                                 </a>
-                                <a href="" class="icono-borrar">
+                                <a href="{% url 'eliminarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-borrar enlaceDelete">
                                     <i class="ti ti-trash"></i>
                                 </a>
                             </td>
@@ -83,5 +83,5 @@
     
 </section>
 
-
+{% include 'includesTemplates/modal-delete.html' %}
 {% endblock %} 

@@ -132,15 +132,26 @@ def editarProveedor(request,codigo_proveedor):
     return render(request,'Productos-templates/producto_proveedor-editar.html',context=context)
 
 # eliminar
-def eliminarProducto(request,id):
-    pass
-def eliminarCategoria(request,id):
-    pass
-def eliminarMarca(request,id):
-    pass
-def eliminarProveedor(request,id):
-    pass
+def eliminarProducto(request,codigo_producto):
+    Producto.objects.get(codigo=codigo_producto).delete()
+    return redirect('PageProductosLink')
+
+def eliminarCategoria(request,codigo_categoria):
+    Categoria.objects.get(codigo=codigo_categoria).delete()
+    return redirect('PageProductosCategoriasLink')
+    
+def eliminarMarca(request,codigo_marca):
+    Marca.objects.get(codigo=codigo_marca).delete()
+    return redirect('PageProductosMarcasLink')
+
+def eliminarProveedor(request,codigo_proveedor):
+    Proveedor.objects.get(codigo=codigo_proveedor).delete()
+    return redirect('PageProductosProveedoresLink')
+
 # detalles
-def detalleProducto(request,id):
-    pass
+def detalleProducto(request,codigo_producto):
+    producto =  Producto.objects.get(codigo=codigo_producto)
+    return render(request,'Productos-templates/producto_detalles.html',context={
+        'producto':producto
+    })
 

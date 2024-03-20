@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -45,10 +46,10 @@
                             <td>{{cat.codigo_categoria}}</td>
                             <td>{{cat.nombre_categoria}}</td>
                             <td>
-                                <a href="{% url 'editarCategoriaLink' codigo_categoria=cat.codigo %}" class="icono-editar">
+                                <a href="{% url 'editarCategoriaLink' codigo_categoria=cat.codigo %}" class="icono-editar ">
                                     <i class="ti ti-edit"></i>
                                 </a>
-                                <a href="" class="icono-borrar">
+                                <a href="{% url 'eliminarCategoriaLink' codigo_categoria=cat.codigo %}" class="icono-borrar enlaceDelete">
                                     <i class="ti ti-trash"></i>
                                 </a>
                             </td>
@@ -60,5 +61,5 @@
     </div>
     
 </section>
-
+{% include 'includesTemplates/modal-delete.html' %}
 {% endblock %}
