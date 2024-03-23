@@ -60,3 +60,4 @@ btnSi.addEventListener('click', function() {
     modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
     window.location.href = btnSi.href; // Redirige al enlace
 });
+

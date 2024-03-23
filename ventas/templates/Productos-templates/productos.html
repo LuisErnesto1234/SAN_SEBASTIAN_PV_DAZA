@@ -48,13 +48,13 @@
                     {% csrf_token %}
                 </form>
                 <div class="descargas">
-                    <button>Descargar csv</button>
-                    <button>Imprimir</button>
-                </div>
+                <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
+                <button onclick="printDiv('printableTable')">Imprimir</button>
+            </div>
             </div>
             <div class="box-table-productos">
                 <div class="box-table-productos-scroll">
-                    <table class="table-productos">
+                    <table id="printableTable" class="table-productos">
                         <thead>
                             <tr>
                                 <th>Cod. Producto</th>
@@ -66,7 +66,7 @@
                                 <th>Marca</th>
                                 <th>Proovedor</th>
                                 <!-- <th>Imagen</th> -->
-                                <th>Acciones</th> 
+                                <th>Acciones</th>
                             </tr>
                             
                         </thead>
@@ -117,4 +117,24 @@
       <button id="btnNo" class="btn">No</button>
     </div>
   </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-descargar-excel').addEventListener('click', function() {
+            window.location.href = "{% url 'descargar_excel' %}";
+        });
+    });
+
+    function printDiv(divName) {
+  var printDiv = document.getElementById(divName);
+  var newWin = window.open('', '', 'width=800,height=600');
+  newWin.document.write(printDiv.outerHTML);
+  newWin.document.close();
+  newWin.focus();
+  newWin.print();
+  newWin.close();
+}
+    </script>
+    
 {% endblock %}
