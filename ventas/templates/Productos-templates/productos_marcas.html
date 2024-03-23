@@ -25,12 +25,12 @@
             {% csrf_token %}
         </form>
         <div class="descargas">
-            <button>Descargar csv</button>
-            <button>Imprimir</button>
+            <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
+            <button onclick="printTable()">Imprimir</button>
         </div>
     
         <div class="seccion-categoria-tabla">
-            <table>
+            <table id="printableTable">
                     <thead>
                         <tr>
                             <th>Codigo</th>
@@ -60,4 +60,22 @@
     
 </section>
 {% include 'includesTemplates/modal-delete.html' %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-descargar-excel').addEventListener('click', function() {
+            window.location.href = "{% url 'descargar_excel_marca' %}";
+        });
+    });
+
+    function printTable() {
+        var printableTable = document.getElementById('printableTable').outerHTML;
+        var newWin = window.open('', '', 'width=800,height=600');
+        newWin.document.write(printableTable);
+        newWin.document.close();
+        newWin.focus();
+        newWin.print();
+        newWin.close();
+    }
+</script>
 {% endblock %}

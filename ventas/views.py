@@ -155,3 +155,100 @@ def detalleProducto(request,codigo_producto):
         'producto':producto
     })
 
+
+
+# Imprimir excel de productos
+
+from django.http import HttpResponse
+from openpyxl import Workbook
+
+def descargar_excel(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="productos.xlsx"'
+
+    # Crear un nuevo libro de trabajo de Excel
+    wb = Workbook()
+    # Obtener la hoja de cálculo activa
+    ws = wb.active
+
+    # Agregar encabezados
+    ws.append(['Código Producto', 'Código Barras', 'Nombre', 'Precio', 'Stock', 'Categoría', 'Marca', 'Proveedor'])
+
+    # Agregar datos de productos
+    productos = Producto.objects.all()
+    for producto in productos:
+        ws.append([producto.codigo_producto, producto.codigo_barras, producto.nombre, producto.precio, producto.stock, producto.categoria.nombre_categoria, producto.marca.nombre_marca, producto.proveedor.nombres])
+
+    # Guardar el libro de trabajo
+    wb.save(response)
+
+    return response
+
+# Imprimir excel de categoria
+def descargar_excel_categoria(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="Categorias.xlsx"'
+
+    # Crear un nuevo libro de trabajo de Excel
+    wb = Workbook()
+    # Obtener la hoja de cálculo activa
+    ws = wb.active
+
+    # Agregar encabezados
+    ws.append(['Código', 'Nombre'])
+
+    # Agregar datos de categorías
+    categorias = Categoria.objects.all()
+    for categoria in categorias:
+        ws.append([categoria.codigo_categoria, categoria.nombre_categoria])
+
+    # Guardar el libro de trabajo
+    wb.save(response)
+
+    return response
+
+# Imprimir excel de Marcas
+def descargar_excel_marca(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="Marca.xlsx"'
+
+    # Crear un nuevo libro de trabajo de Excel
+    wb = Workbook()
+    # Obtener la hoja de cálculo activa
+    ws = wb.active
+
+    # Agregar encabezados
+    ws.append(['Código', 'Nombre'])
+
+    # Agregar datos de marcas
+    marcas = Marca.objects.all()
+    for marca in marcas:
+        ws.append([marca.codigo_marca, marca.nombre_marca])
+
+    # Guardar el libro de trabajo
+    wb.save(response)
+
+    return response
+
+# Imprimir excel de Proveedores
+def descargar_excel_proveedores(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="Proveedores.xlsx"'
+
+    # Crear un nuevo libro de trabajo de Excel
+    wb = Workbook()
+    # Obtener la hoja de cálculo activa
+    ws = wb.active
+
+    # Agregar encabezados
+    ws.append(['Código de Proveedor', 'Nombres', 'Apellidos', 'RUC/DNI', 'Dirección', 'Correo Electrónico', 'Número de Teléfono'])
+
+    # Agregar datos de proveedores
+    proveedores = Proveedor.objects.all()
+    for proveedor in proveedores:
+        ws.append([proveedor.codigo_proveedor, proveedor.nombres, proveedor.apellidos, proveedor.ruc_dni, proveedor.direccion, proveedor.correo_electronico, proveedor.numero_telefono])
+
+    # Guardar el libro de trabajo
+    wb.save(response)
+
+    return response
