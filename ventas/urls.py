@@ -30,7 +30,14 @@ urlpatterns = [
     path('crear-proveedor/',views.crearProveedor,name="crearProveedorink"),
     path('editar-proveedor/<int:codigo_proveedor>',views.editarProveedor,name="editarProveedorLink"),
     path('eliminar-proveedor/<int:codigo_proveedor>',views.eliminarProveedor,name="eliminarProveedorLink"),
-    
+    #Descargar mi csv
+    path('descargar-excel/', views.descargar_excel, name='descargar_excel'),
+    path('descargar-excel-categoria/', views.descargar_excel_categoria, name='descargar_excel_categoria'),
+    path('descargar-excel-marca/', views.descargar_excel_marca, name='descargar_excel_marca'),
+    path('descargar-excel-proveedores/', views.descargar_excel_proveedores, name='descargar_excel_proveedores'),
+
+
+
     
 ]
 

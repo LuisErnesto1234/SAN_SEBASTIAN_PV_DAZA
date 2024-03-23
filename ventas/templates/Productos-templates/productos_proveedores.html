@@ -1,33 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<button class="btn-abrir">
-    <i class="ti ti-plus"></i>
-</button>
-
-<div class="modal">
-    <div class="content-modal modal-proveedor">
-      <h2>Nuevo Proveedor</h2> 
-    
-      <form  action="{% url 'crearProveedorink' %}" method="post" class="form-proveedor">
-        {% csrf_token %}
-        <p>
-            {{formulario.codigo_proveedor}}
-            {{formulario.nombres}}
-            {{formulario.apellidos}}
-            {{formulario.ruc_dni}}
-            {{formulario.direccion}}
-            {{formulario.correo_electronico}}
-            {{formulario.numero_telefono}}
-        </p>
-        <button type="submit" class="btn-guardar">Guardar Proveedor</button>
-        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
-    </form>
-    </div>
-</div>
-
-{% include 'includesTemplates/catalogo_productos.html' %}
-
 <section class="seccion-proveedores">
     <div class="box-button">
         <h2>Proveedores</h2>
@@ -38,50 +12,67 @@
         </form>
         
         <div class="descargas">
-            <button>Descargar csv</button>
-            <button>Imprimir</button>
+            <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
+            <button onclick="printTable()">Imprimir</button>
         </div>
     
         <div class="seccion-proveedor-tabla">
-            <table >
-                    <thead>
-                        <tr>
-                            <th>Codigo de Proveedor</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>RUC/DNI</th>
-                            <th>Direccion</th>
-                            <th>Correo Electronico</th>
-                            <th>Numero de Telefono</th>
-                            <th>Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pro in proveedores %}
-                        <tr>
-                            <td>{{ pro.codigo_proveedor }}</td>
-                            <td>{{ pro.nombres }}</td>
-                            <td>{{ pro.apellidos }}</td>
-                            <td>{{ pro.ruc_dni }}</td>
-                            <td>{{ pro.direccion }}</td>
-                            <td>{{ pro.correo_electronico }}</td>
-                            <td>{{ pro.numero_telefono }}</td>                        
-                            <td>
-                                <a href="{% url 'editarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-editar">
-                                    <i class="ti ti-edit"></i>
-                                </a>
-                                <a href="{% url 'eliminarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-borrar enlaceDelete">
-                                    <i class="ti ti-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor  %}
-                    </tbody>
+            <table id="printableTable">
+                <thead>
+                    <tr>
+                        <th>Codigo de Proveedor</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>RUC/DNI</th>
+                        <th>Direccion</th>
+                        <th>Correo Electronico</th>
+                        <th>Numero de Telefono</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pro in proveedores %}
+                    <tr>
+                        <td>{{ pro.codigo_proveedor }}</td>
+                        <td>{{ pro.nombres }}</td>
+                        <td>{{ pro.apellidos }}</td>
+                        <td>{{ pro.ruc_dni }}</td>
+                        <td>{{ pro.direccion }}</td>
+                        <td>{{ pro.correo_electronico }}</td>
+                        <td>{{ pro.numero_telefono }}</td>                        
+                        <td>
+                            <a href="{% url 'editarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-editar">
+                                <i class="ti ti-edit"></i>
+                            </a>
+                            <a href="{% url 'eliminarProveedorLink' codigo_proveedor=pro.codigo %}" class="icono-borrar enlaceDelete">
+                                <i class="ti ti-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor  %}
+                </tbody>
             </table>
         </div>
     </div>
-    
 </section>
 
 {% include 'includesTemplates/modal-delete.html' %}
-{% endblock %} 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-descargar-excel').addEventListener('click', function() {
+            window.location.href = "{% url 'descargar_excel_proveedores' %}";
+        });
+    });
+
+    function printTable() {
+        var printableTable = document.getElementById('printableTable').outerHTML;
+        var newWin = window.open('', '', 'width=800,height=600');
+        newWin.document.write(printableTable);
+        newWin.document.close();
+        newWin.focus();
+        newWin.print();
+        newWin.close();
+    }
+</script>
+{% endblock %}
