@@ -48,17 +48,20 @@ class Factura(models.Model):
     codigo = models.AutoField(primary_key=True)
     codigo_factura = models.CharField(max_length=20, unique=True)
     fecha_venta = models.DateTimeField(auto_now_add=True)
-
-
+    
+    def __str__(self):
+            return self.codigo_factura
 
 class Producto_vendido(models.Model):
     codigo = models.AutoField(primary_key=True)
     codigo_venta = models.CharField(max_length=20, unique=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad_vendida = models.PositiveIntegerField()
+    comentario = models.CharField(max_length=200, null=True, blank=True,default='Producto vendido')
     codigo_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     
-      
+    def __str__(self):
+            return f' se vendio {self.cantidad_vendida} {self.producto}'
       
       
       

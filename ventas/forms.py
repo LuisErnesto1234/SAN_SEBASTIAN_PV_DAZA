@@ -1,5 +1,5 @@
 from django import forms
-from .models import Producto,Proveedor
+from .models import Producto,Proveedor,Producto_vendido
 
 class ProductoForm(forms.ModelForm):
     class Meta:
@@ -39,4 +39,21 @@ class ProveedorForm(forms.ModelForm):
             'direccion': forms.TextInput(attrs={'placeholder': 'Dirección'}),
             'correo_electronico': forms.EmailInput(attrs={'placeholder': 'Correo Electrónico'}),
             'numero_telefono': forms.TextInput(attrs={'placeholder': 'Número de Teléfono'}),
+        }
+
+class ProductoVendidoForm(forms.ModelForm):
+    class Meta:
+        model = Producto_vendido
+        fields = ['codigo_venta', 'producto', 'cantidad_vendida', 'codigo_factura']
+        labels = {
+            'codigo_venta': 'Código de Venta',
+            'producto': 'Producto',
+            'cantidad_vendida': 'Cantidad Vendida',
+            'codigo_factura': 'Código de Factura',
+        }
+        widgets = {
+            'codigo_venta': forms.TextInput(attrs={'placeholder': 'Ingrese el código de la venta'}),
+            'producto': forms.Select(attrs={'placeholder': 'Seleccione un producto','class':'select-poroductos','id':'seleccionar-productos'}),
+            'cantidad_vendida': forms.NumberInput(attrs={'placeholder': 'Ingrese la cantidad vendida'}),
+            'codigo_factura': forms.Select(attrs={'placeholder': 'Ingrese el código de la factura'}),
         }

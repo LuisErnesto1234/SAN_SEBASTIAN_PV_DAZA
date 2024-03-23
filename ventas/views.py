@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .forms import ProductoForm,ProveedorForm
+from .forms import ProductoForm,ProveedorForm,ProductoVendidoForm
 from .models import *
 
 ######  PAGINAS DE PRINSIPALES  ######
@@ -155,3 +155,21 @@ def detalleProducto(request,codigo_producto):
         'producto':producto
     })
 
+
+
+
+def PageVentas(request):
+    facturas = Factura.objects.all()
+
+    context={
+        'facturas':facturas,
+    }
+    return render(request,"Ventas-templates/ventas.html",context)
+
+
+def crearVenta(request):
+    formulario = ProductoVendidoForm()
+    context={
+        'formulario':formulario
+    }
+    return render(request,'Ventas-templates/crear-venta.html',context=context)

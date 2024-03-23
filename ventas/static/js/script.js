@@ -49,14 +49,28 @@ enlaces.forEach(enlace => {
     
     });
 });
-console.log(enlaces)
 // Agrega un evento de clic al botón "No" de la ventana modalDelete
-btnNo.addEventListener('click', function() {
-    modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
-});
+if (btnNo){
+    btnNo.addEventListener('click', function() {
+        modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
+    });
+}
 
 // Agrega un evento de clic al botón "Sí" de la ventana modalDelete
-btnSi.addEventListener('click', function() {
-    modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
-    window.location.href = btnSi.href; // Redirige al enlace
+if (btnSi){
+    btnSi.addEventListener('click', function() {
+        modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
+        window.location.href = btnSi.href; // Redirige al enlace
+    });
+}
+
+
+// para hacer la seleccion de porductos en la venta 
+new TomSelect("#seleccionar-productos",{
+	create: false,
+	sortField: {
+		field: "text",
+		direction: "asc"
+	}
+    
 });

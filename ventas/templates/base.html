@@ -6,7 +6,9 @@
   <title>Punto de ventas</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
-
+  <!-- libreria para un selec con buscador  -->
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 </head>
 <body>
      <!-- SIDEBAR -->
@@ -32,9 +34,9 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="{% url 'PageVentasLink' %}">
             <i class="ti ti-shopping-cart"></i>
-            <span class="link_name">Vender</span>
+            <span class="link_name">Ventas</span>
           </a>  
         </li>
         <li>
@@ -74,4 +76,7 @@
 
 <script src="{% static 'js/script.js' %}"></script>
 <body>
+
+
+
 </html>

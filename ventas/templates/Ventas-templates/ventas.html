@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>ventas</h1>
+    {% for fac in facturas %}
+    <li>{{fac}}</li>
+    {% endfor  %}
+    
+    <a href="{% url 'crearVentaLink' %}">nueva venta</a>
+
+{% endblock %}

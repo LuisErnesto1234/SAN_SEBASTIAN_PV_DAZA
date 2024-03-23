@@ -3,6 +3,11 @@ from . import views
 
 urlpatterns = [
     path('',views.PageInicio,name="PageInicioLink"),
+    # SECCION DE VENTAS
+    path('ventas',views.PageVentas,name="PageVentasLink"),
+    path('crear-ventas',views.crearVenta,name="crearVentaLink"),
+
+    # SECCION DE PRODUCTOS
     path('productos/',views.PageProductos,name="PageProductosLink"),
     path('productos-Categorias/',views.PageProductosCategorias,name="PageProductosCategoriasLink"),
     path('productos-Marcas/',views.PageProductosMarcas,name="PageProductosMarcasLink"),
