@@ -3,50 +3,78 @@
 
 {% block content %}
 
-
+{{codigo_fac}}
 <div class="seccion-productos">
+    <h1 class="seccion-productos-titulo">Nueva Venta</h1>
     <div class="seccion-productos-agregar">
-        <form action="" method="post" >
+        <form action="" method="post" class="seccion-productos-agregar-form">
             {% csrf_token %}
-            {{formulario.codigo_venta}}
-            {{formulario.producto}}
-            {{formulario.cantidad_vendida}}
-            <button type="submit" class="btn-guardar">agregar</button>
+            <div class="input-producto">
+                {{form_listado_productos.codigo_factura.label}}
+                {{form_listado_productos.codigo_factura}}
+                <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
+                {{form_listado_productos.producto.label}}
+                {{form_listado_productos.producto}}
+                {{form_listado_productos.cantidad_vendida.label}}
+                {{form_listado_productos.cantidad_vendida}}
+                <button type="submit" class="btn-guardar">agregar</button>
+            </div>
         </form>
+        <div class="seccion-productos-agregar-tabla">
+            <div class="tabla-productos">
+                <table>
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% if lista_productos %}
+                            {% for prod in lista_productos %}
+                            <tr>
+                                <td>{{prod.producto}}</td>
+                                <td>{{prod.cantidad_vendida}}</td>
+                                <td>{{prod.producto.precio}}</td>
+                                <td>
+                                    <a href="" class="icono-borrar">
+                                        <i class="ti ti-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor  %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">
+                                    no seleccionaste productos
+                                </td>
+                            </tr>
+                            
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div class="seccion-productos-listar">
-        <table>
-            <thead>
-              <tr>
-                <th>Columna 1</th>
-                <th>Columna 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Fila 1, Celda 1</td>
-                <td>Fila 1, Celda 2</td>
-              </tr>
-              <tr>
-                <td>Fila 2, Celda 1</td>
-                <td>Fila 2, Celda 2</td>
-              </tr>
-            </tbody>
-        </table>
-    </div>
+    
     <div class="seccion-productos-opciones">
-        <a href="#">btn imprimir</a>
-        <a href="#">btn nueva venta</a>
-        <a href="#">btn cancelar</a>
+        <h2></h2>
+        <form action="{% url 'procesarVentaLink' cod_fac=formulario_venta.factura.value %}" method="post" >
+            {% csrf_token %}
+            {{formulario_venta}}
+            <button type="submit">Crear Factura</button>
+        </form>
+        {% if error_stock %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_stock }}
+            </div>
+        {% endif %}
+        <a href="#">Guardar y volver</a>
+        <a href="#">Guardar e Imprimir</a>
+        <a href="#" class="btn-cancelar" >Cancelar Venta</a>
     </div>
-</div>
-<div class="seccion-factura">
-    <form action="" method="post">
-        <label for="codigo">metodo</label>
-        <input type="text" name="metodo" id="" >
-        <label for="coment"></label>
-        <input type="text" name="coment" id="" >
-    </form>
 </div>
 
 {% endblock %} 

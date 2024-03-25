@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
-from .forms import ProductoForm,ProveedorForm,ProductoVendidoForm
+from django.urls import reverse
+from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm
 from .models import *
+from django.contrib import messages
 
 ######  PAGINAS DE PRINSIPALES  ######
 
@@ -157,24 +159,93 @@ def detalleProducto(request,codigo_producto):
 
 
 
-<<<<<<< HEAD
-
 def PageVentas(request):
+    if request.method == 'POST':
+        factura = FacturaForm(request.POST)
+        if factura.is_valid():
+            # guardamos el codigo de la factura
+            fac = factura.save()
+            # enviamos el codigo a otra vista
+            return redirect('crearVentaLink',fac.codigo)
+            
     facturas = Factura.objects.all()
-
+    formulario_fac = FacturaForm()
     context={
         'facturas':facturas,
+        'form_fac':formulario_fac,
     }
     return render(request,"Ventas-templates/ventas.html",context)
 
+def crearVenta(request,cod_fac):
+    #error que viene de la vista procesar venta 
+    # error_stock = request.GET.get('error_stock')
 
-def crearVenta(request):
-    formulario = ProductoVendidoForm()
+    # todos los productos que tiene la misma factura
+    lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    
+    # total de la venta
+    total = 0
+    for producto in lista_productos:
+        total += producto.producto.precio * producto.cantidad_vendida
+        total=total
+    
+    # formulario del listado de productos con un valor inicial de el codigo de fac 
+    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac,'cantidad':'1'})
+    # formulario de venta
+    formulario_venta = VentaProductosFacturaForm(initial={'factura': cod_fac,'total':total})
+    
+    
+    if request.method == 'POST':
+         form = ListaProductosFacturaForm(request.POST)
+         if form.is_valid():
+             form.save()
+             return redirect(request.path)
+             
+             
     context={
-        'formulario':formulario
+        'form_listado_productos':form_listado_productos,
+        'lista_productos':lista_productos,
+        'formulario_venta':formulario_venta,
+        # 'error_stock':error_stock 
     }
     return render(request,'Ventas-templates/crear-venta.html',context=context)
-=======
+
+def procesarVenta(request,cod_fac):
+    errorStock = ''
+    if request.method == 'POST':
+        # obtenemos la lista de productos de esa factura 
+        lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+        # obtenemos todos los productos
+        productos = Producto.objects.all()
+         # quitar el stok
+        for lisProd in lista_productos:
+            for pro in productos:
+                # preguntamos si el codigo del producto lista es el mismo que el de product
+                if lisProd.producto.codigo == pro.codigo:
+                   
+                    # obtenemos el codigo del producto y le restamos la catidad 
+                    productoObtenido = Producto.objects.get(codigo=pro.codigo)
+                    # validamos el stock
+                    if productoObtenido.stock > lisProd.cantidad_vendida:
+                       productoObtenido.stock -= lisProd.cantidad_vendida
+                       productoObtenido.save()
+                    else:
+                        error_stock = "No hay suficiente stock del producto"
+                        return redirect('crearVentaLink',cod_fac)
+                        
+                        
+        form = VentaProductosFacturaForm(request.POST)
+        if form.is_valid():
+            form.save() 
+            return redirect('PageVentasLink')
+    return redirect('PageVentasLink')
+
+def eliminarventa(request,cod_fac):
+    pass
+
+def detalleVenta(request,cod_fac):
+    pass
+
 # Imprimir excel de productos
 
 from django.http import HttpResponse
@@ -270,4 +341,3 @@ def descargar_excel_proveedores(request):
     wb.save(response)
 
     return response
->>>>>>> 7b86026d9085d7202b8d6892847a09eadb705df2

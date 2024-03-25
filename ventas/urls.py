@@ -5,7 +5,8 @@ urlpatterns = [
     path('',views.PageInicio,name="PageInicioLink"),
     # SECCION DE VENTAS
     path('ventas',views.PageVentas,name="PageVentasLink"),
-    path('crear-ventas',views.crearVenta,name="crearVentaLink"),
+    path('crear-ventas/<int:cod_fac>',views.crearVenta,name="crearVentaLink"),
+    path('procesar-ventas/<int:cod_fac>',views.procesarVenta,name="procesarVentaLink"),
 
     # SECCION DE PRODUCTOS
     path('productos/',views.PageProductos,name="PageProductosLink"),

@@ -2,11 +2,33 @@
 {% load static %}
 
 {% block content %}
-    <h1>ventas</h1>
-    {% for fac in facturas %}
-    <li>{{fac}}</li>
-    {% endfor  %}
-    
-    <a href="{% url 'crearVentaLink' %}">nueva venta</a>
+<button class="btn-abrir" >
+    <i class="ti ti-plus"></i>
+</button>
+<div class="modal">
+    <div class="content-modal modal-nueva-factura">
+      <h2>Nuevo Factura</h2> 
+      <br>
+      <form  action="{% url 'PageVentasLink' %}" method="post" class="form-factura">
+        {% csrf_token %}
+        {{form_fac.nombre_factura.label }}
+        {{form_fac.nombre_factura }}
+        <button type="submit" class="btn-guardar">Crear Factura</button>
+        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+    </form>
+    </div>
+</div>
+    <div class="seccion-ventas">
+        <h1>ventas</h1>
+        {% if facturas %}
+            {% for fac in facturas %}
+                <li>{{fac}}  -   {{fac.fecha_factura}}</li>
+            {% endfor  %}
+        {% else %}
+            <li>No hay facturas</li>
+        {% endif %}
+        
+        <a href="">nueva venta</a>
+    </div>
 
 {% endblock %}

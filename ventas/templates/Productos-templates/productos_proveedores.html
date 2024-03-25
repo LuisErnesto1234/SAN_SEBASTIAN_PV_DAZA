@@ -2,6 +2,30 @@
 {% load static %}
 
 {% block content %}
+{% include 'includesTemplates/catalogo_productos.html' %}
+<button class="btn-abrir">
+    <i class="ti ti-plus"></i>
+</button>
+<div class="modal">
+    <div class="content-modal modal-proveedor">
+      <h2>Nuevo Proveedor</h2> 
+    
+      <form  action="{% url 'crearProveedorink' %}" method="post" class="form-proveedor">
+        {% csrf_token %}
+        <p>
+            {{formulario.codigo_proveedor}}
+            {{formulario.nombres}}
+            {{formulario.apellidos}}
+            {{formulario.ruc_dni}}
+            {{formulario.direccion}}
+            {{formulario.correo_electronico}}
+            {{formulario.numero_telefono}}
+        </p>
+        <button type="submit" class="btn-guardar">Guardar Producto</button>
+        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+    </form>
+    </div>
+</div>
 <section class="seccion-proveedores">
     <div class="box-button">
         <h2>Proveedores</h2>

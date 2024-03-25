@@ -46,24 +46,38 @@ class Producto(models.Model):
 
 class Factura(models.Model):
     codigo = models.AutoField(primary_key=True)
-    codigo_factura = models.CharField(max_length=20, unique=True)
-    fecha_venta = models.DateTimeField(auto_now_add=True)
+    nombre_factura = models.CharField(max_length=50)
+    fecha_factura = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-            return self.codigo_factura
-
-class Producto_vendido(models.Model):
+            return self.nombre_factura
+        
+class MetodoPago(models.Model):
     codigo = models.AutoField(primary_key=True)
-    codigo_venta = models.CharField(max_length=20, unique=True)
+    nombre = models.CharField(max_length=255)
+      
+    def __str__(self):
+            return self.nombre  
+      
+class Lista_Productos_Factura(models.Model):
+    codigo = models.AutoField(primary_key=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad_vendida = models.PositiveIntegerField()
-    comentario = models.CharField(max_length=200, null=True, blank=True,default='Producto vendido')
     codigo_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     
     def __str__(self):
-            return f' se vendio {self.cantidad_vendida} {self.producto}'
-      
-      
+            return f' se vendio {self.producto} {self.cantidad_vendida}'
+    
+class Venta_Productos_Factura(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE,null=True)
+    metodo = models.ForeignKey(MetodoPago, on_delete=models.CASCADE)
+    comentario = models.CharField(max_length=200, null=True, blank=True,default='Venta Añadida')
+    total = models.PositiveIntegerField()
+    
+    def __str__(self):
+            return f'total {self.total} de la venta  {self.codigo}'
+
       
 class Inventario(models.Model):
     codigo = models.AutoField(primary_key=True)

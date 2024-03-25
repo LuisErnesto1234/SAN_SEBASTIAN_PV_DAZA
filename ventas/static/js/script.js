@@ -57,7 +57,7 @@ if (btnNo){
 }
 
 // Agrega un evento de clic al botón "Sí" de la ventana modalDelete
-<<<<<<< HEAD
+
 if (btnSi){
     btnSi.addEventListener('click', function() {
         modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
@@ -67,7 +67,7 @@ if (btnSi){
 
 
 // para hacer la seleccion de porductos en la venta 
-new TomSelect("#seleccionar-productos",{
+new TomSelect("#seleccionar-producto",{
 	create: false,
 	sortField: {
 		field: "text",
@@ -75,10 +75,13 @@ new TomSelect("#seleccionar-productos",{
 	}
     
 });
-=======
-btnSi.addEventListener('click', function() {
-    modalDelete.style.display = 'none'; // Oculta la ventana modalDelete
-    window.location.href = btnSi.href; // Redirige al enlace
-});
-
->>>>>>> 7b86026d9085d7202b8d6892847a09eadb705df2
+// para hacer la seleccion de metodos en la venta 
+// new TomSelect("#seleccionar-metodo",{
+// 	create: false,
+// 	sortField: {
+// 		field: "text",
+// 		direction: "asc"
+// 	}
+// });
+// para hacer la seleccion desabilitada
+new TomSelect("#select-codigo-fac-disabled");

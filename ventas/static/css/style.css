@@ -482,6 +482,72 @@ PAGINA DE PROVEEDORES */
   max-width: 100%;
 }
 
+/* PAGINA DE VENTAS */
+.modal-nueva-factura{
+
+}
+.modal-nueva-factura .form-factura{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+.modal-nueva-factura .form-factura input{
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  padding: 10px;
+}
+/* PAGINA DE CREAR UNA VENTA */
+.seccion-productos{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
+}
+.seccion-productos-titulo{
+  width: 100%;
+  font-size: xx-large;
+  color: var(--color2);
+  font-weight: bold;
+  text-align: center;
+}
+.seccion-productos-agregar{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 20px;
+  background-color: #EBFF00;
+}
+.seccion-productos-opciones{
+  background-color: rgb(0, 0, 0);
+  padding: 20px;
+}
+.seccion-productos-agregar-form{
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-around;
+  gap: 20px;
+}
+.seccion-productos-agregar-tabla{
+  flex-grow: 1;
+}
+.seccion-productos-agregar-form .input-producto{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: solid 1px solid;
+  padding: 20px;
+}
+.seccion-productos-agregar-form label{
+  color: var(--color2);
+}
+.seccion-productos-agregar-form input,textarea{
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  padding: 10px;
+  min-width: 300px;
+  resize: none;
+}
+
 /* Estilo para la tabla */
 table {
   width: 100%;
