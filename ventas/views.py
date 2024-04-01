@@ -441,3 +441,72 @@ def descargar_excel_proveedores(request):
     wb.save(response)
 
     return response
+
+
+
+#LOGIN
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+
+
+# Decorador para restringir el acceso a vistas solo para administradores
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'Admin1':
+            return view_func(request, *args, **kwargs)
+        elif request.user.is_authenticated and request.user.username == 'Vendedor':
+            return redirect(reverse_lazy('PageVentasLink'))  # Redirige a la página de ventas si el usuario es un vendedor
+        else:
+            return redirect('login')  # Redirige a la página de inicio de sesión si no está autenticado como Admin
+    return wrapper
+
+# Decorador para restringir el acceso a vistas solo para vendedores
+def vendor_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'Vendedor':
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect(reverse_lazy('PageVentasLink'))  # Redirige a la página de ventas si no está autenticado como Vendedor
+    return wrapper
+
+# Aplica los decoradores a tus vistas
+
+@login_required
+def PageInicio(request):
+    # Esta vista puede ser accedida tanto por Admin como por Vendedor
+    return render(request, "inicio.html")
+
+@login_required
+@admin_required
+def PageProductos(request):
+    # Esta vista está restringida solo para Admin y Vendedor
+    productos = Producto.objects.all()
+    form = ProductoForm()
+    context = {
+        'productos': productos,
+        'formulario': form,
+    }
+    return render(request, "Productos-templates/productos.html", context)
+
+@login_required
+def PageVentas(request):
+    # Esta vista puede ser accedida por Admin y Vendedor
+    if request.method == 'POST':
+        factura = FacturaForm(request.POST)
+        if factura.is_valid():
+            # Guardamos el código de la factura
+            fac = factura.save()
+            # Enviamos el código a otra vista
+            return redirect('crearVentaLink', fac.codigo)
+
+    facturas = Factura.objects.all()
+    formulario_fac = FacturaForm()
+    context = {
+        'facturas': facturas,
+        'form_fac': formulario_fac,
+    }
+    return render(request, "Ventas-templates/ventas.html", context)
+
+# Aplica decoradores similares a otras vistas según sea necesario
