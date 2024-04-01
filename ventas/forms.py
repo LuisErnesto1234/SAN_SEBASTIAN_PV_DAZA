@@ -80,5 +80,17 @@ class ListaProductosFacturaForm(forms.ModelForm):
 class VentaProductosFacturaForm(forms.ModelForm):
     class Meta:
         model = Venta_Productos_Factura
-        fields = [ 'factura','metodo', 'comentario', 'total']
+        fields = ['factura', 'metodo', 'comentario', 'total']
+        labels = {
+            'factura': 'Número de Factura',
+            'metodo': 'Método de Pago',
+            'comentario': 'Comentario',
+            'total': 'Total de la Venta',
+        }
+        widgets = {
+            'factura': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione el número de factura','disabled':'','id':'select-codigo-fac-venta-disabled'}),
+            'metodo': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione el método de pago','id':'select-metodo-venta'}),
+            'comentario': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese un comentario (opcional)'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control','disabled':'','id':'select-total-venta-disabled'}),
+        }
         

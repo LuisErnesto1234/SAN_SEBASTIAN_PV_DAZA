@@ -160,6 +160,9 @@ def detalleProducto(request,codigo_producto):
 
 
 def PageVentas(request):
+    # Obtener todas las facturas que tienen ventas asociadas
+    facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
+        
     if request.method == 'POST':
         factura = FacturaForm(request.POST)
         if factura.is_valid():
@@ -169,17 +172,16 @@ def PageVentas(request):
             return redirect('crearVentaLink',fac.codigo)
             
     facturas = Factura.objects.all()
+    ventas = Venta_Productos_Factura.objects.all()
     formulario_fac = FacturaForm()
     context={
-        'facturas':facturas,
+        'facturas':facturas_con_ventas,
         'form_fac':formulario_fac,
+        'ventas':ventas
     }
     return render(request,"Ventas-templates/ventas.html",context)
 
 def crearVenta(request,cod_fac):
-    #error que viene de la vista procesar venta 
-    # error_stock = request.GET.get('error_stock')
-
     # todos los productos que tiene la misma factura
     lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
     
@@ -193,25 +195,37 @@ def crearVenta(request,cod_fac):
     form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac,'cantidad':'1'})
     # formulario de venta
     formulario_venta = VentaProductosFacturaForm(initial={'factura': cod_fac,'total':total})
-    
-    
+    #error de stock
+    error_stock = ""
     if request.method == 'POST':
+         
          form = ListaProductosFacturaForm(request.POST)
-         if form.is_valid():
-             form.save()
-             return redirect(request.path)
+         #obtenemos el codigo del producto
+         cod_producto =request.POST.get('producto')
+         #obtenemos el producto
+         prod = Producto.objects.get(codigo=cod_producto)
+         #obtenemos el stock del producto
+         stock_producto = prod.stock
+
+         cantidad = request.POST.get('cantidad_vendida')
+         
+         if stock_producto > int(cantidad):
+            if form.is_valid():
+                form.save()
+                return redirect(request.path)
+         else:
+            error_stock = "no se puede agregar el producto por falta de stock"
              
              
     context={
         'form_listado_productos':form_listado_productos,
         'lista_productos':lista_productos,
         'formulario_venta':formulario_venta,
-        # 'error_stock':error_stock 
+        'error_stock':error_stock 
     }
     return render(request,'Ventas-templates/crear-venta.html',context=context)
 
 def procesarVenta(request,cod_fac):
-    errorStock = ''
     if request.method == 'POST':
         # obtenemos la lista de productos de esa factura 
         lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
@@ -229,22 +243,108 @@ def procesarVenta(request,cod_fac):
                     if productoObtenido.stock > lisProd.cantidad_vendida:
                        productoObtenido.stock -= lisProd.cantidad_vendida
                        productoObtenido.save()
-                    else:
-                        error_stock = "No hay suficiente stock del producto"
-                        return redirect('crearVentaLink',cod_fac)
-                        
-                        
+        
+        # validacion de factura vacia   
         form = VentaProductosFacturaForm(request.POST)
-        if form.is_valid():
-            form.save() 
-            return redirect('PageVentasLink')
+        if lista_productos.exists():  #verifica si hay datos    
+            if form.is_valid():
+                form.save() 
+                return redirect('detalleVentaLink',cod_fac)       
+        else:
+            # eliminamos la factura 
+            Factura.objects.get(codigo=cod_fac).delete()
+            # mandamos el error a una template nueva
+            error = "error creaste una factura sin productos vuelve a crear una factura valida"
+            return render(request,'Ventas-templates/error-venta.html',context={'error':error})
     return redirect('PageVentasLink')
 
-def eliminarventa(request,cod_fac):
-    pass
+def eliminarProductoLista(request,cod_prod_list):
+    producto_lista = Lista_Productos_Factura.objects.get(codigo=cod_prod_list).delete()
+    url_pagina_anterior = request.META.get('HTTP_REFERER')
+
+    # Redireccionar a la página anterior
+    return redirect(url_pagina_anterior)
+
+
+def eliminarVenta(request,cod_fac):
+    factura = Factura.objects.get(codigo=cod_fac).delete()
+    return redirect('PageVentasLink') 
 
 def detalleVenta(request,cod_fac):
-    pass
+    factura =Factura.objects.get(codigo=cod_fac)
+    lista = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    venta = Venta_Productos_Factura.objects.get(factura=cod_fac)
+    titulo = f"Tiket {factura}"
+    lugar = "Puente Piedra"
+    telefono = '52345432532'
+    fecha_for = "12/12/12"
+    
+    context = {
+        'factura':factura,
+        'lista_productos':lista,
+        'venta':venta,
+        'titulo':titulo,
+        'lugar':lugar,
+        'telefono':telefono,
+        "fechaFor":fecha_for
+    }
+    return render(request,'Ventas-templates/detalle-venta.html',context)
+
+from io import BytesIO
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+
+def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
+    
+    # Crear el contenido del PDF
+    pdf_content = []
+    pdf_content.append(Paragraph(titulo, getSampleStyleSheet()['Title']))
+    pdf_content.append(Paragraph(f"Fecha y Hora: {fecha}", getSampleStyleSheet()['BodyText']))
+    pdf_content.append(Paragraph(f"Lugar: {lugar}", getSampleStyleSheet()['BodyText']))
+    pdf_content.append(Paragraph(f"Método de Pago: {metodo_pago}", getSampleStyleSheet()['BodyText']))
+    pdf_content.append(Paragraph(f"Código: {codigo}", getSampleStyleSheet()['BodyText']))
+
+    lista = Lista_Productos_Factura.objects.filter(codigo_factura=codigo)
+    # venta = Venta_Productos_Factura.objects.get(factura=codigo)
+    data = [["Producto", "Precio unitario", "Cantidad", "Total"]]
+    total = 0
+    for lis in lista:
+        subtotal = lis.producto.precio * lis.cantidad_vendida
+        total += subtotal
+        data.append([lis.producto, f"${lis.producto.precio}", str(lis.cantidad_vendida), f"${subtotal}"])
+    # for product in productos:
+    #     subtotal = product["precio"] * product["cantidad"]
+    #     total += subtotal
+    #     data.append([product["nombre"], f"${product['precio']}", str(product["cantidad"]), f"${subtotal}"])
+
+    table = Table(data)
+    style = TableStyle([('TEXTCOLOR', (0, 0), (-1, -1), (0, 0, 0)),  # Color de texto: negro
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('GRID', (0, 0), (-1, -1), 1, (0, 0, 0))])  # Color de la línea de la tabla: negro
+    table.setStyle(style)
+    pdf_content.append(table)
+
+    pdf_content.append(Paragraph(f"Total de Productos: {len(lista)}", getSampleStyleSheet()['BodyText']))
+    pdf_content.append(Paragraph(f"Total: ${total}", getSampleStyleSheet()['BodyText']))
+
+    # Generar el PDF
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer, pagesize=letter)
+    pdf.build(pdf_content)
+
+    # Devolver el PDF como respuesta HTTP
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="ticket_venta.pdf"'
+    response.write(buffer.getvalue())
+    buffer.close()
+    return response
+
+
 
 # Imprimir excel de productos
 

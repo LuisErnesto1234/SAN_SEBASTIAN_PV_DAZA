@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="error-venta">
+
+    <div class="error-venta-box">
+    
+        <p><i class="ti ti-exclamation-circle"></i> {{error}} <i class="ti ti-exclamation-circle"></i></p>
+        
+    </div>
+    <a href="{% url 'PageVentasLink' %}" class="btn-guardar  regresar-venta ">Volver a la pagina de ventas </a>
+</div>
+{% endblock %}

@@ -2,14 +2,19 @@
 {% load static %}
 
 {% block content %}
-
-{{codigo_fac}}
 <div class="seccion-productos">
+    
     <h1 class="seccion-productos-titulo">Nueva Venta</h1>
+   
     <div class="seccion-productos-agregar">
         <form action="" method="post" class="seccion-productos-agregar-form">
             {% csrf_token %}
             <div class="input-producto">
+                {% if error_stock %}
+                    <div class="alert alert-danger" role="alert">
+                         {{ error_stock }} <i class="ti ti-alert-circle"></i>
+                    </div>
+                {% endif %}
                 {{form_listado_productos.codigo_factura.label}}
                 {{form_listado_productos.codigo_factura}}
                 <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
@@ -20,61 +25,70 @@
                 <button type="submit" class="btn-guardar">agregar</button>
             </div>
         </form>
-        <div class="seccion-productos-agregar-tabla">
-            <div class="tabla-productos">
-                <table>
-                    <thead>
-                      <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% if lista_productos %}
-                            {% for prod in lista_productos %}
-                            <tr>
-                                <td>{{prod.producto}}</td>
-                                <td>{{prod.cantidad_vendida}}</td>
-                                <td>{{prod.producto.precio}}</td>
-                                <td>
-                                    <a href="" class="icono-borrar">
-                                        <i class="ti ti-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor  %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4">
-                                    no seleccionaste productos
-                                </td>
-                            </tr>
-                            
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
+    </div>
+    <div class="seccion-productos-tabla">
+        <div class="tabla-productos">
+            <table>
+                <thead>
+                  <tr>
+                    <th class="cabeceras-tabla">Producto</th>
+                    <th class="cabeceras-tabla">Cantidad</th>
+                    <th class="cabeceras-tabla">Precio</th>
+                    <th class="cabeceras-tabla">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if lista_productos %}
+                        {% for prod in lista_productos %}
+                        <tr>
+                            <td>{{prod.producto}}</td>
+                            <td>{{prod.cantidad_vendida}}</td>
+                            <td>{{prod.producto.precio}}</td>
+                            <td>
+                                <a href="{% url 'eliminarProductoListaLink'  cod_prod_list=prod.codigo %}" class="icono-borrar">
+                                    <i class="ti ti-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor  %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">
+                                no seleccionaste productos
+                            </td>
+                        </tr>
+                        
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
     
     <div class="seccion-productos-opciones">
-        <h2></h2>
+        <h2>Venta</h2>
         <form action="{% url 'procesarVentaLink' cod_fac=formulario_venta.factura.value %}" method="post" >
             {% csrf_token %}
-            {{formulario_venta}}
-            <button type="submit">Crear Factura</button>
+            {{formulario_venta.factura.label}}
+            {{formulario_venta.factura}}
+            <input type="hidden" name="factura" value="{{formulario_venta.factura.value}}">
+            {{formulario_venta.metodo.label}}
+            {{formulario_venta.metodo}}
+            {{formulario_venta.comentario.label}}
+            {{formulario_venta.comentario}}
+            {{formulario_venta.total.label}}
+            {{formulario_venta.total}}
+            <input type="hidden" name="total" id="total-number" value="{{formulario_venta.total.value}}">
+            <button type="submit" class="btn-guardar">Crear Factura</button>
+            <a href="{% url 'eliminarVentaLink'  cod_fac=formulario_venta.factura.value %}" class="btn-cancelar" >Cancelar Venta</a>
+            
         </form>
-        {% if error_stock %}
-            <div class="alert alert-danger" role="alert">
-                {{ error_stock }}
-            </div>
-        {% endif %}
-        <a href="#">Guardar y volver</a>
-        <a href="#">Guardar e Imprimir</a>
-        <a href="#" class="btn-cancelar" >Cancelar Venta</a>
+        
     </div>
 </div>
-
+<script>
+    // covertimos el total de la venta en un numero entero 
+    numero = document.getElementById("total-number").value;
+    numero_entero = parseInt(numero);
+    document.getElementById("total-number").value = numero_entero;
+</script>
 {% endblock %} 
