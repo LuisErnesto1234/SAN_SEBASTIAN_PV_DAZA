@@ -483,8 +483,59 @@ PAGINA DE PROVEEDORES */
 }
 
 /* PAGINA DE VENTAS */
-.modal-nueva-factura{
+.seccion-ventas h1{ 
+  text-transform: capitalize;
+  text-align: center;
+  color: var(--color2);
+  font-size: xx-large;
+  padding: 30px;
+}
+.cards{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.facturas-cards{
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  width: 200px;
+  background-color:var(--color1);
+  padding: 20px;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border-radius: 10px;
+}
+.cards-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color2);
+}
+.cards-titulo{
+  text-align: center;
+  text-transform: capitalize;
+  color: var(--color2);
+}
+.card-info{
+  border-radius: 10px;
+  background-color: var(--color3);
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+.cards-icon a{
+  text-decoration: none;
+  font-size: 30px;
+  color: var(--color2);
+}
+.noFacturas{
+  font-size: 30px;
+  color: var(--color2);  
+  text-transform: capitalize;
 }
 .modal-nueva-factura .form-factura{
   display: flex;
@@ -514,22 +565,16 @@ PAGINA DE PROVEEDORES */
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  align-items: center;
   padding: 20px;
-  background-color: #EBFF00;
+  background-color:var(--color1);
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.185);
 }
-.seccion-productos-opciones{
-  background-color: rgb(0, 0, 0);
-  padding: 20px;
-}
+
 .seccion-productos-agregar-form{
   display: flex;
   flex-wrap: wrap-reverse;
   justify-content: space-around;
   gap: 20px;
-}
-.seccion-productos-agregar-tabla{
-  flex-grow: 1;
 }
 .seccion-productos-agregar-form .input-producto{
   display: flex;
@@ -547,6 +592,66 @@ PAGINA DE PROVEEDORES */
   min-width: 300px;
   resize: none;
 }
+.seccion-productos-agregar .alert-danger{
+  background-color: yellow;
+  padding: 10px;
+}
+.seccion-productos-tabla{
+  flex-grow: 2;
+  background-color: var(--color1);
+  padding: 10px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.185);
+}
+.seccion-productos-opciones{
+   background-color: var(--color1);
+   box-shadow: 5px 0 30px rgba(0, 0, 0, 0.185);
+   padding: 20px;
+}
+.seccion-productos-opciones form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* PAGINA DE ERROR AL CREAR UNA VENTA  */
+.error-venta{
+  display: flex;
+  justify-content:space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.error-venta-box{
+  padding: 20px;
+  margin: auto;
+  background-color: red;
+  color: var(--color1);
+  margin: 10px;
+}
+.regresar-venta{
+  margin: 10px;
+  text-decoration: none;
+}
+
+/* DETALLES DE LA VENTA */
+.seccion-detalle-venta{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.detalle-tiket{
+  background-color: var(--color1);
+  padding: 20px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.185);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.detalle-tiket h2,.agradecimientos,.descripcion{
+  font-style: italic;
+  text-align: center;
+}
+
 
 /* Estilo para la tabla */
 table {
@@ -600,14 +705,18 @@ tr:hover {
 }
 /* botones */
 .btn-guardar,.btn-cancelar{
+  text-transform: capitalize;
+  font-size: 18px;
   padding: 10px;
   background-color:green;
   color: var(--color1);
-  font-weight: bold;
   border: none;
+  text-align: center;
+  text-decoration: none;
 }
 .btn-cancelar{
   background-color: red;
+  
 }
 .btn-guardar:hover,.btn-cancelar:hover{
   box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);

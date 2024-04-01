@@ -16,13 +16,18 @@ urlpatterns = [
     path('ventas/', login_required(views.PageVentas), name="PageVentasLink"),
     path('crear-ventas/<int:cod_fac>/', login_required(views.crearVenta), name="crearVentaLink"),
     path('procesar-ventas/<int:cod_fac>/', login_required(views.procesarVenta), name="procesarVentaLink"),
-
+    path('ventas',views.PageVentas,name="PageVentasLink"),
+    path('crear-ventas/<int:cod_fac>',views.crearVenta,name="crearVentaLink"),
+    path('procesar-ventas/<int:cod_fac>',views.procesarVenta,name="procesarVentaLink"),
+    path('eliminar-producto-lista/<int:cod_prod_list>',views.eliminarProductoLista,name="eliminarProductoListaLink"),
+    path('eliminar-ventas/<int:cod_fac>',views.eliminarVenta,name="eliminarVentaLink"),
+    path('detalle-venta/<int:cod_fac>',views.detalleVenta,name='detalleVentaLink'),
+    path('generar_pdf/<str:titulo>/<str:fecha>/<str:lugar>/<str:metodo_pago>/<str:codigo>/', views.generate_pdf, name='generar_pdf'),
     # SECCION DE PRODUCTOS
     path('productos/', admin_required(views.PageProductos), name="PageProductosLink"),
     path('productos-Categorias/', admin_required(views.PageProductosCategorias), name="PageProductosCategoriasLink"),
     path('productos-Marcas/', admin_required(views.PageProductosMarcas), name="PageProductosMarcasLink"),
     path('productos-Proveedores/', admin_required(views.PageProductosProveedores), name="PageProductosProveedoresLink"),
-    
     # CRUD DE PRODUCTOS
     path('crear-producto/', admin_required(views.crearProducto), name="crearProductosLink"),
     path('editar-producto/<int:codigo_producto>/', admin_required(views.editarProducto), name="editarProductoLink"),

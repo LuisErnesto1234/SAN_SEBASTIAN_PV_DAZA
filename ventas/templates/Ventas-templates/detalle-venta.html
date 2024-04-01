@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="seccion-detalle-venta">
+
+    <div class="detalle-titulo">
+        <h1>Detalle de la venta</h1>
+    </div>
+
+    <div class="detalle-tiket" id="imp1">
+        <h2>SAN SEBASTIAN</h2>
+        <p class="box-tiket descripcion">
+            Somo una empresa Peruana que quiere sobresalir xd
+        </p>
+        <p class="box-tiket ruc">
+            <b>Ruc:</b>
+            144762110423
+        </p>
+        <p class="box-tiket codigo">
+            <b>Codigo:</b>
+            {{factura}}
+        </p>
+        <p class="box-tiket fecha">
+            <b>Fecha:</b>
+            {{factura.fecha_factura|date:"d/m/y"}}
+        </p>
+        <p class="box-tiket metodo">
+            <b>Metodo:</b>
+            {{venta.metodo}}
+        </p>
+        <table class="tb-tiket">
+            <thead>
+                <tr>
+                  <th>Productos</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for l in lista_productos %}
+                <tr>
+                  <td>{{l.producto}}</td>
+                  <td>{{l.producto.precio}}</td>
+                  <td>{{l.cantidad_vendida}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+        </table>
+        <p class="box-tiket total">
+            <b>Total:</b>
+            {{venta.total}}
+        </p>
+        <p class="box-tiket lugar">
+            <b>Lugar:</b>
+            Puente Piedra - Mercado Huamantanga Puerta 345
+        </p>
+        <p class="box-tiket telefono">
+            <b>Telefono:</b>
+            923453777
+        </p>
+        <p class="box-tiket agradecimientos">
+            Gracias por su compra, vuelva pronto... <br>
+            Nos puede visitar en <br><br>
+            <a href="">sanSebastian</a>
+        </p>
+    </div>
+
+    <div class="detalle-btns">
+        <a  class="btn-guardar" href="{% url 'generar_pdf' titulo=titulo fecha=factura.fecha_factura.date lugar=lugar  metodo_pago=venta.metodo codigo=factura.codigo  %}">imprimir</a>
+        <a  class="btn-cancelar" href="{% url 'PageVentasLink' %}">volver</a>
+    </div>
+</div>
+   
+{% endblock %}

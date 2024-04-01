@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <button class="btn-abrir" >
     <i class="ti ti-plus"></i>
 </button>
@@ -20,15 +21,32 @@
 </div>
     <div class="seccion-ventas">
         <h1>ventas</h1>
-        {% if facturas %}
+        <div class="cards">
+            {% if facturas %}
             {% for fac in facturas %}
-                <li>{{fac}}  -   {{fac.fecha_factura}}</li>
+            <section class="facturas-cards">
+                <div class="cards-header">
+                    <i>{{fac.codigo}}</i>
+                    <b>{{fac.fecha_factura|date:"d/m/y"}}</b>
+                </div>
+                <div class="cards-titulo">
+                    <h2>{{fac}}</h2>
+                </div>
+                <div class="card-info">
+                    <h5>Venta realizada con exito. <br><br>
+                    ver venta 👇</h5>
+                </div>
+                <div class="cards-icon">
+                    <a href="{% url 'detalleVentaLink' cod_fac=fac.codigo %}">
+                        <i class="ti ti-list-check"></i>
+                    </a>
+                </div>
+            </section>
             {% endfor  %}
-        {% else %}
-            <li>No hay facturas</li>
-        {% endif %}
-        
-        <a href="">nueva venta</a>
+            {% else %}
+                <li class="noFacturas">No hay facturas</li>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock %}

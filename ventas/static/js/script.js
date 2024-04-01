@@ -66,22 +66,26 @@ if (btnSi){
 }
 
 
-// para hacer la seleccion de porductos en la venta 
-new TomSelect("#seleccionar-producto",{
-	create: false,
-	sortField: {
-		field: "text",
-		direction: "asc"
-	}
-    
-});
-// para hacer la seleccion de metodos en la venta 
-// new TomSelect("#seleccionar-metodo",{
-// 	create: false,
-// 	sortField: {
-// 		field: "text",
-// 		direction: "asc"
-// 	}
-// });
-// para hacer la seleccion desabilitada
-new TomSelect("#select-codigo-fac-disabled");
+// // para hacer la seleccion de porductos en la venta 
+
+const creaSeleccion =(id)=>{
+    new TomSelect(id,{
+        	create: false,
+        	sortField: {
+        		field: "text",
+        		direction: "asc"
+        	}});
+}
+
+const creaSeleccionInabilitada=(id)=>{
+    new TomSelect(id);
+}
+
+creaSeleccion('#seleccionar-producto')
+creaSeleccion('#select-metodo-venta')
+creaSeleccionInabilitada('#select-codigo-fac-disabled')
+creaSeleccionInabilitada('#select-codigo-fac-venta-disabled')
+creaSeleccionInabilitada('#select-total-venta-disabled')
+
+
+
