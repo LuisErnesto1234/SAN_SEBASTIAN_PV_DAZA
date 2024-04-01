@@ -10,7 +10,6 @@ from .views import admin_required
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='Login.html'), name='login'),
-
     path('PaginaInicio/', login_required(views.PageInicio), name="PageInicioLink"),
     # SECCION DE VENTAS
     path('ventas/', login_required(views.PageVentas), name="PageVentasLink"),
