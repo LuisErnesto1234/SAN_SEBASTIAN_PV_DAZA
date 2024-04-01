@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Punto de ventas</title>
+  <link rel="shortcut icon" href="/static/img/img-logo.png" type="image/x-icon">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
   <!-- libreria para un selec con buscador  -->
@@ -52,7 +53,7 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="estadisticas.html">
             <i class="ti ti-brand-google-analytics"></i>
             <span class="link_name">Estadisticas</span>
           </a>
@@ -63,10 +64,20 @@
             <i class="ti ti-sitemap"></i>
             <span class="link_name">Mas</span>
           </a>
-
+        </li>
+        <li>
+          <form action="{% url 'logout' %}" method="post" title="Cerrar Sesión" style="background-color: white; transition: background-color 1s;">
+            {% csrf_token %}
+            <button class="Fin_Sesion" type="submit" style="width: 100%; background: none; border: none; cursor: pointer;"><i class="ti ti-x" style="color: rgb(49, 0, 140);"></i></button>
+        </form>
         </li>
       </ul>
     </section>
+    <style>
+      form:hover{
+        background-color: yellow;
+      }
+    </style>
       <!-- CONTENIDO DE PAGINAS -->
     <section class="contenido">
       {% block content %}{% endblock %}

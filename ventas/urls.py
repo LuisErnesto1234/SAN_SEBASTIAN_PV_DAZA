@@ -6,7 +6,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from .views import admin_required
-
+from django.contrib.auth.views import logout_then_login
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='Login.html'), name='login'),
@@ -49,4 +49,7 @@ urlpatterns = [
     path('descargar-excel-categoria/', admin_required(views.descargar_excel_categoria), name='descargar_excel_categoria'),
     path('descargar-excel-marca/', admin_required(views.descargar_excel_marca), name='descargar_excel_marca'),
     path('descargar-excel-proveedores/', admin_required(views.descargar_excel_proveedores), name='descargar_excel_proveedores'),
+    # Cierre de sesión
+    path('logout/', logout_then_login, name='logout'),
+
 ]

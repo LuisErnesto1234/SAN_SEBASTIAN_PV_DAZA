@@ -510,3 +510,21 @@ def PageVentas(request):
     return render(request, "Ventas-templates/ventas.html", context)
 
 # Aplica decoradores similares a otras vistas según sea necesario
+
+#Obtener el ID secion 
+def ID_Session(request):
+    session_id = request.session.session_key
+    # Hacer algo con el ID de sesión
+    return render(request, 'inicio.html', {'session_id': session_id})
+
+
+#Cierre de secion 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    response = redirect('Login.html')
+    # Eliminar la cookie de sesión de tu aplicación
+    response.delete_cookie('sessionid')
+    return response

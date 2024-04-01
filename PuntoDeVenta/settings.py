@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse_lazy
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -114,8 +116,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = 'PageInicioLink'  # Nombre de la URL o ruta a la que se redirige después del inicio de sesión
+LOGIN_REDIRECT_URL = reverse_lazy('PageInicioLink') # Nombre de la URL o ruta a la que se redirige después del inicio de sesión
 LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = reverse_lazy('login') #Nombre de la url a la que dirige cuando la secion se cierre
 
 
 STATIC_URL = '/static/'

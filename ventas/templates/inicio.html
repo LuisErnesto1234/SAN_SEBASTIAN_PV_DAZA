@@ -1,5 +1,179 @@
-{% extends 'base.html' %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto de ventas</title>
+  <link rel="shortcut icon" href="/static/img/img-logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+  <!-- libreria para un selec con buscador  -->
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+</head>
+<body>
+     <!-- SIDEBAR -->
+     <section class="sidebar">
+      <div class="logo_content">
+        <div class="logo">
+          <h4 class="logo_name">San Sebastian</h4>
+        </div>
+        <i class="ti ti-menu-2"  id='btn'></i>
+      </div>
+    
+      <ul class="nav">
+        <li>
+          <a href="/PaginaInicio/">
+            <i class="ti ti-Home"></i>
+            <span class="link_name">Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="ti ti-layout-dashboard"></i>
+            <span class="link_name">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="/ventas">
+            <i class="ti ti-shopping-cart"></i>
+            <span class="link_name">Ventas</span>
+          </a>  
+        </li>
+        <li>
+          <a href="/productos/">
+            <i class="ti ti-building-store"></i>
+            <span class="link_name">Productos</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="ti ti-businessplan"></i>
+            <span class="link_name">Reportes</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="ti ti-brand-google-analytics"></i>
+            <span class="link_name">Estadisticas</span>
+          </a>
 
-{% block content %}
-        <h1>INicio PAGINA</h1>
-{% endblock %}
+        </li>
+        <li>
+          <a href="#">
+            <i class="ti ti-sitemap"></i>
+            <span class="link_name">Mas</span>
+          </a>
+
+        </li>
+        <li>
+          <form action="{% url 'logout' %}" method="post" title="Cerrar Sesión" style="background-color: white; transition: background-color 1s;">
+            {% csrf_token %}
+            <button class="Fin_Sesion" type="submit" style="width: 100%; background: none; border: none; cursor: pointer;"><i class="ti ti-x" style="color: rgb(49, 0, 140);"></i></button>
+        </form>
+        </li>
+      </ul>
+    </section>
+
+    <style>
+      form:hover{
+        background-color: yellow;
+      }
+    </style>
+      <!-- CONTENIDO DE PAGINAS -->
+    <section class="contenido">
+        <center><h1>INICIO PAGINA</h1></center>
+        <br>
+        <p>Bienvenido {{user.username | upper}}. Este es el panel principal del sistema aca podra encontrar atajos,
+        para encontrar los distintos listados del sistema.
+        </p>
+        <br><br>
+
+        <div class="container">
+                <a href="/productos-Proveedores/" class="enlace">
+                <div class="item"><h2>Proveedores</h2>
+                    <img src="/static/img/img-camion.png" alt="">
+                </div>
+                </a>
+                <a href="/productos-Categorias/" class="enlace">
+                <div class="item"><h2>Categorias</h2>
+                <img src="/static/img/img-etiqueta.png" alt="">
+                </div>
+                </a>
+                <a href="#" class="enlace">
+                <div class="item"><h2>Usuarios</h2>
+                <img src="/static/img/img-usuario.png" alt="">
+                </div>
+                </a>
+                <a href="{% url 'PageProductosLink' %}" class="enlace">
+                <div class="item"><h2>Productos</h2>
+                <img src="/static/img/img-caja.png" alt="">
+                </div>
+                </a>
+                <a href="estadisticas.html" class="enlace">
+                <div class="item"><h2>Estadisticas</h2>
+                <img src="/static/img/img-estadistica.png" alt="">
+                </div>
+                </a>
+                <a href="/ventas/" class="enlace">
+                <div class="item"><h2>Ventas</h2>
+                <img src="/static/img/img-carro.png" alt="">
+                </div>
+                </a>
+        </div>
+
+        <style>
+                .container {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr; /* Dos columnas de igual ancho */
+                grid-template-rows: auto auto; /* Dos filas con altura automática */
+                gap: 3px; /* Espacio entre las cajas */
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                grid-row-gap: 2em;
+        }
+        
+        .enlace {
+                background-color: #f2f2f2;
+                padding: 20px;
+                border: 1px solid #ccc;
+                justify-self: center;
+                width: 90%;
+        }
+        a{
+                list-style: none;
+                text-decoration: none;
+        }
+
+        .enlace h2{
+                color: #4B0081;
+        }
+
+        .enlace .item img{
+                width: 150px;
+                height: 150px;
+                margin: 1.5em;
+        }
+
+        .contenido p{
+                margin: 1em;
+        }
+
+        .enlace:hover{
+                background-color: #fff;
+                color: #4B0081;
+        }
+        
+        </style>
+
+
+    </section>
+
+
+<script src="/static/js/script.js"></script>
+<body>
+
+
+
+</html>
