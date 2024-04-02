@@ -11,3 +11,5 @@ settings_local.py
 __pycache__/
 
 venv
+
+db.sqlite3
