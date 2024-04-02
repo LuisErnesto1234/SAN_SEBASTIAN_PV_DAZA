@@ -12,4 +12,5 @@ __pycache__/
 
 venv
 
-sqlite3
+# Ignore the default SQLite database.
+/db/*.sqlite3
