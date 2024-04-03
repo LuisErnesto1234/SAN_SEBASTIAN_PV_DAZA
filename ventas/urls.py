@@ -9,7 +9,7 @@ from .views import admin_required
 from django.contrib.auth.views import logout_then_login
 #PROBANDO PULL REQUEST
 #PROBANDO PULL REQUEST2
-
+#PROBANDO PULL REQUEST2 3 desde el usuario admin
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='Login.html'), name='login'),
