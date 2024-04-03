@@ -7,6 +7,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from .views import admin_required
 from django.contrib.auth.views import logout_then_login
+#PROBANDO PULL REQUEST
 
 urlpatterns = [
     path('', LoginView.as_view(template_name='Login.html'), name='login'),
