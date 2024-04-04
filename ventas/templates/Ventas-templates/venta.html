@@ -21,9 +21,9 @@
 </div>
     <div class="seccion-ventas">
         <h1>ventas</h1>
-        <div class="cards">
-            {% if facturas %}
-            {% for fac in facturas %}
+        <div class="cards">         
+            {% if fact %}
+            {% for fac in fact %}
             <section class="facturas-cards">
                 <div class="cards-header">
                     <i>{{fac.codigo}}</i>

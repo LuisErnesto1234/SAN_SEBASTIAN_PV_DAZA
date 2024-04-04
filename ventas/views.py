@@ -3,12 +3,54 @@ from django.urls import reverse
 from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm
 from .models import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.http import HttpResponse
+from openpyxl import Workbook
+#Cierre de secion 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+#Obtener el ID secion 
+def ID_Session(request):
+    session_id = request.session.session_key
+    # Hacer algo con el ID de sesión
+    return render(request, 'inicio.html', {'session_id': session_id})
 
-######  PAGINAS DE PRINSIPALES  ######
+# Decorador para restringir el acceso a vistas solo para administradores
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'Admin1':
+            return view_func(request, *args, **kwargs)
+        elif request.user.is_authenticated and request.user.username == 'Vendedor':
+            return redirect(reverse_lazy('PageVentasLink'))  # Redirige a la página de ventas si el usuario es un vendedor
+        else:
+            return redirect('login')  # Redirige a la página de inicio de sesión si no está autenticado como Admin
+    return wrapper
 
+# Decorador para restringir el acceso a vistas solo para vendedores
+def vendor_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'Vendedor':
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect(reverse_lazy('PageVentasLink'))  # Redirige a la página de ventas si no está autenticado como Vendedor
+    return wrapper
+
+def logout_view(request):
+    logout(request)
+    response = redirect('Login.html')
+    # Eliminar la cookie de sesión de tu aplicación
+    response.delete_cookie('sessionid')
+    return response
+
+######  PAGINAS DE PRINCIPALES  ######
+@login_required
 def PageInicio(request):
     return render(request,"inicio.html")
 
+@login_required
+@admin_required
 def PageProductos(request):
     productos = Producto.objects.all()
     form = ProductoForm()
@@ -48,8 +90,6 @@ def crearProducto(request):
     if producto.is_valid():
         producto.save()
         return redirect('PageProductosLink')
-    else :
-       return render(request,'estadisticas.html')
 
 def crearCategoria(request):
     if request.method == 'POST':
@@ -57,8 +97,7 @@ def crearCategoria(request):
         dato2 = request.POST.get('txt-nombre')
         Categoria.objects.create(codigo_categoria=dato1,nombre_categoria=dato2)
         return redirect('PageProductosCategoriasLink')
-    else:
-        return render(request,'estadisticas.html')
+        
 
 def crearMarca(request):
     if request.method == 'POST':
@@ -66,15 +105,13 @@ def crearMarca(request):
         dato2 = request.POST.get('txt-nombre')
         Marca.objects.create(codigo_marca=dato1,nombre_marca=dato2)
         return redirect('PageProductosMarcasLink')
-    else:
-        return render(request,'estadisticas.html')
+        
 def crearProveedor(request):
     proveedor = ProveedorForm(request.POST)
     if proveedor.is_valid():
         proveedor.save()
         return redirect('PageProductosProveedoresLink')
-    else :
-       return render(request,'estadisticas.html')
+       
 
 # editar
 def editarProducto(request,codigo_producto):
@@ -158,11 +195,8 @@ def detalleProducto(request,codigo_producto):
     })
 
 
-
-def PageVentas(request):
-    # Obtener todas las facturas que tienen ventas asociadas
-    facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
-        
+@login_required
+def PageVentas(request): 
     if request.method == 'POST':
         factura = FacturaForm(request.POST)
         if factura.is_valid():
@@ -170,16 +204,15 @@ def PageVentas(request):
             fac = factura.save()
             # enviamos el codigo a otra vista
             return redirect('crearVentaLink',fac.codigo)
-            
-    facturas = Factura.objects.all()
-    ventas = Venta_Productos_Factura.objects.all()
+        
+    # Obtener todas las facturas que tienen ventas asociadas
+    facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
     formulario_fac = FacturaForm()
-    context={
-        'facturas':facturas_con_ventas,
+    context={ 
+        'fact':facturas_con_ventas,
         'form_fac':formulario_fac,
-        'ventas':ventas
     }
-    return render(request,"Ventas-templates/ventas.html",context)
+    return render(request,"Ventas-templates/venta.html",context)
 
 def crearVenta(request,cod_fac):
     # todos los productos que tiene la misma factura
@@ -344,13 +377,16 @@ def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
     buffer.close()
     return response
 
-
+#ESTADISTICAS 
+@admin_required
+def PageEstadisticas(request):
+    facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
+    context={
+        'fac':facturas_con_ventas
+    }
+    return render(request,'estadisticas.html',context)
 
 # Imprimir excel de productos
-
-from django.http import HttpResponse
-from openpyxl import Workbook
-
 def descargar_excel(request):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="productos.xlsx"'
@@ -442,89 +478,3 @@ def descargar_excel_proveedores(request):
 
     return response
 
-
-
-#LOGIN
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
-
-
-# Decorador para restringir el acceso a vistas solo para administradores
-def admin_required(view_func):
-    def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.username == 'Admin1':
-            return view_func(request, *args, **kwargs)
-        elif request.user.is_authenticated and request.user.username == 'Vendedor':
-            return redirect(reverse_lazy('PageVentasLink'))  # Redirige a la página de ventas si el usuario es un vendedor
-        else:
-            return redirect('login')  # Redirige a la página de inicio de sesión si no está autenticado como Admin
-    return wrapper
-
-# Decorador para restringir el acceso a vistas solo para vendedores
-def vendor_required(view_func):
-    def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.username == 'Vendedor':
-            return view_func(request, *args, **kwargs)
-        else:
-            return redirect(reverse_lazy('PageVentasLink'))  # Redirige a la página de ventas si no está autenticado como Vendedor
-    return wrapper
-
-# Aplica los decoradores a tus vistas
-
-@login_required
-def PageInicio(request):
-    # Esta vista puede ser accedida tanto por Admin como por Vendedor
-    return render(request, "inicio.html")
-
-@login_required
-@admin_required
-def PageProductos(request):
-    # Esta vista está restringida solo para Admin y Vendedor
-    productos = Producto.objects.all()
-    form = ProductoForm()
-    context = {
-        'productos': productos,
-        'formulario': form,
-    }
-    return render(request, "Productos-templates/productos.html", context)
-
-@login_required
-def PageVentas(request):
-    # Esta vista puede ser accedida por Admin y Vendedor
-    if request.method == 'POST':
-        factura = FacturaForm(request.POST)
-        if factura.is_valid():
-            # Guardamos el código de la factura
-            fac = factura.save()
-            # Enviamos el código a otra vista
-            return redirect('crearVentaLink', fac.codigo)
-
-    facturas = Factura.objects.all()
-    formulario_fac = FacturaForm()
-    context = {
-        'facturas': facturas,
-        'form_fac': formulario_fac,
-    }
-    return render(request, "Ventas-templates/ventas.html", context)
-
-# Aplica decoradores similares a otras vistas según sea necesario
-
-#Obtener el ID secion 
-def ID_Session(request):
-    session_id = request.session.session_key
-    # Hacer algo con el ID de sesión
-    return render(request, 'inicio.html', {'session_id': session_id})
-
-
-#Cierre de secion 
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-
-def logout_view(request):
-    logout(request)
-    response = redirect('Login.html')
-    # Eliminar la cookie de sesión de tu aplicación
-    response.delete_cookie('sessionid')
-    return response

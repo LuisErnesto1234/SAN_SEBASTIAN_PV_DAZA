@@ -1,8 +1,8 @@
 librerias o plugins usados 
 
-- https://tom-select.js.org/
+- https://tom-select.js.org/  (para la seleccion y busqueda en un formulario)
 
-la para seleccion de productos con un buscador
+- https://www.chartjs.org/ (para los graficos estadisticos)
 
 ## PASOS PARA HACER PULL REQUEST
 

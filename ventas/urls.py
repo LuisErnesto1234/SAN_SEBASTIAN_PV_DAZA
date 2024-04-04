@@ -14,6 +14,8 @@ from django.contrib.auth.views import logout_then_login
 urlpatterns = [
     path('', LoginView.as_view(template_name='Login.html'), name='login'),
     path('PaginaInicio/', login_required(views.PageInicio), name="PageInicioLink"),
+    # ESTADISTICAS
+    path('estadisticas/',admin_required(views.PageEstadisticas),name="PageEstadisticasLink"),
     # SECCION DE VENTAS
     path('ventas/', login_required(views.PageVentas), name="PageVentasLink"),
     path('crear-ventas/<int:cod_fac>/', login_required(views.crearVenta), name="crearVentaLink"),
@@ -47,6 +49,7 @@ urlpatterns = [
     path('crear-proveedor/', admin_required(views.crearProveedor), name="crearProveedorink"),
     path('editar-proveedor/<int:codigo_proveedor>/', admin_required(views.editarProveedor), name="editarProveedorLink"),
     path('eliminar-proveedor/<int:codigo_proveedor>/', admin_required(views.eliminarProveedor), name="eliminarProveedorLink"),
+    
     # Descargar mi csv
     path('descargar-excel/', admin_required(views.descargar_excel), name='descargar_excel'),
     path('descargar-excel-categoria/', admin_required(views.descargar_excel_categoria), name='descargar_excel_categoria'),
