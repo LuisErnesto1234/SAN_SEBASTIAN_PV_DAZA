@@ -116,8 +116,49 @@
     min-height: 100vh;
     padding: 10px;
   }
+/* pagina de inicio */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Dos columnas de igual ancho */
+  grid-template-rows: auto auto; /* Dos filas con altura automática */
+  gap: 3px; /* Espacio entre las cajas */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  grid-row-gap: 2em;
+}
 
+.container .enlace {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border: 1px solid #ccc;
+  justify-self: center;
+  width: 90%;
+}
+.container  a{
+  list-style: none;
+  text-decoration: none;
+}
 
+.container .enlace h2{
+  color: #4B0081;
+}
+
+.container  .enlace .item img{
+  width: 150px;
+  height: 150px;
+  margin: 1.5em;
+}
+
+.container  .contenido p{
+  margin: 1em;
+}
+
+.container  .enlace:hover{
+  background-color: #fff;
+  color: #4B0081;
+}
   /* PAGINA DE PRODUCTOS */
 .btn-abrir{
   width: 50px;
