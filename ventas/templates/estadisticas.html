@@ -2,34 +2,72 @@
 {% load static %}
 
 {% block content %}
-<div>
-    <canvas id="myChart"></canvas>
-  </div>
-  
-{{fac}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{productos_nombres}}
+{{productos_stocks}}
+<section class="estadisticas">
+  <div class="stock_productos content-grafico">
+    <h2>Stock Productos</h2>
+    <canvas id="grafico_stock"></canvas>
+ </div>
+ 
+ <div class="ventas-totales-por-fecha content-grafico">
+   <h2>Ventas Por fecha</h2>
+   <canvas id="grafico_venta"></canvas>
+ </div>
+ 
+ <div class="categorias content-grafico">
+   <h2>Categorias</h2>
+   <canvas id="grafico_categoria"></canvas>
+ </div> 
+ 
+ <div class="marcas content-grafico">
+   <h2>Marcas</h2>
+   <canvas id="grafico_marca"></canvas>
+ </div> 
+ 
+ <div class="proveedores content-grafico">
+   <h2>Proveedores</h2>
+   <canvas id="grafico_proveedor"></canvas>
+ </div>
+</section>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <script>
-    const ctx = document.getElementById('myChart');
-    new Chart(ctx, {
-      type: 'bar',
+<script>
+window.datos ={{data|safe}}
+
+let productos_nombres =  datos.productos_nombres
+let productos_stocks = datos.productos_stocks
+let categorias_nombres = datos.categorias_nombres
+let categorias_cantidad = datos.categorias_cantidad
+let marcas_nombres = datos.marcas_nombres
+let marcas_cantidad = datos.marcas_cantidad
+let proveedor_nombre = datos.proveedor_nombre
+let proveedor_cantidad = datos.proveedor_cantidad
+let venta_total_dinero = datos.venta_total_dinero
+let venta_fecha = datos.venta_fecha
+
+console.log(venta_fecha,venta_total_dinero)
+
+const grafico=(tipo,element, labels,label, data)=>{
+  const ctx = document.getElementById(element);
+  new Chart(ctx, {
+      type: tipo,
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange','Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: labels,
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3],
-          borderWidth: 1
+          label: label,
+          data: data ,
         }]
       },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
     });
+}
+
+grafico('bar','grafico_stock',productos_nombres,'stock',productos_stocks)
+grafico('bar','grafico_venta',venta_fecha,'S/',venta_total_dinero)
+grafico('doughnut','grafico_categoria',categorias_nombres,'cantidad',categorias_cantidad)
+grafico('doughnut','grafico_marca',marcas_nombres,'cantidad',marcas_cantidad)
+grafico('doughnut','grafico_proveedor',proveedor_nombre,'cantidad',proveedor_cantidad)
+
   </script>
 {% endblock %}

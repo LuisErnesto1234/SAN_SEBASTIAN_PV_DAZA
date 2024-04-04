@@ -69,23 +69,35 @@ if (btnSi){
 // // para hacer la seleccion de porductos en la venta 
 
 const creaSeleccion =(id)=>{
-    new TomSelect(id,{
+    if(id){
+        new TomSelect(id,{
         	create: false,
         	sortField: {
         		field: "text",
         		direction: "asc"
         	}});
+    }
+    
 }
 
 const creaSeleccionInabilitada=(id)=>{
-    new TomSelect(id);
+    if(id){
+        new TomSelect(id);
+    }
+    
 }
 
-creaSeleccion('#seleccionar-producto')
-creaSeleccion('#select-metodo-venta')
-creaSeleccionInabilitada('#select-codigo-fac-disabled')
-creaSeleccionInabilitada('#select-codigo-fac-venta-disabled')
-creaSeleccionInabilitada('#select-total-venta-disabled')
+try{
+    creaSeleccion('#seleccionar-producto')
+    creaSeleccion('#select-metodo-venta')
+    creaSeleccionInabilitada('#select-codigo-fac-disabled')
+    creaSeleccionInabilitada('#select-codigo-fac-venta-disabled')
+    creaSeleccionInabilitada('#select-total-venta-disabled')
+}catch (error) {
+  
+}
+
+
 
 
 

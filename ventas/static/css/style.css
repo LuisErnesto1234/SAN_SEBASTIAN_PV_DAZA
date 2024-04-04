@@ -886,4 +886,23 @@ tr:hover {
   background-color: red;
 }
 
-
+/* GRAFICOS  */
+.estadisticas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.content-grafico{
+  flex-grow: 1;
+  height: auto;
+  text-align: center;
+  background-color: var(--color1);
+  padding: 20px;
+  max-width: 400px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+}
+.content-grafico canvas{
+  width: 100%;
+}

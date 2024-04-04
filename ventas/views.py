@@ -378,13 +378,44 @@ def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
     return response
 
 #ESTADISTICAS 
+from json import dumps
+from datetime import datetime
 @admin_required
 def PageEstadisticas(request):
-    facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
-    context={
-        'fac':facturas_con_ventas
-    }
-    return render(request,'estadisticas.html',context)
+    p = Producto.objects.all()
+    c = Categoria.objects.all()
+    m = Marca.objects.all()
+    pv = Proveedor.objects.all()
+    ventas = Venta_Productos_Factura.objects.all()
+    
+    
+    productos_nombres =  [prod.nombre  for prod in p]
+    productos_stocks = [prod.stock  for prod in p]
+    categorias_nombres = [cat.nombre_categoria for cat in c]
+    categorias_cantidad = [1 for cat in c]
+    marcas_nombres = [mar.nombre_marca for mar in m]
+    marcas_cantidad = [1 for mar in m]
+    proveedor_nombre = [prov.nombres  for prov in pv]
+    proveedor_cantidad = [1  for prov in pv]
+    venta_total_dinero = [v.total for v in ventas]
+    venta_fecha = [str(v.factura.fecha_factura.strftime('%d/%m/%y')) for v in ventas]
+    
+    print(venta_fecha)
+    
+    context = {
+    'productos_nombres': productos_nombres,
+    'productos_stocks': productos_stocks,
+    'categorias_nombres': categorias_nombres,
+    'categorias_cantidad':categorias_cantidad,
+    'marcas_nombres': marcas_nombres,
+    'marcas_cantidad':marcas_cantidad,
+    'proveedor_nombre': proveedor_nombre,
+    'proveedor_cantidad':proveedor_cantidad,
+    'venta_total_dinero': venta_total_dinero,
+    'venta_fecha': venta_fecha,
+}
+    dataJSON = dumps(context) 
+    return render(request,'estadisticas.html',{'data':dataJSON})
 
 # Imprimir excel de productos
 def descargar_excel(request):
