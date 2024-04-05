@@ -2,12 +2,51 @@
 {% load static %}
 
 {% block content %}
+<div class="ventas_totales grafico">
+    <h1>Ventas Totales</h1>
+    <span>S/ {{ventas_totales}}</span>
+    <p>Ventas Totales de Todos los meses</p>
+</div>
+<section class="reportes">
+    <div class="grafico_ventas    grafico">
+        <canvas id="grafico_ventas_totales_bar"></canvas>
+    </div>
+    <div class="grafico_ventas_2  grafico">
+        <canvas id="grafico_ventas_totales_pie"></canvas>
+    </div> 
+</section>
 
-{{ventas_por_mes}}
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    window.ventas = {{ventas_por_mes|safe}}
-    console.log(ventas[0])
+window.ventas_totales_por_mes = {{ventas_totales_por_mes|safe}}
+
+console.log(ventas_totales_por_mes)
+
+const grafico=(tipo,element, labels,label, data)=>{
+  const ctx = document.getElementById(element);
+  new Chart(ctx, {
+      type: tipo,
+      data: {
+        labels: labels,
+        datasets: [{
+          label: label,
+          data: data ,
+        }]
+      },
+    });
+}
+
+grafico('pie','grafico_ventas_totales_bar',
+['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','nomviembre','diciembre']
+,'ganancia',
+ventas_totales_por_mes)
+grafico('bar','grafico_ventas_totales_pie',
+['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','nomviembre','diciembre']
+,'ganancia',
+ventas_totales_por_mes)
+
 </script>
 
 {% endblock %}

@@ -43,10 +43,14 @@
         <article class="productos-section">
             <div class="header-table">
                 <h2>Productos</h2>
-                <form action="" method="post" class="buscador">
-                    <input type="search" name="" id="" placeholder="Buscar">
+                <form action="{% url 'PageProductosLink' %}" method="post" class="buscador">
+                    <input type="search" name="termino_busqueda" id="" placeholder="Buscar">
                     {% csrf_token %}
                 </form>
+                {% if alerta %}
+                    <a  class="alerta-mostrar-todos" href="{% url 'PageProductosLink' %}">{{alerta}}</a>
+                {% endif %}
+                
                 <div class="descargas">
                 <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
                 <button onclick="printDiv('printableTable')">Imprimir</button>
@@ -71,9 +75,9 @@
                             
                         </thead>
                         <tbody>
-                            {% for prod in productos %}
+                            {% if busqueda %}
+                            {% for prod in busqueda %}
                             <tr>
-                                <!-- <td>{{prod.codigo}}</td> -->
                                 <td>{{prod.codigo_producto}}</td>
                                 <td>{{prod.codigo_barras}}</td>
                                 <td>{{prod.nombre}}</td>
@@ -82,13 +86,6 @@
                                 <td>{{prod.categoria}}</td>
                                 <td>{{prod.marca}}</td>
                                 <td>{{prod.proveedor}}</td>
-                                <!-- <td>
-                                    {% if prod.imagen %}
-                                        <img src="{{prod.imagen.url}}" alt="{{prod.nombre}}" width="30px" height="30px">
-                                    {% else %}
-                                        <img src="" alt="{{prod.nombre}}" width="30px" height="30px">
-                                    {% endif %}
-                                </td> -->
                                 <td>
                                     <a href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}" class="icono-editar">
                                         <i class="ti ti-edit"></i>
@@ -102,6 +99,31 @@
                                 </td>
                             </tr>
                             {% endfor  %}
+                            {% else %}
+                            {% for prod in productos %}
+                            <tr>
+                                <td>{{prod.codigo_producto}}</td>
+                                <td>{{prod.codigo_barras}}</td>
+                                <td>{{prod.nombre}}</td>
+                                <td>{{prod.precio}}</td>
+                                <td>{{prod.stock}}</td>
+                                <td>{{prod.categoria}}</td>
+                                <td>{{prod.marca}}</td>
+                                <td>{{prod.proveedor}}</td>
+                                <td>
+                                    <a href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}" class="icono-editar">
+                                        <i class="ti ti-edit"></i>
+                                    </a>
+                                    <a href="{% url 'eliminarProductoLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
+                                        <i class="ti ti-trash"></i>
+                                    </a>
+                                    <a href="{% url 'detalleProductoLink' codigo_producto=prod.codigo %}" class="icono-detalle">
+                                        <i class="ti ti-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor  %}
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>

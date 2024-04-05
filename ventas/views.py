@@ -54,6 +54,31 @@ def PageInicio(request):
 def PageProductos(request):
     productos = Producto.objects.all()
     form = ProductoForm()
+    if request.method == "POST":
+        termino_busqueda = request.POST['termino_busqueda']
+        if termino_busqueda:
+            # Filtrar productos por nombre, código, stock, código de barras, categoría, marca y código de producto
+            productos = Producto.objects.filter(
+                nombre__icontains=termino_busqueda
+            ) | Producto.objects.filter(
+                codigo__icontains=termino_busqueda
+            ) | Producto.objects.filter(
+                stock__icontains=termino_busqueda
+            ) | Producto.objects.filter(
+                codigo_barras__icontains=termino_busqueda
+            ) | Producto.objects.filter(
+                categoria__nombre_categoria__icontains=termino_busqueda
+            ) | Producto.objects.filter(
+                marca__nombre_marca__icontains=termino_busqueda
+            ) | Producto.objects.filter(
+                codigo_producto__icontains=termino_busqueda
+            )
+            contex={
+            'formulario':form,
+            'busqueda':productos,
+            'alerta':"ver todos"
+            }
+            return render(request,"Productos-templates/productos.html",contex)
     contex={
         'productos':productos,
         'formulario':form,
@@ -425,6 +450,8 @@ from calendar import monthrange
 # REPORTES
 @admin_required
 def reportesPage(request):
+    ventas = Venta_Productos_Factura.objects.all()
+    ventas_totales = sum([ v.total  for v in ventas])
      # Obtén el año actual
     año_actual = datetime.now().year
 
@@ -444,13 +471,16 @@ def reportesPage(request):
             'mes': mes,
             'total': ventas_mes_actual or 0  # Si no hay ventas, establecer el total en 0
         })
-    dataJSON = dumps(ventas_por_mes) 
+    
+    ventas = [v['total'] for v in ventas_por_mes]
+    
+    
+    
     context={
-        'ventas_por_mes':dataJSON
+        'ventas_totales_por_mes':dumps(ventas),
+        'ventas_totales':ventas_totales
     }
     return render(request,'reportes.html',context)
-
-    return ventas_mes_actual
 
 # Imprimir excel de productos
 def descargar_excel(request):

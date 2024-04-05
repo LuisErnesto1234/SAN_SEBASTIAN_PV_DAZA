@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Punto de ventas</title>
-  <link rel="shortcut icon" href="/static/img/img-logo.png" type="image/x-icon">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
   <!-- libreria para un selec con buscador  -->
@@ -63,7 +62,7 @@
         <li>
           <form action="{% url 'logout' %}" method="post" title="Cerrar Sesión" style="background-color: white; transition: background-color 1s;">
             {% csrf_token %}
-            <button class="Fin_Sesion" type="submit" style="width: 100%; background: none; border: none; cursor: pointer;"><i class="ti ti-x" style="color: rgb(49, 0, 140);"></i></button>
+            <button class="Fin_Sesion" type="submit" style="width: 100%; background: none; border: none; cursor: pointer;"><i class="ti ti-logout" style="color: #4B0081;"></i> </button>
         </form>
         </li>
       </ul>

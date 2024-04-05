@@ -130,9 +130,9 @@
 }
 
 .container .enlace {
-  background-color: #f2f2f2;
+  background-color:var(--color1);
   padding: 20px;
-  border: 1px solid #ccc;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
   justify-self: center;
   width: 90%;
 }
@@ -156,7 +156,7 @@
 }
 
 .container  .enlace:hover{
-  background-color: #fff;
+  background-color: #f3efef;
   color: #4B0081;
 }
   /* PAGINA DE PRODUCTOS */
@@ -217,7 +217,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color:var(--color3);
+    background-color:var(--color1);
     flex-wrap: wrap;
     text-decoration: none;
     text-transform: capitalize;
@@ -228,6 +228,7 @@
   .header-nav-box-text{
     font-size:small;
     font-weight: bold;
+    color: var(--color2);
   }
   .header-nav-box-icon{
    font-size: 30px;
@@ -762,7 +763,19 @@ tr:hover {
 .btn-guardar:hover,.btn-cancelar:hover{
   box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
 }
-
+/* ALERTAS */
+.alert-login{
+  text-align: center;
+  color: var(--color2);
+  font-weight: bold;
+  background-color: var(--color1);
+  padding: 20px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+}
+.alerta-mostrar-todos{
+  color: var(--color2);
+  text-decoration: none;
+}
 /* VENTANAS MODALES */
 .modal{
   display: none;
@@ -886,7 +899,7 @@ tr:hover {
   background-color: red;
 }
 
-/* GRAFICOS  */
+/* ESTADISTICAS  */
 .estadisticas {
   display: flex;
   flex-wrap: wrap;
@@ -904,5 +917,40 @@ tr:hover {
   box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
 }
 .content-grafico canvas{
+  width: 100%;
+}
+
+/* REPORTES  */
+.ventas_totales {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.reportes{
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
+
+.ventas_totales span{
+  font-size: 30px;
+  color: var(--color2);
+  font-weight: 900
+}
+.grafico{
+  text-align: center;
+  max-width: 500px;
+  background-color: var(--color1);
+  padding: 20px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+}
+.grafico_ventas_2{
+  flex-grow: 3;
+}
+.grafico_ventas canvas{
   width: 100%;
 }

@@ -2,25 +2,20 @@
 {% load static %}
 
 {% block content %}
-        <p>Bienvenido {{user.username | upper}}. Este es el panel principal del sistema aca podra encontrar atajos,
+        <p class="alert-login">Bienvenido {{user.username | upper}}. Este es el panel principal del sistema aca podra encontrar atajos,
         para encontrar los distintos listados del sistema.
         </p>
         <br><br>
 
         <div class="container">
-                <a href="/productos-Proveedores/" class="enlace">
+                <a href="{% url 'PageProductosProveedoresLink' %}" class="enlace">
                 <div class="item"><h2>Proveedores</h2>
                     <img src="/static/img/img-camion.png" alt="">
                 </div>
                 </a>
-                <a href="/productos-Categorias/" class="enlace">
+                <a href="{% url 'PageProductosCategoriasLink' %}" class="enlace">
                 <div class="item"><h2>Categorias</h2>
                 <img src="/static/img/img-etiqueta.png" alt="">
-                </div>
-                </a>
-                <a href="#" class="enlace">
-                <div class="item"><h2>Usuarios</h2>
-                <img src="/static/img/img-usuario.png" alt="">
                 </div>
                 </a>
                 <a href="{% url 'PageProductosLink' %}" class="enlace">
@@ -28,7 +23,7 @@
                 <img src="/static/img/img-caja.png" alt="">
                 </div>
                 </a>
-                <a href="estadisticas.html" class="enlace">
+                <a href="{% url 'PageEstadisticasLink' %}" class="enlace">
                 <div class="item"><h2>Estadisticas</h2>
                 <img src="/static/img/img-estadistica.png" alt="">
                 </div>

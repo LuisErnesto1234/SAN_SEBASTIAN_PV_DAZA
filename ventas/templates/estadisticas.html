@@ -3,6 +3,7 @@
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {{productos_nombres}}
 {{productos_stocks}}
 <section class="estadisticas">
@@ -32,9 +33,8 @@
  </div>
 </section>
 
-  
 <script>
-window.datos ={{data|safe}}
+  window.datos ={{data|safe}}
 
 let productos_nombres =  datos.productos_nombres
 let productos_stocks = datos.productos_stocks
@@ -68,6 +68,5 @@ grafico('bar','grafico_venta',venta_fecha,'S/',venta_total_dinero)
 grafico('doughnut','grafico_categoria',categorias_nombres,'cantidad',categorias_cantidad)
 grafico('doughnut','grafico_marca',marcas_nombres,'cantidad',marcas_cantidad)
 grafico('doughnut','grafico_proveedor',proveedor_nombre,'cantidad',proveedor_cantidad)
-
-  </script>
+</script>
 {% endblock %}
