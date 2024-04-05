@@ -379,7 +379,7 @@ def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
 
 #ESTADISTICAS 
 from json import dumps
-from datetime import datetime
+
 @admin_required
 def PageEstadisticas(request):
     p = Producto.objects.all()
@@ -416,6 +416,41 @@ def PageEstadisticas(request):
 }
     dataJSON = dumps(context) 
     return render(request,'estadisticas.html',{'data':dataJSON})
+
+
+from datetime import datetime
+from django.db.models import Sum
+from calendar import monthrange
+
+# REPORTES
+@admin_required
+def reportesPage(request):
+     # Obtén el año actual
+    año_actual = datetime.now().year
+
+    ventas_por_mes = []
+    for mes in range(1, 13):  # Iterar sobre los 12 meses
+        # Obtener el rango de días del mes actual
+        inicio_mes = datetime(año_actual, mes, 1)
+        fin_mes = datetime(año_actual, mes, monthrange(año_actual, mes)[1])
+
+        # Filtrar las ventas por el mes actual
+        ventas_mes_actual = Venta_Productos_Factura.objects.filter(
+            factura__fecha_factura__range=(inicio_mes, fin_mes)
+        ).aggregate(total_mes_actual=Sum('total'))['total_mes_actual']
+
+        # Agregar el total de ventas del mes actual a la lista
+        ventas_por_mes.append({
+            'mes': mes,
+            'total': ventas_mes_actual or 0  # Si no hay ventas, establecer el total en 0
+        })
+    dataJSON = dumps(ventas_por_mes) 
+    context={
+        'ventas_por_mes':dataJSON
+    }
+    return render(request,'reportes.html',context)
+
+    return ventas_mes_actual
 
 # Imprimir excel de productos
 def descargar_excel(request):

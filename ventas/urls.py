@@ -16,6 +16,8 @@ urlpatterns = [
     path('PaginaInicio/', login_required(views.PageInicio), name="PageInicioLink"),
     # ESTADISTICAS
     path('estadisticas/',admin_required(views.PageEstadisticas),name="PageEstadisticasLink"),
+    # REPORTES
+    path('reportes/',admin_required(views.reportesPage),name="reportesPageLink"),
     # SECCION DE VENTAS
     path('ventas/', login_required(views.PageVentas), name="PageVentasLink"),
     path('crear-ventas/<int:cod_fac>/', login_required(views.crearVenta), name="crearVentaLink"),

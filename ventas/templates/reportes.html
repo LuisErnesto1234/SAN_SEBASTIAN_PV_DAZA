@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{{ventas_por_mes}}
+
+<script>
+    window.ventas = {{ventas_por_mes|safe}}
+    console.log(ventas[0])
+</script>
+
+{% endblock %}
