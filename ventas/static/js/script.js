@@ -94,7 +94,7 @@ try{
     creaSeleccionInabilitada('#select-codigo-fac-venta-disabled')
     creaSeleccionInabilitada('#select-total-venta-disabled')
 }catch (error) {
-  
+    
 }
 
 

@@ -331,9 +331,11 @@ def eliminarVenta(request,cod_fac):
 
 def deleteVentaTemplate(request,cod_fac):
     venta = Venta_Productos_Factura.objects.get(factura=cod_fac)
-    lista = Lista_Productos_Factura.objects.get(codigo_factura=cod_fac)
-    
-    h = historial.objects.create(venta=venta.codigo,productos=cadenas,metodo=venta.metodo,total=venta.total)
+    lista = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    cadena = ""
+    for objeto in lista:
+        cadena += str(objeto) + ", "
+    historial.objects.create(venta=venta.codigo,productos=cadena,metodo=venta.metodo,total=venta.total)
     
     Factura.objects.get(codigo=cod_fac).delete()
     return redirect('PageVentasLink')
@@ -589,7 +591,9 @@ def descargar_excel_proveedores(request):
 @admin_required
 def historialPage(request):
     histo = historial.objects.all()
+    ventas = Venta_Productos_Factura.objects.all()
     context={
-        'historial_eliminados':histo
+        'historial_eliminados':histo,
+        'ventas_template':ventas,
     }
     return render(request,'historial.html',context)

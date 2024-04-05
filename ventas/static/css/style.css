@@ -954,3 +954,25 @@ tr:hover {
 .grafico_ventas canvas{
   width: 100%;
 }
+
+/* 
+HISTORIAL */
+.tiutlo_historial{
+  text-align: center;
+  padding: 20px;
+  margin: auto;
+}
+.tables_historial {
+  display: flex;
+  padding: 20px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
+}
+.tabla_ventas_eliminadas td{
+  color: red;
+  font-weight: bold;
+}
+.tabla_ventas_realizadas td{
+  color:green;
+  font-weight: bold;
+}
