@@ -1,5 +1,7 @@
 librerias o plugins usados 
 
+Cambio-Rojas
+
 - https://tom-select.js.org/  (para la seleccion y busqueda en un formulario)
 
 - https://www.chartjs.org/ (para los graficos estadisticos)
@@ -70,8 +72,7 @@ git pull fork main
 ````
 dazafirma
 
-
-
 Rojas Vargas 
+Cambio Daza 🐔🐔
 
 ### por ahora esto es un ejemplo mejoraremos con el tiempo .....
