@@ -18,6 +18,8 @@ urlpatterns = [
     path('estadisticas/',admin_required(views.PageEstadisticas),name="PageEstadisticasLink"),
     # REPORTES
     path('reportes/',admin_required(views.reportesPage),name="reportesPageLink"),
+    # HISTORIAL
+    path('historial/',admin_required(views.historialPage), name= "historialPageLink"),
     # SECCION DE VENTAS
     path('ventas/', login_required(views.PageVentas), name="PageVentasLink"),
     path('crear-ventas/<int:cod_fac>/', login_required(views.crearVenta), name="crearVentaLink"),
@@ -29,6 +31,8 @@ urlpatterns = [
     path('eliminar-ventas/<int:cod_fac>',login_required(views.eliminarVenta),name="eliminarVentaLink"),
     path('detalle-venta/<int:cod_fac>',login_required(views.detalleVenta),name='detalleVentaLink'),
     path('generar_pdf/<str:titulo>/<str:fecha>/<str:lugar>/<str:metodo_pago>/<str:codigo>/', login_required(views.generate_pdf), name='generar_pdf'),
+    # ---- historial ventas
+    path('eliminar-venta-template/<int:cod_fac>',views.deleteVentaTemplate,name="deleteVentaTemplateLink"),
     # SECCION DE PRODUCTOS
     path('productos/', admin_required(views.PageProductos), name="PageProductosLink"),
     path('productos-Categorias/', admin_required(views.PageProductosCategorias), name="PageProductosCategoriasLink"),

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+{% if historial_eliminados %}
+    {% for h in historial_eliminados %}
+        {{h.venta}} | {{h.productos}} {{h.total}}  {{h.metodo}}  <br>
+    {% endfor  %}
+{% else %}
+        <li class="noFacturas">No hay ventas eliminadas</li>
+{% endif %}
+
+
+{% endblock %}

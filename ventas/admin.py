@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, Marca, Proveedor, Producto,Inventario,Factura,MetodoPago,Lista_Productos_Factura,Venta_Productos_Factura
-
+from .models import Categoria, Marca, Proveedor, Producto,Inventario,Factura,MetodoPago,Lista_Productos_Factura,Venta_Productos_Factura ,historial
 admin.site.register(Categoria)
 admin.site.register(Marca)
 admin.site.register(Proveedor)
@@ -10,7 +9,7 @@ admin.site.register(MetodoPago)
 admin.site.register(Factura)
 admin.site.register(Lista_Productos_Factura)
 admin.site.register(Venta_Productos_Factura)
-
+admin.site.register(historial)
 
 
 

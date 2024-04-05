@@ -66,7 +66,7 @@ class Lista_Productos_Factura(models.Model):
     codigo_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     
     def __str__(self):
-            return f' se vendio {self.producto} {self.cantidad_vendida}'
+            return f'{self.producto} -> {self.cantidad_vendida}'
     
 class Venta_Productos_Factura(models.Model):
     codigo = models.AutoField(primary_key=True)
@@ -78,7 +78,17 @@ class Venta_Productos_Factura(models.Model):
     def __str__(self):
             return f'total {self.total} de la venta  {self.codigo}'
 
-      
+class historial(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    venta = models.CharField(max_length=200)
+    productos =  models.TextField()
+    total = models.IntegerField()
+    metodo = models.CharField(max_length=50)
+    
+    def __str__(self):
+            return f'se elimino la venta {self.venta}'
+        
+        
 class Inventario(models.Model):
     codigo = models.AutoField(primary_key=True)
     stock_inicial = models.PositiveIntegerField(default=0)  

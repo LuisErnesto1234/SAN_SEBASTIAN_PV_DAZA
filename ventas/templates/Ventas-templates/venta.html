@@ -40,6 +40,9 @@
                     <a href="{% url 'detalleVentaLink' cod_fac=fac.codigo %}">
                         <i class="ti ti-list-check"></i>
                     </a>
+                    <a href="{% url 'deleteVentaTemplateLink' cod_fac=fac.codigo %}">
+                        <i class="ti ti-trash-x"></i>
+                    </a>
                 </div>
             </section>
             {% endfor  %}
