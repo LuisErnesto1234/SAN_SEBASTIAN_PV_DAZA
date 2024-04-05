@@ -68,6 +68,6 @@ y el la bash de tu repositorio forkeado utilizas el git pull
 ````bash
 git pull fork main
 ````
-daza
+dazafirma
 
 ### por ahora esto es un ejemplo mejoraremos con el tiempo .....
