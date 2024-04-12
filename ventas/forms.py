@@ -1,5 +1,5 @@
 from django import forms
-from .models import Producto,Proveedor,Factura,MetodoPago,Lista_Productos_Factura,Venta_Productos_Factura
+from .models import Producto,Proveedor,Factura,MetodoPago,Lista_Productos_Factura,Venta_Productos_Factura, Lista_ProductoSinUnidad_Factura
 
 class ProductoForm(forms.ModelForm):
     class Meta:
@@ -94,3 +94,19 @@ class VentaProductosFacturaForm(forms.ModelForm):
             'total': forms.NumberInput(attrs={'class': 'form-control','disabled':'','id':'select-total-venta-disabled'}),
         }
         
+class ListaProductoSinUnidadFacturaForm(forms.ModelForm):
+    # cantidad_vendida_gramos = forms.CharField(required=False, widget={
+    #     'class': 'form-control','id':'cantidad_vendida_gramos_input', 'placeholder': 'Ingrese Los Gramos' 
+    # })
+    class Meta:
+        model = Lista_ProductoSinUnidad_Factura
+        fields = ['producto', 'codigo_factura']
+        
+        labels = {
+            'producto': 'Producto',
+            'codigo_factura': 'Código de Factura'
+        }
+        widgets = {
+            'producto': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione el producto','id':'seleccionar-producto-form2'}),
+            'codigo_factura': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione el código de factura','disabled':'','id':'select-codigo-fac-venta-disabled_form2'}),
+        }
