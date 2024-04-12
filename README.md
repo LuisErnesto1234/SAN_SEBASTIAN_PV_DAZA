@@ -70,9 +70,5 @@ y el la bash de tu repositorio forkeado utilizas el git pull
 ````bash
 git pull fork main
 ````
-dazafirma
-
-Rojas Vargas 
-Cambio Daza 🐔🐔
 
 ### por ahora esto es un ejemplo mejoraremos con el tiempo .....

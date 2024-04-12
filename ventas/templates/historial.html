@@ -4,13 +4,41 @@
 {% block content %}
 
 
-{% if historial_eliminados %}
-    {% for h in historial_eliminados %}
-        {{h.venta}} | {{h.productos}} {{h.total}}  {{h.metodo}}  <br>
-    {% endfor  %}
-{% else %}
-        <li class="noFacturas">No hay ventas eliminadas</li>
-{% endif %}
+<h1 class="tiutlo_historial">Historial de Ventas</h1>
 
+<secction class="tables_historial">
+    <table class="tabla_ventas_eliminadas" >
+        <tr>
+            <th>Ventas Eliminadas</th>
+        </tr>
+            {% if historial_eliminados %}
+                {% for h in historial_eliminados %}
+                <tr>
+                   <td>{{h.venta}} | {{h.productos}} | {{h.total}} | {{h.metodo}} </td> 
+                </tr>
+                {% endfor  %}
+            {% else %}
+                <tr>
+                    <td> No hay ventas eliminadas ...</td>
+                </tr>
+            {% endif %} 
+    </table>
+    <table class="tabla_ventas_realizadas">
+        <tr>
+            <th>Ventas Realizadas</th>
+        </tr>
+            {% if ventas_template %}
+                {% for v in ventas_template %}
+                <tr>
+                   <td>{{v.codigo}} | {{v.productos}} | {{v.total}} | {{v.metodo}} </td> 
+                </tr>
+                {% endfor  %}
+            {% else %}
+                <tr>
+                    <td> No hay ventas Realizadas ...</td>
+                </tr>
+            {% endif %} 
+    </table>
+</secction>
 
 {% endblock %}

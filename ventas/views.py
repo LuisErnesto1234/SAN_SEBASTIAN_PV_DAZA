@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm
+from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm,ListaProductoSinUnidadFacturaForm
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -250,13 +250,15 @@ def crearVenta(request,cod_fac):
         total=total
     
     # formulario del listado de productos con un valor inicial de el codigo de fac 
-    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac,'cantidad':'1'})
+    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac})
+    # formulario del listado de productos sin unidad con el valor del codigo de fac
+    form_listado_productos_sin_unidad = ListaProductoSinUnidadFacturaForm(initial={'codigo_factura': cod_fac,})
     # formulario de venta
     formulario_venta = VentaProductosFacturaForm(initial={'factura': cod_fac,'total':total})
     #error de stock
     error_stock = ""
     if request.method == 'POST':
-         
+         print(request.POST)
          form = ListaProductosFacturaForm(request.POST)
          #obtenemos el codigo del producto
          cod_producto =request.POST.get('producto')
@@ -279,7 +281,8 @@ def crearVenta(request,cod_fac):
         'form_listado_productos':form_listado_productos,
         'lista_productos':lista_productos,
         'formulario_venta':formulario_venta,
-        'error_stock':error_stock 
+        'error_stock':error_stock ,
+        'form_listado_productos_sin_unidad':form_listado_productos_sin_unidad
     }
     return render(request,'Ventas-templates/crear-venta.html',context=context)
 
@@ -331,9 +334,11 @@ def eliminarVenta(request,cod_fac):
 
 def deleteVentaTemplate(request,cod_fac):
     venta = Venta_Productos_Factura.objects.get(factura=cod_fac)
-    lista = Lista_Productos_Factura.objects.get(codigo_factura=cod_fac)
-    
-    h = historial.objects.create(venta=venta.codigo,productos=cadenas,metodo=venta.metodo,total=venta.total)
+    lista = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    cadena = ""
+    for objeto in lista:
+        cadena += str(objeto) + ", "
+    historial.objects.create(venta=venta.codigo,productos=cadena,metodo=venta.metodo,total=venta.total)
     
     Factura.objects.get(codigo=cod_fac).delete()
     return redirect('PageVentasLink')
@@ -589,7 +594,9 @@ def descargar_excel_proveedores(request):
 @admin_required
 def historialPage(request):
     histo = historial.objects.all()
+    ventas = Venta_Productos_Factura.objects.all()
     context={
-        'historial_eliminados':histo
+        'historial_eliminados':histo,
+        'ventas_template':ventas,
     }
     return render(request,'historial.html',context)

@@ -604,26 +604,49 @@ PAGINA DE PROVEEDORES */
   text-align: center;
 }
 .seccion-productos-agregar{
+  min-width: 250px;
+  width: fit-content;
   display: flex;
-  justify-content: space-evenly;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 10px;
   background-color:var(--color1);
   box-shadow: 5px 0 30px rgba(0, 0, 0, 0.185);
+  flex-direction: column;
+}
+.btn-cambio-formularios{
+  display: flex;
+  justify-content: space-evenly;
+}
+.btn-cambio-formularios button{
+  padding: 10px;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: none;
+}
+.formularios{
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .seccion-productos-agregar-form{
+  width: 100%;
   display: flex;
   flex-wrap: wrap-reverse;
   justify-content: space-around;
   gap: 20px;
 }
 .seccion-productos-agregar-form .input-producto{
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   border: solid 1px solid;
   padding: 20px;
+}
+.seccion-productos-agregar-form .input-producto h3{
+  text-transform: capitalize;
+  text-align: center;
+  padding: 10px;
 }
 .seccion-productos-agregar-form label{
   color: var(--color2);
@@ -636,8 +659,31 @@ PAGINA DE PROVEEDORES */
 }
 .seccion-productos-agregar .alert-danger{
   background-color: yellow;
-  padding: 10px;
 }
+
+#container{
+  display: flex;
+  justify-content: space-between;
+
+}
+#container .boton{
+  text-align: center;
+  cursor: pointer;
+  padding: 4px;
+  background-color: var(--color2);
+  color: var(--color1);
+  border: none;
+  font-size: 13px;
+  width: 40px;
+}
+#myLabel{
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  background-color: var(--color2);
+  color: var(--color1);
+}
+
 .seccion-productos-tabla{
   flex-grow: 2;
   background-color: var(--color1);
@@ -953,4 +999,26 @@ tr:hover {
 }
 .grafico_ventas canvas{
   width: 100%;
+}
+
+/* 
+HISTORIAL */
+.tiutlo_historial{
+  text-align: center;
+  padding: 20px;
+  margin: auto;
+}
+.tables_historial {
+  display: flex;
+  padding: 20px;
+  box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
+}
+.tabla_ventas_eliminadas td{
+  color: red;
+  font-weight: bold;
+}
+.tabla_ventas_realizadas td{
+  color:green;
+  font-weight: bold;
 }

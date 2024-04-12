@@ -11,6 +11,7 @@ settings_local.py
 __pycache__/
 
 venv
+ven
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

@@ -44,6 +44,24 @@ class Producto(models.Model):
     def __str__(self):
             return self.nombre
 
+
+
+class ProductoSinUnidad(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    codigo_producto = models.CharField(max_length=20, unique=True)
+    codigo_barras = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=255)
+    precio_por_kilo = models.DecimalField(max_digits=10, decimal_places=2)
+    stock_en_kilos = models.PositiveIntegerField()
+    imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+  
+    def __str__(self):
+            return f"{self.nombre} ( {self.stock_en_kilos * 1000} gramos o {self.stock_en_kilos} kg) "
+
+
 class Factura(models.Model):
     codigo = models.AutoField(primary_key=True)
     nombre_factura = models.CharField(max_length=50)
@@ -67,6 +85,14 @@ class Lista_Productos_Factura(models.Model):
     
     def __str__(self):
             return f'{self.producto} -> {self.cantidad_vendida}'
+
+
+class Lista_ProductoSinUnidad_Factura(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    producto = models.ForeignKey(ProductoSinUnidad, on_delete=models.CASCADE)
+    cantidad_vendida_gramos = models.PositiveIntegerField()
+    codigo_factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+
     
 class Venta_Productos_Factura(models.Model):
     codigo = models.AutoField(primary_key=True)

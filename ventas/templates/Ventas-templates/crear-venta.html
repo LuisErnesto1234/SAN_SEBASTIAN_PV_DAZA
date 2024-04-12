@@ -7,24 +7,62 @@
     <h1 class="seccion-productos-titulo">Nueva Venta</h1>
    
     <div class="seccion-productos-agregar">
-        <form action="" method="post" class="seccion-productos-agregar-form">
-            {% csrf_token %}
-            <div class="input-producto">
-                {% if error_stock %}
-                    <div class="alert alert-danger" role="alert">
-                         {{ error_stock }} <i class="ti ti-alert-circle"></i>
-                    </div>
-                {% endif %}
-                {{form_listado_productos.codigo_factura.label}}
-                {{form_listado_productos.codigo_factura}}
-                <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
-                {{form_listado_productos.producto.label}}
-                {{form_listado_productos.producto}}
-                {{form_listado_productos.cantidad_vendida.label}}
-                {{form_listado_productos.cantidad_vendida}}
-                <button type="submit" class="btn-guardar">agregar</button>
-            </div>
-        </form>
+
+        <div class="btn-cambio-formularios">
+            <button id="btnForm1" class="active" onclick="mostrarFormulario('formulario1')">Por Unidad</button>
+            <button id="btnForm2" class="" onclick="mostrarFormulario('formulario2')">Por Gramos</button>
+        </div>
+
+        <div class="formularios">
+            <form action="" id="formulario1" method="post" class="seccion-productos-agregar-form">
+                {% csrf_token %}
+                <div class="input-producto">
+                    <h3>Por Unidad</h3>
+                    {% if error_stock %}
+                        <div class="alert alert-danger" role="alert">
+                             {{ error_stock }} <i class="ti ti-alert-circle"></i>
+                        </div>
+                    {% endif %}
+                    {{form_listado_productos.codigo_factura.label}}
+                    {{form_listado_productos.codigo_factura}}
+                    <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
+                    {{form_listado_productos.producto.label}}
+                    {{form_listado_productos.producto}}
+                    {{form_listado_productos.cantidad_vendida.label}}
+                    {{form_listado_productos.cantidad_vendida}}
+                    <button type="submit" class="btn-guardar" name="formulario1" value="form 1 ">agregar</button>
+                </div>  
+            </form>
+            <form action="" id="formulario2" method="post" class="seccion-productos-agregar-form">
+                {% csrf_token %}
+                <div class="input-producto">
+                    <h3>Por Gramos</h3>
+                    {% if error_stock %}
+                        <div class="alert alert-danger" role="alert">
+                             {{ error_stock }} <i class="ti ti-alert-circle"></i>
+                        </div>
+                    {% endif %}
+                    {{form_listado_productos_sin_unidad.codigo_factura.label}}
+                    {{form_listado_productos_sin_unidad.codigo_factura}}
+                    <input type="hidden" name="codigo_factura" value="{{form_listado_productos_sin_unidad.codigo_factura.value}}">
+                    {{form_listado_productos_sin_unidad.producto.label}}
+                    {{form_listado_productos_sin_unidad.producto}}
+                    Cantidad vendida en gramos
+                    <input type="number" id="cantidad_vendida_gramos_input" name="cantidad_vendida_gramos" placeholder="Ingrese Los Gramos">
+                        <div id="container">
+                                <div class="boton" onclick="cambiarValor(1000)" >1 Kg</div>
+                                <div class="boton" onclick="cambiarValor(500)" ><sup>1</sup>&frasl;<sub>2</sub></div>
+                                <div class="boton" onclick="cambiarValor(250)" ><sup>1</sup>&frasl;<sub>4</sub></div>
+                                <div class="boton" onclick="cambiarValor(125)" ><sup>1</sup>&frasl;<sub>8</sub></div>
+                                <div class="boton" onclick="cambiarValor(750)" ><sup>3</sup>&frasl;<sub>4</sub></div>
+                        </div>
+                    <p id="myLabel" ><b>vender por dinero</b></p>
+                    <input type="number" id="myInput" placeholder="Ingrese el valor" name="ventaDinero" style="display: none;">
+                    <button type="submit" class="btn-guardar" name="formulario2" value="form 2">agregar</button>
+                </div>
+            </form>
+        </div>
+        
     </div>
     <div class="seccion-productos-tabla">
         <div class="tabla-productos">
@@ -90,5 +128,62 @@
     numero = document.getElementById("total-number").value;
     numero_entero = parseInt(numero);
     document.getElementById("total-number").value = numero_entero;
+
+    function mostrarFormulario(formId) {
+    var form1 = document.getElementById('formulario1');
+    var form2 = document.getElementById('formulario2');
+    var btnForm1 = document.getElementById('btnForm1');
+    var btnForm2 = document.getElementById('btnForm2');
+
+    if (formId === 'formulario1') {
+      form1.style.display = 'block';
+      form2.style.display = 'none';
+      btnForm1.classList.add('active');
+      btnForm2.classList.remove('active');
+    } else {
+      form1.style.display = 'none';
+      form2.style.display = 'block';
+      btnForm1.classList.remove('active');
+      btnForm2.classList.add('active');
+    }
+  }
+
+  // Por defecto, mostrar el formulario 1
+  mostrarFormulario('formulario1');
+
+
+// valores del imput de cantidad_vendida_gramos_input
+    function cambiarValor(valor) {
+        document.getElementById("cantidad_vendida_gramos_input").value = valor;
+    }
+
+// venta por dinero
+let label = document.getElementById("myLabel");
+let input = document.getElementById("myInput");
+let externalInput = document.getElementById("cantidad_vendida_gramos_input");
+
+label.addEventListener("click", function() {
+  if (input.style.display === "none") {
+    externalInput.disabled = true;
+    input.style.display = "block";
+  } else {
+    externalInput.disabled = false;
+    input.style.display = "none";
+  }
+});
+
+
+let form = document.getElementById("formulario2");
+
+form.addEventListener("submit", function(event) {
+  let input1 = document.getElementById("cantidad_vendida_gramos_input");
+  let input2 = document.getElementById("myInput");
+
+  if (input1.value.trim() === "" && input2.value.trim() === "") {
+    alert("Agrega Un Valor en Gramos o en Dinero .. por favor ");
+    event.preventDefault();
+  }
+});
+
 </script>
 {% endblock %} 
