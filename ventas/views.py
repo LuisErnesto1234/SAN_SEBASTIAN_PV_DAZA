@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm
+from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm,ListaProductoSinUnidadFacturaForm
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -250,13 +250,15 @@ def crearVenta(request,cod_fac):
         total=total
     
     # formulario del listado de productos con un valor inicial de el codigo de fac 
-    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac,'cantidad':'1'})
+    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac})
+    # formulario del listado de productos sin unidad con el valor del codigo de fac
+    form_listado_productos_sin_unidad = ListaProductoSinUnidadFacturaForm(initial={'codigo_factura': cod_fac,})
     # formulario de venta
     formulario_venta = VentaProductosFacturaForm(initial={'factura': cod_fac,'total':total})
     #error de stock
     error_stock = ""
     if request.method == 'POST':
-         
+         print(request.POST)
          form = ListaProductosFacturaForm(request.POST)
          #obtenemos el codigo del producto
          cod_producto =request.POST.get('producto')
@@ -279,7 +281,8 @@ def crearVenta(request,cod_fac):
         'form_listado_productos':form_listado_productos,
         'lista_productos':lista_productos,
         'formulario_venta':formulario_venta,
-        'error_stock':error_stock 
+        'error_stock':error_stock ,
+        'form_listado_productos_sin_unidad':form_listado_productos_sin_unidad
     }
     return render(request,'Ventas-templates/crear-venta.html',context=context)
 
