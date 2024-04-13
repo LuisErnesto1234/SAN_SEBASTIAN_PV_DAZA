@@ -242,12 +242,20 @@ def PageVentas(request):
 def crearVenta(request,cod_fac):
     # todos los productos que tiene la misma factura
     lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    lista_productos_su = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=cod_fac)
     
+    # subtottal lista productos unidad
+    subtotalUNI = [ float(lp.producto.precio * lp.cantidad_vendida) for lp in lista_productos ]
+    # subtottal lista productos gramos
+    subtotalGRA = [ round(float(lp.cantidad_vendida_gramos)/ 1000 * float(lp.producto.precio_por_kilo) ,1) for lp in lista_productos_su ]
+    
+    # listas cobn sus subtotales
+    prueba_produc_list_uni = zip(lista_productos,subtotalUNI)
+    prueba_produc_list_gra = zip(lista_productos_su,subtotalGRA)
+    
+
     # total de la venta
-    total = 0
-    for producto in lista_productos:
-        total += producto.producto.precio * producto.cantidad_vendida
-        total=total
+    total = sum(subtotalUNI + subtotalGRA)
     
     # formulario del listado de productos con un valor inicial de el codigo de fac 
     form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac})
@@ -258,56 +266,102 @@ def crearVenta(request,cod_fac):
     #error de stock
     error_stock = ""
     if request.method == 'POST':
-         print(request.POST)
-         form = ListaProductosFacturaForm(request.POST)
-         #obtenemos el codigo del producto
-         cod_producto =request.POST.get('producto')
-         #obtenemos el producto
-         prod = Producto.objects.get(codigo=cod_producto)
-         #obtenemos el stock del producto
-         stock_producto = prod.stock
+        if 'formulario1' in request.POST:
+            form = ListaProductosFacturaForm(request.POST)
+            #obtenemos el codigo del producto
+            cod_producto =request.POST.get('producto')
+            #obtenemos el producto
+            prod = Producto.objects.get(codigo=cod_producto)
+            #obtenemos el stock del producto
+            stock_producto = prod.stock
+            cantidad = request.POST.get('cantidad_vendida')   
+            if stock_producto > int(cantidad):
+                if form.is_valid():
+                    form.save()
+                    return redirect(request.path)
+            else:
+                error_stock = "no se puede agregar el producto por falta de stock"
+        else :
+            # factura instacia
+            fac = Factura.objects.get(codigo=cod_fac)
+            #obtenemos el codigo del producto
+            cod_producto =request.POST.get('producto')
+            #obtenemos el producto
+            prod = ProductoSinUnidad.objects.get(codigo=cod_producto)
+             #obtenemos el stock del producto en gramos 
+            stock_producto_su = prod.stock_en_kilos * 1000
+            # obtenemos el precio por kilo
+            precio_kilo = prod.precio_por_kilo
+              
+            if 'cantidad_vendida_gramos' in request.POST: #se vende por gramos
+                cant_gramos =request.POST.get('cantidad_vendida_gramos')
+                if stock_producto_su > int(cant_gramos):
 
-         cantidad = request.POST.get('cantidad_vendida')
-         
-         if stock_producto > int(cantidad):
-            if form.is_valid():
-                form.save()
+                    gramos = float(cant_gramos)
+                    Lista_ProductoSinUnidad_Factura.objects.create(producto=prod,cantidad_vendida_gramos=gramos,codigo_factura=fac)
+                
+                    return redirect(request.path)
+                else:
+                    error_stock = "no se puede agregar el producto por falta de stock"
+                
+            else: #se vende por dinero
+                can_dinero = request.POST.get('ventaDinero')
+                
+                total_en_gramos = float(can_dinero) / float(precio_kilo) * 1000.00  # Convertir dinero a gramos
+                
+                Lista_ProductoSinUnidad_Factura.objects.create(producto=prod,cantidad_vendida_gramos=total_en_gramos,codigo_factura=fac)
+
                 return redirect(request.path)
-         else:
-            error_stock = "no se puede agregar el producto por falta de stock"
-             
-             
+                 
     context={
+        # 'lista_productos_su':lista_productos_su,
+        # 'lista_productos':lista_productos,
+        # 'subtotalUNI':subtotalUNI,
+        # 'subtotalGRA':subtotalGRA, 
+        
         'form_listado_productos':form_listado_productos,
-        'lista_productos':lista_productos,
         'formulario_venta':formulario_venta,
         'error_stock':error_stock ,
-        'form_listado_productos_sin_unidad':form_listado_productos_sin_unidad
+        'form_listado_productos_sin_unidad':form_listado_productos_sin_unidad,
+        
+        'prueba_produc_list_uni':prueba_produc_list_uni,
+        'prueba_produc_list_gra':prueba_produc_list_gra
+        
     }
     return render(request,'Ventas-templates/crear-venta.html',context=context)
 
 def procesarVenta(request,cod_fac):
     if request.method == 'POST':
-        # obtenemos la lista de productos de esa factura 
+        # obtenemos todos los productos vendidos
         lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+        lista_productos_2 = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=cod_fac)
         # obtenemos todos los productos
         productos = Producto.objects.all()
-         # quitar el stok
+        productos_2 = ProductoSinUnidad.objects.all()
+         # quitar el stok en los productos por unidad
         for lisProd in lista_productos:
             for pro in productos:
                 # preguntamos si el codigo del producto lista es el mismo que el de product
                 if lisProd.producto.codigo == pro.codigo:
-                   
                     # obtenemos el codigo del producto y le restamos la catidad 
                     productoObtenido = Producto.objects.get(codigo=pro.codigo)
                     # validamos el stock
                     if productoObtenido.stock > lisProd.cantidad_vendida:
                        productoObtenido.stock -= lisProd.cantidad_vendida
                        productoObtenido.save()
-        
+                       
+        for lpsu in lista_productos_2:
+            for pro in productos_2:
+                if lpsu.producto.codigo == pro.codigo:
+                    productoObtenido = ProductoSinUnidad.objects.get(codigo=pro.codigo)
+                    can_ven_kil = lpsu.cantidad_vendida_gramos / 1000
+                    if productoObtenido.stock_en_kilos > can_ven_kil :
+                       productoObtenido.stock_en_kilos -= can_ven_kil
+                       productoObtenido.save()
+                    
         # validacion de factura vacia   
         form = VentaProductosFacturaForm(request.POST)
-        if lista_productos.exists():  #verifica si hay datos    
+        if lista_productos.exists() or lista_productos_2.exists():  #verifica si hay datos    
             if form.is_valid():
                 form.save() 
                 return redirect('detalleVentaLink',cod_fac)       
@@ -322,7 +376,12 @@ def procesarVenta(request,cod_fac):
 def eliminarProductoLista(request,cod_prod_list):
     producto_lista = Lista_Productos_Factura.objects.get(codigo=cod_prod_list).delete()
     url_pagina_anterior = request.META.get('HTTP_REFERER')
+    # Redireccionar a la página anterior
+    return redirect(url_pagina_anterior)
 
+def eliminarProductoListaSU(request,cod_prod_list_g):
+    Lista_ProductoSinUnidad_Factura.objects.get(codigo=cod_prod_list_g).delete()
+    url_pagina_anterior = request.META.get('HTTP_REFERER')
     # Redireccionar a la página anterior
     return redirect(url_pagina_anterior)
 
@@ -345,21 +404,23 @@ def deleteVentaTemplate(request,cod_fac):
 
 def detalleVenta(request,cod_fac):
     factura =Factura.objects.get(codigo=cod_fac)
-    lista = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    
+    lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    lista_productos_2 = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=cod_fac)
+    
     venta = Venta_Productos_Factura.objects.get(factura=cod_fac)
     titulo = f"Tiket {factura}"
     lugar = "Puente Piedra"
     telefono = '52345432532'
-    fecha_for = "12/12/12"
     
     context = {
         'factura':factura,
-        'lista_productos':lista,
+        'lista_productos':lista_productos,
+        'lista_productos_2':lista_productos_2,
         'venta':venta,
         'titulo':titulo,
         'lugar':lugar,
         'telefono':telefono,
-        "fechaFor":fecha_for
     }
     return render(request,'Ventas-templates/detalle-venta.html',context)
 
@@ -381,18 +442,25 @@ def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
     pdf_content.append(Paragraph(f"Código: {codigo}", getSampleStyleSheet()['BodyText']))
 
     lista = Lista_Productos_Factura.objects.filter(codigo_factura=codigo)
+    lista_productos_2 = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=codigo)
     # venta = Venta_Productos_Factura.objects.get(factura=codigo)
     data = [["Producto", "Precio unitario", "Cantidad", "Total"]]
-    total = 0
+    
+    subtotalUNI = [ float(lp.producto.precio * lp.cantidad_vendida) for lp in lista  ]
+    subtotalGRA = [ round(float(lp.cantidad_vendida_gramos)/ 1000 * float(lp.producto.precio_por_kilo) ,1) for lp in lista_productos_2 ] 
+    
+    total = sum(subtotalUNI  + subtotalGRA)
     for lis in lista:
         subtotal = lis.producto.precio * lis.cantidad_vendida
-        total += subtotal
         data.append([lis.producto, f"${lis.producto.precio}", str(lis.cantidad_vendida), f"${subtotal}"])
-    # for product in productos:
-    #     subtotal = product["precio"] * product["cantidad"]
-    #     total += subtotal
-    #     data.append([product["nombre"], f"${product['precio']}", str(product["cantidad"]), f"${subtotal}"])
-
+    for lis in lista_productos_2:
+        subtotal = lis.producto.precio_por_kilo * (lis.cantidad_vendida_gramos / 1000)
+        data.append([lis.producto, f"${lis.producto.precio_por_kilo}", str(lis.cantidad_vendida_gramos), f"${subtotal}"])
+    
+    
+    
+    
+    
     table = Table(data)
     style = TableStyle([('TEXTCOLOR', (0, 0), (-1, -1), (0, 0, 0)),  # Color de texto: negro
                         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -402,7 +470,8 @@ def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
     table.setStyle(style)
     pdf_content.append(table)
 
-    pdf_content.append(Paragraph(f"Total de Productos: {len(lista)}", getSampleStyleSheet()['BodyText']))
+    cantidad_productos = len(lista) if lista else len(lista_productos_2)
+    pdf_content.append(Paragraph(f"Total de Productos: {cantidad_productos}", getSampleStyleSheet()['BodyText']))
     pdf_content.append(Paragraph(f"Total: ${total}", getSampleStyleSheet()['BodyText']))
 
     # Generar el PDF

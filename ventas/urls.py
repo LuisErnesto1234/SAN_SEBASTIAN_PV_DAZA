@@ -28,6 +28,7 @@ urlpatterns = [
     path('crear-ventas/<int:cod_fac>',login_required(views.crearVenta),name="crearVentaLink"),
     path('procesar-ventas/<int:cod_fac>',login_required(views.procesarVenta),name="procesarVentaLink"),
     path('eliminar-producto-lista/<int:cod_prod_list>',login_required(views.eliminarProductoLista),name="eliminarProductoListaLink"),
+    path('eliminar-producto-lista-gramos/<int:cod_prod_list_g>',login_required(views.eliminarProductoListaSU),name="eliminarProductoListaSULink"),
     path('eliminar-ventas/<int:cod_fac>',login_required(views.eliminarVenta),name="eliminarVentaLink"),
     path('detalle-venta/<int:cod_fac>',login_required(views.detalleVenta),name='detalleVentaLink'),
     path('generar_pdf/<str:titulo>/<str:fecha>/<str:lugar>/<str:metodo_pago>/<str:codigo>/', login_required(views.generate_pdf), name='generar_pdf'),
