@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm,ListaProductoSinUnidadFacturaForm
+from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm,ListaProductoSinUnidadFacturaForm,ProductoSinUnidadForm
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -54,6 +54,7 @@ def PageInicio(request):
 def PageProductos(request):
     productos = Producto.objects.all()
     form = ProductoForm()
+    form2 = ProductoSinUnidadForm()
     if request.method == "POST":
         termino_busqueda = request.POST['termino_busqueda']
         if termino_busqueda:
@@ -82,6 +83,7 @@ def PageProductos(request):
     contex={
         'productos':productos,
         'formulario':form,
+        'formulario2':form2
     }
     return render(request,"Productos-templates/productos.html",contex)
 

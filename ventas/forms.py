@@ -1,5 +1,5 @@
 from django import forms
-from .models import Producto,Proveedor,Factura,MetodoPago,Lista_Productos_Factura,Venta_Productos_Factura, Lista_ProductoSinUnidad_Factura
+from .models import Producto,Proveedor,Factura,MetodoPago,Lista_Productos_Factura,Venta_Productos_Factura, Lista_ProductoSinUnidad_Factura,ProductoSinUnidad
 
 class ProductoForm(forms.ModelForm):
     class Meta:
@@ -109,4 +109,32 @@ class ListaProductoSinUnidadFacturaForm(forms.ModelForm):
         widgets = {
             'producto': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione el producto','id':'seleccionar-producto-form2'}),
             'codigo_factura': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione el código de factura','disabled':'','id':'select-codigo-fac-venta-disabled_form2'}),
+        }
+        
+        
+class ProductoSinUnidadForm(forms.ModelForm):
+    class Meta:
+        model = ProductoSinUnidad
+        fields = ['codigo_producto', 'codigo_barras', 'nombre', 'precio_por_kilo', 'stock_en_kilos', 'imagen', 'categoria', 'marca', 'proveedor']
+        labels = {
+            'codigo_producto': 'Código del Producto',
+            'codigo_barras': 'Código de Barras',
+            'nombre': 'Nombre del Producto',
+            'precio_por_kilo': 'Precio por Kilo',
+            'stock_en_kilos': 'Stock en Kilos',
+            'imagen': 'Imagen',
+            'categoria': 'Categoría',
+            'marca': 'Marca',
+            'proveedor': 'Proveedor'
+        }
+        widgets = {
+            'codigo_producto': forms.TextInput(attrs={'placeholder': 'Introduce el código del producto'}),
+            'codigo_barras': forms.TextInput(attrs={'placeholder': 'Introduce el código de barras'}),
+            'nombre': forms.TextInput(attrs={'placeholder': 'Introduce el nombre del producto'}),
+            'precio_por_kilo': forms.NumberInput(attrs={'placeholder': 'Introduce el precio por kilo'}),
+            'stock_en_kilos': forms.NumberInput(attrs={'placeholder': 'Introduce el stock en kilos'}),
+            'imagen': forms.ClearableFileInput(attrs={'placeholder': 'Selecciona una imagen'}),
+            'categoria': forms.Select(attrs={'placeholder': 'Selecciona la categoría'}),
+            'marca': forms.Select(attrs={'placeholder': 'Selecciona la marca'}),
+            'proveedor': forms.Select(attrs={'placeholder': 'Selecciona el proveedor'})
         }
