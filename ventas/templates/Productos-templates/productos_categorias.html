@@ -12,9 +12,9 @@
                 {% csrf_token %}
                 <h2>Nueva Categoria</h2>
                 <label for="codigo">Codigo</label>
-                <input type="number" name="int-codigo" id="codigo" placeholder="00">
+                <input type="number" name="int-codigo" id="codigo" placeholder="00" required>
                 <label for="nombre">Nombre</label>
-                <input type="text" name="txt-nombre" id="nombre" placeholder="Nombre">
+                <input type="text" name="txt-nombre" id="nombre" placeholder="Nombre" required>
                 <button type="submit">Crear Categoria</button>
             </form>
         </div>

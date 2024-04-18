@@ -11,8 +11,11 @@
 <div class="modal">
     <div class="content-modal modal-productos">
       <h2>Nuevo Producto</h2>
-
-      <form action="{% url 'crearProductosLink' %}"  method="post" enctype="multipart/form-data" class="form-productos">
+      <div class="btn-cambio-formularios">
+        <button  type="button" id="btnForm1" class="active" onclick="mostrarFormulario('formulario1')">Por Unidad</button>
+        <button  type="button" id="btnForm2" class="" onclick="mostrarFormulario('formulario2')">Por Gramos</button>
+    </div>
+      <form action="{% url 'crearProductosLink' %}"  method="post" enctype="multipart/form-data" class="form-productos" id="formulario1">
         {% csrf_token %}
         <p>
             {{formulario.codigo_producto}}
@@ -30,7 +33,27 @@
             {{formulario.imagen}}
         </p>
         <button type="submit"  class="btn-guardar">Guardar Producto</button>
-        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+        <button type="button" id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+    </form>
+    <form action="{% url 'crearProductoSinUnidadLink' %}"  method="post" enctype="multipart/form-data" class="form-productos" id="formulario2">
+        {% csrf_token %}
+        <p>
+            {{ formulario2.codigo_producto }}
+            {{ formulario2.codigo_barras }}
+            {{ formulario2.nombre }}
+            {{ formulario2.precio_por_kilo }}
+            {{ formulario2.stock_en_kilos }}
+            <label >Categoria:</label>
+            {{formulario.categoria}}
+            <label >Marca:</label>
+            {{formulario.marca}}
+            <label>Proveedor:</label>
+            {{ formulario2.proveedor }}
+            <label>Imagen:</label>
+            {{ formulario2.imagen }}
+        </p>
+        <button type="submit"  class="btn-guardar">Guardar Producto</button>
+        <button type="button" id="btn-cerrar" class="btn-cancelar ">Cancelar</button>
     </form>
     </div>
 </div>
@@ -129,6 +152,78 @@
                     </table>
                 </div>
             </div>
+
+             <div class="box-table-productos">
+
+    <div class="box-table-productos-scroll">
+        <table id="printableTable" class="table-productos">
+            <thead>
+                <tr>
+                    <th>Cod. Producto</th>
+                    <th>Cod. Barra</th>
+                    <th>Nombre</th>
+                    <th>Precio por Kilo</th>
+                    <th>Stock en Kilos</th>
+                    <th>Categoria</th>
+                    <th>Marca</th>
+                    <th>Proveedor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if busqueda %}
+                    {% for prod in busqueda %}
+                        <tr>
+                            <td>{{ prod.codigo_producto }}</td>
+                            <td>{{ prod.codigo_barras }}</td>
+                            <td>{{ prod.nombre }}</td>
+                            <td>{{ prod.precio_por_kilo }}</td>
+                            <td>{{ prod.stock_en_kilos }}</td>
+                            <td>{{ prod.categoria }}</td>
+                            <td>{{ prod.marca }}</td>
+                            <td>{{ prod.proveedor }}</td>
+                            <td>
+                                <a href="{% url 'editarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-editar">
+                                    <i class="ti ti-edit"></i>
+                                </a>
+                                <a href="{% url 'eliminarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
+                                    <i class="ti ti-trash"></i>
+                                </a>
+                                <a href="{% url 'detalleProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-detalle">
+                                    <i class="ti ti-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    {% for prod in Productosinunidad %}
+                        <tr>
+                            <td>{{ prod.codigo_producto }}</td>
+                            <td>{{ prod.codigo_barras }}</td>
+                            <td>{{ prod.nombre }}</td>
+                            <td>{{ prod.precio_por_kilo }}</td>
+                            <td>{{ prod.stock_en_kilos }}</td>
+                            <td>{{ prod.categoria }}</td>
+                            <td>{{ prod.marca }}</td>
+                            <td>{{ prod.proveedor }}</td>
+                            <td>
+                                <a href="{% url 'editarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-editar">
+                                    <i class="ti ti-edit"></i>
+                                </a>
+                                <a href="{% url 'eliminarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
+                                    <i class="ti ti-trash"></i>
+                                </a>
+                                <a href="{% url 'detalleProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-detalle">
+                                    <i class="ti ti-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
         </article>
     </section>
     <!-- Modal -->
@@ -157,6 +252,29 @@
   newWin.print();
   newWin.close();
 }
-    </script>
+
+function mostrarFormulario(formId) {
+    var form1 = document.getElementById('formulario1');
+    var form2 = document.getElementById('formulario2');
+    var btnForm1 = document.getElementById('btnForm1');
+    var btnForm2 = document.getElementById('btnForm2');
+
+    if (formId === 'formulario1') {
+      form1.style.display = 'block';
+      form2.style.display = 'none';
+      btnForm1.classList.add('active');
+      btnForm2.classList.remove('active');
+    } else {
+      form1.style.display = 'none';
+      form2.style.display = 'block';
+      btnForm1.classList.remove('active');
+      btnForm2.classList.add('active');
+    }
+  }
+
+  // Por defecto, mostrar el formulario 1
+  mostrarFormulario('formulario1');
+
+</script>
     
 {% endblock %}

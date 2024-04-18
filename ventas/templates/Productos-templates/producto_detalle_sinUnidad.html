@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'includesTemplates/catalogo_productos.html' %}
+
+<div class="detalle-producto">
+    <div class="informacion-producto">
+        <table>
+            <thead>
+              <tr>
+                <th colspan="2">especificaciones</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>Codigo:</td>
+                <td>{{productosinunidad.codigo}}</td>
+                </tr>
+                <tr>
+                <td>Cod Barras:</td>
+                <td>{{productosinunidad.codigo_barras}}</td>
+            </tr>
+              <tr>
+                <td>Nombre:</td>
+                <td>{{productosinunidad.nombre}}</td>
+              </tr>
+              <tr>
+                <td>Precio Por Kg:</td>
+                <td>S/ {{productosinunidad.precio_por_kilo}}</td>
+              </tr>
+              <tr>
+                <td>Categoria:</td>
+                <td>{{productosinunidad.categoria}}</td>
+              </tr>
+              <tr>
+                <td>Marca:</td>
+                <td>{{productosinunidad.marca}}</td>
+              </tr>
+              <tr>
+                <td>Proveedor:</td>
+                <td>{{productosinunidad.proveedor}}</td>
+              </tr>
+              <tr>
+                <td>Stock Por Kg:</td>
+                <td>{{productosinunidad.stock_en_kilos}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="imagen-producto">
+        <h1>{{productosinunidad.nombre}}</h1>
+            {% if productosinunidad.imagen %}
+                <img src="{{productosinunidad.imagen.url}}" alt="{{productosinunidad.nombre}}" class="img">
+            {% else %}
+                <img src="{% static 'img/img-default.jpg' %}" alt="{{productosinunidad.nombre}}" >
+            {% endif %}
+    </div>
+</div>
+
+{% endblock %} 

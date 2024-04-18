@@ -39,6 +39,11 @@ urlpatterns = [
     path('productos-Categorias/', admin_required(views.PageProductosCategorias), name="PageProductosCategoriasLink"),
     path('productos-Marcas/', admin_required(views.PageProductosMarcas), name="PageProductosMarcasLink"),
     path('productos-Proveedores/', admin_required(views.PageProductosProveedores), name="PageProductosProveedoresLink"),
+    # CRUD DE PRODUCTOS Sin UNIDAD
+    path('crear-producto-sinunidad/', admin_required(views.crearProductoSinUnidad), name="crearProductoSinUnidadLink"),
+    path('editar-producto-sinunidad/<int:codigo_producto>/', admin_required(views.editarProductoSinUnidad), name="editarProductoSinUnidadLink"),
+    path('eliminar-producto-sinunidad/<int:codigo_producto>/', admin_required(views.eliminarProductoSinUnidad), name="eliminarProductoSinUnidadLink"),
+    path('detalle-producto-sinunidad/<int:codigo_producto>/', admin_required(views.detalleProductoSinUnidad), name="detalleProductoSinUnidadLink"),
     # CRUD DE PRODUCTOS
     path('crear-producto/', admin_required(views.crearProducto), name="crearProductosLink"),
     path('editar-producto/<int:codigo_producto>/', admin_required(views.editarProducto), name="editarProductoLink"),

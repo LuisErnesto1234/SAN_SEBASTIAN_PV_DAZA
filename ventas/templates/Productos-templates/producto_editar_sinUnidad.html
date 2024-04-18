@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includesTemplates/catalogo_productos.html' %}
+<div class="editar-producto">
+    <h1 class="editar-titulo">{{productosinunidad}}</h1>
+    <div class="box-2-columns">
+        <form action="" class="formulario-editar" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label >Codigo Producto:</label>
+            {{ formulariosinunidad.codigo_producto }}
+            <label >Codigo Barras:</label>
+            {{ formulariosinunidad.codigo_barras }}
+            <label >Nombre:</label>
+            {{ formulariosinunidad.nombre }}
+            <label >Precio Por Kg:</label>
+            {{ formulariosinunidad.precio_por_kilo }}
+            <label >Stock Por Kg:</label>
+            {{ formulariosinunidad.stock_en_kilos }}
+            <label >Categoria:</label>
+            {{formulariosinunidad.categoria}}
+            <label >Marca:</label>
+            {{formulariosinunidad.marca}}
+            <label >Proveedor:</label>
+            {{formulariosinunidad.proveedor}}
+            <label >Imagen:</label>
+            {{ formulariosinunidad.imagen }}
+            <button type="submit" class="btn-guardar">Guardar</button>
+            
+        </form>
+        
+        <div class="editar-imagen">
+            {% if productosinunidad.imagen %}
+                <img src="{{productosinunidad.imagen.url}}" alt="{{productosinunidad.nombre}}" class="img">
+            {% else %}
+                <img src="{% static 'img/img-default.jpg' %}" alt="{{prod.nombre}}" width="30px" height="30px">
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

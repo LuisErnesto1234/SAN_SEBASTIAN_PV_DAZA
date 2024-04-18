@@ -1,14 +1,14 @@
 let btn = document.querySelector("#btn");
 let sidebar = document.querySelector(".sidebar");
 
-btn.addEventListener('click', (e) => {
+btn.addEventListener('click', (e) => { 
   e.preventDefault();
   sidebar.classList.toggle('active');
 });
 
 const openModals = document.querySelectorAll('.btn-abrir');
 const modal = document.querySelector('.modal');
-const closeModal = document.querySelector('#btn-cerrar');
+const closeModal = document.querySelector('#btn-cerrar')
 
 
 openModals.forEach(openModal => {
@@ -17,10 +17,11 @@ openModals.forEach(openModal => {
     });
 });
 
-if (closeModal){
+if (closeModal  ){
     closeModal.addEventListener('click', () => {
         modal.classList.remove('modal-open');
     });
+
 }
 
 

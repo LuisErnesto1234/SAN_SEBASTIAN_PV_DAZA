@@ -52,6 +52,7 @@ def PageInicio(request):
 @login_required
 @admin_required
 def PageProductos(request):
+    productosSinunidad = ProductoSinUnidad.objects.all()
     productos = Producto.objects.all()
     form = ProductoForm()
     form2 = ProductoSinUnidadForm()
@@ -83,7 +84,8 @@ def PageProductos(request):
     contex={
         'productos':productos,
         'formulario':form,
-        'formulario2':form2
+        'formulario2':form2,
+        'Productosinunidad':productosSinunidad
     }
     return render(request,"Productos-templates/productos.html",contex)
 
@@ -117,21 +119,32 @@ def crearProducto(request):
     if producto.is_valid():
         producto.save()
         return redirect('PageProductosLink')
+    
+#Crear Producto Sin Unidad
+def crearProductoSinUnidad(request):
+    ProductoSinUnidad = ProductoSinUnidadForm(request.POST,request.FILES)
+    if ProductoSinUnidad.is_valid():
+        ProductoSinUnidad.save()
+        return redirect('PageProductosLink')
 
 def crearCategoria(request):
     if request.method == 'POST':
         dato1 = request.POST.get('int-codigo')
         dato2 = request.POST.get('txt-nombre')
-        Categoria.objects.create(codigo_categoria=dato1,nombre_categoria=dato2)
-        return redirect('PageProductosCategoriasLink')
+        if dato1 and dato2:
+            Categoria.objects.create(codigo_categoria=dato1,nombre_categoria=dato2)
+            return redirect('PageProductosCategoriasLink')
+    return redirect('PageProductosCategoriasLink')
         
 
 def crearMarca(request):
     if request.method == 'POST':
         dato1 = request.POST.get('int-codigo')
         dato2 = request.POST.get('txt-nombre')
-        Marca.objects.create(codigo_marca=dato1,nombre_marca=dato2)
-        return redirect('PageProductosMarcasLink')
+        if dato1 and dato2:
+            Marca.objects.create(codigo_marca=dato1,nombre_marca=dato2)
+            return redirect('PageProductosMarcasLink')
+    return redirect('PageProductosMarcasLink')
         
 def crearProveedor(request):
     proveedor = ProveedorForm(request.POST)
@@ -155,6 +168,22 @@ def editarProducto(request,codigo_producto):
         'formulario':formulario,
         }
     return render(request,'Productos-templates/productos-editar.html',context=context)
+
+#Editar Producto sin Unidad
+def editarProductoSinUnidad(request,codigo_producto):
+    productosinunidad = ProductoSinUnidad.objects.get(codigo=codigo_producto)
+    formulario = ProductoSinUnidadForm(instance=productosinunidad)
+    
+    if request.method == 'POST':
+        form = ProductoSinUnidadForm(request.POST ,request.FILES,instance=productosinunidad) 
+        if form.is_valid():
+            form.save()
+            return redirect('PageProductosLink') 
+    context={
+        'productosinunidad':productosinunidad,
+        'formulariosinunidad':formulario,
+        }
+    return render(request,'Productos-templates/producto_editar_sinUnidad.html',context=context)
 
 def editarCategoria(request,codigo_categoria):
     categoria = Categoria.objects.get(codigo=codigo_categoria)
@@ -202,6 +231,11 @@ def eliminarProducto(request,codigo_producto):
     Producto.objects.get(codigo=codigo_producto).delete()
     return redirect('PageProductosLink')
 
+#Eliminar Producto Sin Unidad
+def eliminarProductoSinUnidad(request,codigo_producto):
+    ProductoSinUnidad.objects.get(codigo=codigo_producto).delete()
+    return redirect('PageProductosLink')
+
 def eliminarCategoria(request,codigo_categoria):
     Categoria.objects.get(codigo=codigo_categoria).delete()
     return redirect('PageProductosCategoriasLink')
@@ -219,6 +253,13 @@ def detalleProducto(request,codigo_producto):
     producto =  Producto.objects.get(codigo=codigo_producto)
     return render(request,'Productos-templates/producto_detalles.html',context={
         'producto':producto
+    })
+    
+#Detalle de Producto Sin Unidad
+def detalleProductoSinUnidad(request,codigo_producto):
+    productosinunidad =  ProductoSinUnidad.objects.get(codigo=codigo_producto)
+    return render(request,'Productos-templates/producto_detalle_sinUnidad.html',context={
+        'productosinunidad':productosinunidad
     })
 
 
@@ -395,10 +436,15 @@ def eliminarVenta(request,cod_fac):
 
 def deleteVentaTemplate(request,cod_fac):
     venta = Venta_Productos_Factura.objects.get(factura=cod_fac)
-    lista = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    listaUnidad = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
+    listaSinUnidad = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=cod_fac)
+    
+    lista = list(listaUnidad) + list(listaSinUnidad)
     cadena = ""
     for objeto in lista:
         cadena += str(objeto) + ", "
+    
+        
     historial.objects.create(venta=venta.codigo,productos=cadena,metodo=venta.metodo,total=venta.total)
     
     Factura.objects.get(codigo=cod_fac).delete()
