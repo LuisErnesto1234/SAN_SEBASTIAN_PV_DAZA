@@ -119,14 +119,17 @@
 /* pagina de inicio */
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* Dos columnas de igual ancho */
-  grid-template-rows: auto auto; /* Dos filas con altura automática */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Columnas que se ajustan automáticamente al tamaño del contenedor con un ancho mínimo de 250px */
+  grid-template-rows: auto; /* Filas con altura automática */
   gap: 3px; /* Espacio entre las cajas */
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Alinea las columnas horizontalmente al centro */
+  align-items: center; /* Alinea las filas verticalmente al centro */
+  justify-items: center; /* Alinea el contenido horizontalmente al centro */
+  align-items: center; /* Alinea el contenido verticalmente al centro */
   text-align: center;
   grid-row-gap: 2em;
+  max-width: 100%; /* Limita el ancho máximo del contenedor para mantener la responsividad */
+  margin: 0 auto; /* Centra el contenedor en la página */
 }
 
 .container .enlace {
