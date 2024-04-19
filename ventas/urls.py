@@ -1,18 +1,14 @@
 from django.urls import path,include
 from . import views
-
-
 from django.urls import path
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from .views import admin_required
 from django.contrib.auth.views import logout_then_login
-#PROBANDO PULL REQUEST
-#PROBANDO PULL REQUEST2
-#PROBANDO PULL REQUEST2 3 desde el usuario admin
+
 
 urlpatterns = [
-    path('', LoginView.as_view(template_name='Login.html'), name='login'),
+    path('', views.CustomLoginView.as_view(template_name='Login.html'), name='login'),
     path('PaginaInicio/', login_required(views.PageInicio), name="PageInicioLink"),
     # ESTADISTICAS
     path('estadisticas/',admin_required(views.PageEstadisticas),name="PageEstadisticasLink"),
