@@ -11,27 +11,7 @@ from openpyxl import Workbook
 #Cierre de secion 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-from django.contrib.auth.views import LoginView
 
-
-
-
-class CustomLoginView(LoginView):
-    def form_valid(self, form):
-        usuario_admin = "Admin1"
-        contraseña_admin = "A1234"
-        usuario_vendedor = "Vendedor"
-        contraseña_vendedor = "V1234"
-
-        usuario_ingresado = form.cleaned_data.get('username')
-        contraseña_ingresada = form.cleaned_data.get('password')
-
-        if (usuario_ingresado == usuario_admin and contraseña_ingresada == contraseña_admin) or \
-           (usuario_ingresado == usuario_vendedor and contraseña_ingresada == contraseña_vendedor):
-            return redirect('PageInicioLink')
-        else:
-            self.extra_context = {'error_message': 'Error de usuario o contraseña'}
-            return super().form_invalid(form)
 
 #Obtener el ID secion 
 def ID_Session(request):

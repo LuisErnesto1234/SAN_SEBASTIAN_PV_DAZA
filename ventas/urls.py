@@ -8,7 +8,7 @@ from django.contrib.auth.views import logout_then_login
 
 
 urlpatterns = [
-    path('', views.CustomLoginView.as_view(template_name='Login.html'), name='login'),
+    path('', LoginView.as_view(template_name='Login.html'), name='login'),
     path('PaginaInicio/', login_required(views.PageInicio), name="PageInicioLink"),
     # ESTADISTICAS
     path('estadisticas/',admin_required(views.PageEstadisticas),name="PageEstadisticasLink"),
