@@ -1,7 +1,5 @@
 librerias o plugins usados 
 
-Cambio-Rojas
-
 - https://tom-select.js.org/  (para la seleccion y busqueda en un formulario)
 
 - https://www.chartjs.org/ (para los graficos estadisticos)
