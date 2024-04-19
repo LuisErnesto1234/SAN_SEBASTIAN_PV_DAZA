@@ -97,9 +97,27 @@ def PageProductos(request):
             ) | Producto.objects.filter(
                 codigo_producto__icontains=termino_busqueda
             )
+            
+            productosSinUnidad = ProductoSinUnidad.objects.filter(
+                nombre__icontains=termino_busqueda
+            ) | ProductoSinUnidad.objects.filter(
+                codigo__icontains=termino_busqueda
+            ) | ProductoSinUnidad.objects.filter(
+                stock_en_kilos__icontains=termino_busqueda
+            ) | ProductoSinUnidad.objects.filter(
+                codigo_barras__icontains=termino_busqueda
+            ) | ProductoSinUnidad.objects.filter(
+                categoria__nombre_categoria__icontains=termino_busqueda
+            ) | ProductoSinUnidad.objects.filter(
+                marca__nombre_marca__icontains=termino_busqueda
+            ) | ProductoSinUnidad.objects.filter(
+                codigo_producto__icontains=termino_busqueda
+            )
+            
             contex={
             'formulario':form,
             'busqueda':productos,
+            'busqueda2':productosSinUnidad,
             'alerta':"ver todos"
             }
             return render(request,"Productos-templates/productos.html",contex)
