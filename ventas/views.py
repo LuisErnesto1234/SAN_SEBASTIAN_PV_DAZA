@@ -112,6 +112,18 @@ def PageProductos(request):
 ######  PAGINAS RELACIONADAS A PRODUCTOS  ######
 def PageProductosCategorias(request):
     categorias = Categoria.objects.all()
+    if request.method == "POST":
+        termino_busqueda = request.POST['query']
+        if termino_busqueda:
+            categorias = Categoria.objects.filter(
+                codigo_categoria__icontains=termino_busqueda
+            ) | Categoria.objects.filter(
+                nombre_categoria__icontains=termino_busqueda
+            )
+            contex={
+                'busqueda':categorias,
+            }
+            return render(request,"Productos-templates/productos_categorias.html",contex)
     contex={
         'categorias':categorias,
     }

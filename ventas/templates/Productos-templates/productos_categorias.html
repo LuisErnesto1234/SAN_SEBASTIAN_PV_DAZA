@@ -23,7 +23,7 @@
         <h2>Categorias</h2>
 
         <form action="" method="post" class="buscador">
-            <input type="search" name="" id="" placeholder="Buscar">
+            <input type="search" name="query" id="" placeholder="Buscar">
             {% csrf_token %}
         </form>
         <div class="descargas">
@@ -55,6 +55,23 @@
                             </td>
                         </tr>
                         {% endfor  %}
+                        {% if busqueda %}
+                            <a href="{% url 'PageProductosCategoriasLink' %}">ver todos</a>
+                            {% for cat in busqueda %}
+                            <tr>
+                                <td>{{cat.codigo_categoria}}</td>
+                                <td>{{cat.nombre_categoria}}</td>
+                                <td>
+                                    <a href="{% url 'editarCategoriaLink' codigo_categoria=cat.codigo %}" class="icono-editar ">
+                                        <i class="ti ti-edit"></i>
+                                    </a>
+                                    <a href="{% url 'eliminarCategoriaLink' codigo_categoria=cat.codigo %}" class="icono-borrar enlaceDelete">
+                                        <i class="ti ti-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor  %}
+                        {% endif %}
                     </tbody>
             </table>
         </div>
