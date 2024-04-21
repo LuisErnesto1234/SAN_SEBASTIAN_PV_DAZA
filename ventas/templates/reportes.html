@@ -1,52 +1,70 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
-<div class="ventas_totales grafico">
-    <h1>Ventas Totales</h1>
-    <span>S/ {{ventas_totales}}</span>
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="reportes_section">
+  <div class="ventas_totales grafico">
+    <h2>Ventas Totales</h2>
+    <span class="font-bold-size-large" >S/ {{ventas_totales}}</span>
     <p>Ventas Totales de Todos los meses</p>
-</div>
-<section class="reportes">
-    <div class="grafico_ventas    grafico">
-        <canvas id="grafico_ventas_totales_bar"></canvas>
+  </div>
+  <section class="reportes">
+    <div class="grafico_ventas grafico">
+      <h2>Graf Circular</h2>
+      <canvas id="grafico_ventas_totales_bar"></canvas>
     </div>
-    <div class="grafico_ventas_2  grafico">
-        <canvas id="grafico_ventas_totales_pie"></canvas>
-    </div> 
-</section>
-
-
+    <div class="grafico_ventas_2 grafico">
+      <h2>Graf Barras</h2>
+      <canvas id="grafico_ventas_totales_pie"></canvas>
+    </div>
+  </section>
+  <div class="grafico">
+    <h2>Venta De hoy</h2>
+      <h3 class="font-bold-size-large">S/ {{totalVentaHoy}}</h3>
+    <h3></h3>
+  </div>
+  <div class="grafico">
+    <h2>filtrar por fecha</h2>
+    <form class="formulario_fecha_buscar" method="post">
+      {% csrf_token %}
+      <input type="date" id="calendar_value_date" name="calendar_value_date">
+      <button type="submit" id="btn-search">buscar</button>
+    </form> 
+    <div class="resultados_busqueda">
+      {% if total_venta_por_fecha %}
+         <h3 class="font-bold-size-large">Total: S/ {{total_venta_por_fecha}}</h3>
+      {% else %}
+        <h3 class="font-bold-size-large">Total: S/ 0</h3>
+      {% endif %}
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-window.ventas_totales_por_mes = {{ventas_totales_por_mes|safe}}
+  window.ventas_totales_por_mes = {{ventas_totales_por_mes|safe}}
 
-console.log(ventas_totales_por_mes)
+  console.log(ventas_totales_por_mes)
 
-const grafico=(tipo,element, labels,label, data)=>{
-  const ctx = document.getElementById(element);
-  new Chart(ctx, {
-      type: tipo,
-      data: {
-        labels: labels,
-        datasets: [{
-          label: label,
-          data: data ,
-        }]
-      },
-    });
-}
+  const grafico=(tipo,element, labels,label, data)=>{
+    const ctx = document.getElementById(element);
+    new Chart(ctx, {
+        type: tipo,
+        data: {
+          labels: labels,
+          datasets: [{
+            label: label,
+            data: data ,
+          }]
+        },
+      });
+  }
 
-grafico('pie','grafico_ventas_totales_bar',
-['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','nomviembre','diciembre']
-,'ganancia',
-ventas_totales_por_mes)
-grafico('bar','grafico_ventas_totales_pie',
-['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','nomviembre','diciembre']
-,'ganancia',
-ventas_totales_por_mes)
-
+  grafico('pie','grafico_ventas_totales_bar',
+  ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','nomviembre','diciembre']
+  ,'ganancia',
+  ventas_totales_por_mes)
+  grafico('bar','grafico_ventas_totales_pie',
+  ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','nomviembre','diciembre']
+  ,'ganancia',
+  ventas_totales_por_mes)
 </script>
 
 {% endblock %}

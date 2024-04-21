@@ -8,10 +8,16 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from openpyxl import Workbook
-#Cierre de secion 
 from django.contrib.auth import logout
-from django.shortcuts import redirect
-
+from io import BytesIO
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from datetime import datetime
+from django.db.models import Sum
+from calendar import monthrange
 
 #Obtener el ID secion 
 def ID_Session(request):
@@ -504,12 +510,7 @@ def detalleVenta(request,cod_fac):
     }
     return render(request,'Ventas-templates/detalle-venta.html',context)
 
-from io import BytesIO
-from django.http import HttpResponse
-from reportlab.lib.pagesizes import letter
-from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+
 
 def generate_pdf(request, titulo, fecha, lugar, metodo_pago, codigo):
     
@@ -606,13 +607,15 @@ def PageEstadisticas(request):
     return render(request,'estadisticas.html',{'data':dataJSON})
 
 
-from datetime import datetime
-from django.db.models import Sum
-from calendar import monthrange
 
 # REPORTES
 @admin_required
 def reportesPage(request):
+    fecha_actual = datetime.now().strftime("%Y-%m-%d")
+    obj = Venta_Productos_Factura.objects.filter(factura__fecha_factura__date=fecha_actual) 
+    totalListHoy = [ v.total for v in obj]
+    totalVentaHoy= sum(totalListHoy)
+    
     ventas = Venta_Productos_Factura.objects.all()
     ventas_totales = sum([ v.total  for v in ventas])
      # Obtén el año actual
@@ -637,12 +640,20 @@ def reportesPage(request):
     
     ventas = [v['total'] for v in ventas_por_mes]
     
-    
-    
     context={
         'ventas_totales_por_mes':dumps(ventas),
-        'ventas_totales':ventas_totales
+        'ventas_totales':ventas_totales,
+        'totalVentaHoy':totalVentaHoy
     }
+    
+    if request.method == 'POST':
+        date = request.POST.get('calendar_value_date')
+        objectos = Venta_Productos_Factura.objects.filter(factura__fecha_factura__date=date)      
+        totalList = [ v.total for v in objectos]
+        totalventa= sum(totalList)
+        # agregarmos el valor al contexto
+        context['total_venta_por_fecha'] = totalventa
+
     return render(request,'reportes.html',context)
 
 # Imprimir excel de productos
