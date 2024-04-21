@@ -32,7 +32,7 @@
             {% if ventas_template %}
                 {% for v in ventas_template %}
                 <tr>
-                   <td>{{v.codigo}} | {{v.productos}} | {{v.total}} | {{v.metodo}} </td> 
+                   <td>{{v.codigo}} | {{v.productos|escape}} | {{v.total}} | {{v.metodo}} </td> 
                 </tr>
                 {% endfor  %}
             {% else %}

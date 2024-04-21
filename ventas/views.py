@@ -18,6 +18,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from datetime import datetime
 from django.db.models import Sum
 from calendar import monthrange
+from django.db.models import Q
+
 
 #Obtener el ID secion 
 def ID_Session(request):
@@ -116,40 +118,60 @@ def PageProductos(request):
     return render(request,"Productos-templates/productos.html",contex)
 
 ######  PAGINAS RELACIONADAS A PRODUCTOS  ######
+
 def PageProductosCategorias(request):
     categorias = Categoria.objects.all()
-    if request.method == "POST":
-        termino_busqueda = request.POST['query']
-        if termino_busqueda:
-            categorias = Categoria.objects.filter(
-                codigo_categoria__icontains=termino_busqueda
-            ) | Categoria.objects.filter(
-                nombre_categoria__icontains=termino_busqueda
-            )
-            contex={
-                'busqueda':categorias,
-            }
-            return render(request,"Productos-templates/productos_categorias.html",contex)
-    contex={
-        'categorias':categorias,
-    }
-    return render(request,"Productos-templates/productos_categorias.html",contex)
 
+    if request.method == "POST":
+        termino_busqueda = request.POST.get('termino_busqueda', '')
+
+        categorias = Categoria.objects.filter(
+            Q(codigo_categoria__icontains=termino_busqueda) | Q(nombre_categoria__icontains=termino_busqueda)
+        )
+
+    contex = {
+        'categorias': categorias,
+        'alerta':"ver todos"
+    }
+    return render(request, "Productos-templates/productos_categorias.html", contex)
 def PageProductosMarcas(request):
     marcas = Marca.objects.all()
-    contex={
-        'marcas':marcas,
+
+    if request.method == "POST":
+        termino_busqueda = request.POST.get('termino_busqueda', '')
+
+        marcas = Marca.objects.filter(
+            Q(codigo_marca__icontains=termino_busqueda) | Q(nombre_marca__icontains=termino_busqueda)
+        )
+
+    contex = {
+        'marcas': marcas,
+        'alerta': "ver todos"
     }
-    return render(request,"Productos-templates/productos_marcas.html",contex)
+    return render(request, "Productos-templates/productos_marcas.html", contex)
 
 def PageProductosProveedores(request):
     proveedores = Proveedor.objects.all()
-    form = ProveedorForm()
-    contex={
-        'proveedores':proveedores,
-        'formulario':form,
+    if request.method == "POST":
+        termino_busqueda = request.POST.get('termino_busqueda', '')
+
+        proveedores = Proveedor.objects.filter(
+            Q(codigo_proveedor__icontains=termino_busqueda) |
+            Q(nombres__icontains=termino_busqueda) |
+            Q(apellidos__icontains=termino_busqueda) |
+            Q(ruc_dni__icontains=termino_busqueda) |
+            Q(direccion__icontains=termino_busqueda) |
+            Q(correo_electronico__icontains=termino_busqueda) |
+            Q(numero_telefono__icontains=termino_busqueda)
+        )
+
+    form = ProveedorForm()  
+    contex = {
+        'proveedores': proveedores,
+        'formulario': form,
+        'alerta': "ver todos"
     }
-    return render(request,"Productos-templates/productos_proveedores.html",contex)
+    return render(request, "Productos-templates/productos_proveedores.html", contex)
 
 # crear
 def crearProducto(request):
@@ -754,8 +776,10 @@ def descargar_excel_proveedores(request):
 def historialPage(request):
     histo = historial.objects.all()
     ventas = Venta_Productos_Factura.objects.all()
+    
     context={
         'historial_eliminados':histo,
         'ventas_template':ventas,
+        
     }
     return render(request,'historial.html',context)

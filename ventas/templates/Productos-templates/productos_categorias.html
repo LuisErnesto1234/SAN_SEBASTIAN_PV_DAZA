@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+ 
 {% block content %}
 
 {% include 'includesTemplates/catalogo_productos.html' %}
@@ -23,9 +23,12 @@
         <h2>Categorias</h2>
 
         <form action="" method="post" class="buscador">
-            <input type="search" name="query" id="" placeholder="Buscar">
+            <input type="search" name="termino_busqueda" id="" placeholder="Buscar">
             {% csrf_token %}
         </form>
+        {% if alerta %}
+            <a  class="alerta-mostrar-todos" href="{% url 'PageProductosCategoriasLink' %}">{{alerta}}</a>
+        {% endif %}
         <div class="descargas">
             <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
             <button onclick="printTable()">Imprimir</button>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block content %} 
 
 {% include 'includesTemplates/catalogo_productos.html' %}
 <section class="seccion-marca">
@@ -21,9 +21,12 @@
         <h2>Marcas</h2>
 
         <form action="" method="post" class="buscador">
-            <input type="search" name="" id="" placeholder="Buscar">
+            <input type="search" name="termino_busqueda" id="" placeholder="Buscar">
             {% csrf_token %}
         </form>
+        {% if alerta %}
+            <a  class="alerta-mostrar-todos" href="{% url 'PageProductosMarcasLink' %}">{{alerta}}</a>
+        {% endif %}
         <div class="descargas">
             <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
             <button onclick="printTable()">Imprimir</button>
