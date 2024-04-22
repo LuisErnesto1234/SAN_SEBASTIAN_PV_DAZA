@@ -108,13 +108,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'es-es'
+LANGUAGE_CODE = 'es-pe'  # Cambiar a español de Perú
+TIME_ZONE = 'America/Lima'  # Cambiar a la zona horaria de Lima, Perú
+USE_TZ = True  # Habilitar el uso de la zona horaria
 
-TIME_ZONE = 'America/Lima'
-
-USE_I18N = True
-
-USE_TZ = True
 
 LOGIN_REDIRECT_URL = reverse_lazy('PageInicioLink') # Nombre de la URL o ruta a la que se redirige después del inicio de sesión
 LOGIN_URL = 'login'

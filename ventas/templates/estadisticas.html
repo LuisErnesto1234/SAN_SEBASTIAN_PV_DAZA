@@ -11,6 +11,10 @@
     <h2>Stock Productos</h2>
     <canvas id="grafico_stock"></canvas>
  </div>
+ <div class="stock_psu content-grafico">
+  <h2>Stock Productos Por Peso</h2>
+  <canvas id="grafico_stock_psu"></canvas>
+</div>
  
  <div class="ventas-totales-por-fecha content-grafico">
    <h2>Ventas Por fecha</h2>
@@ -35,7 +39,8 @@
 
 <script>
   window.datos ={{data|safe}}
-
+let psu_nombres =  datos.psu_nombres
+let psu_stocks = datos.psu_stocks
 let productos_nombres =  datos.productos_nombres
 let productos_stocks = datos.productos_stocks
 let categorias_nombres = datos.categorias_nombres
@@ -68,5 +73,6 @@ grafico('bar','grafico_venta',venta_fecha,'S/',venta_total_dinero)
 grafico('doughnut','grafico_categoria',categorias_nombres,'cantidad',categorias_cantidad)
 grafico('doughnut','grafico_marca',marcas_nombres,'cantidad',marcas_cantidad)
 grafico('doughnut','grafico_proveedor',proveedor_nombre,'cantidad',proveedor_cantidad)
+grafico('bar','grafico_stock_psu',psu_nombres,'kilos',psu_stocks)
 </script>
 {% endblock %}

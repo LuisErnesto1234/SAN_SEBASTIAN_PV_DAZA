@@ -1,9 +1,11 @@
 asgiref==3.7.2
 chardet==5.2.0
 Django==5.0.3
+django-multiforloop==0.3.1
 et-xmlfile==1.1.0
 openpyxl==3.1.2
 pillow==10.2.0
+pytz==2024.1
 reportlab==4.1.0
 sqlparse==0.4.4
 tzdata==2024.1

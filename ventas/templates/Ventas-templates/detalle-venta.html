@@ -23,7 +23,7 @@
         </p>
         <p class="box-tiket fecha">
             <b>Fecha:</b>
-            {{factura.fecha_factura|date:"d/m/y"}}
+            {{factura.fecha_factura | date:"d-m-y  h:m" }}
         </p>
         <p class="box-tiket metodo">
             <b>Metodo:</b>
@@ -75,7 +75,7 @@
     </div>
 
     <div class="detalle-btns">
-        <a  class="btn-guardar" href="{% url 'generar_pdf' titulo=titulo fecha=factura.fecha_factura.date lugar=lugar  metodo_pago=venta.metodo codigo=factura.codigo  %}">imprimir</a>
+        <a  class="btn-guardar" href="{% url 'generar_pdf' titulo=titulo fecha=factura.fecha_factura|date:'d-m-y  h:m' lugar=lugar  metodo_pago=venta.metodo codigo=factura.codigo  %}">imprimir</a>
         <a  class="btn-cancelar" href="{% url 'PageVentasLink' %}">volver</a>
     </div>
 </div>
