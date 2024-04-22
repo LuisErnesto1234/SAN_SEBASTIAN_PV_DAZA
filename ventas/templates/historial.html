@@ -12,10 +12,10 @@
             <th>Ventas Eliminadas</th>
             
         </tr>
-            {% if historial_eliminados %}
-                {% for h in historial_eliminados %}
+            {% if lisventaseli %}
+                {% for h in lisventaseli %}
                 <tr>
-                   <td>{{h.venta}} | {{h.productos}} | {{h.total}} | {{h.metodo}} </td> 
+                   <td>{{h}} </td> 
                 </tr>
                 {% endfor  %}
             {% else %}
@@ -29,10 +29,10 @@
             <th>Ventas Realizadas</th>
 
         </tr>
-            {% if ventas_template %}
-                {% for v in ventas_template %}
+            {% if lisventas %}
+                {% for v in lisventas %}
                 <tr>
-                   <td>{{v.codigo}} | {{v.productos|escape}} | {{v.total}} | {{v.metodo}} </td> 
+                   <td>{{v}}</td> 
                 </tr>
                 {% endfor  %}
             {% else %}

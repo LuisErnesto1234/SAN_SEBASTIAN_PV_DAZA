@@ -337,11 +337,9 @@ def PageVentas(request):
     # Obtener todas las facturas que tienen ventas asociadas
     facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
     formulario_fac = FacturaForm()
-    facturas = Factura.objects.get(codigo=223)
     context={ 
         'fact':facturas_con_ventas,
-        'form_fac':formulario_fac,
-        'ftr':facturas,
+        'form_fac':formulario_fac
     }
     return render(request,"Ventas-templates/venta.html",context)
 
@@ -779,7 +777,7 @@ def descargar_excel_proveedores(request):
         ws.append([proveedor.codigo_proveedor, proveedor.nombres, proveedor.apellidos, proveedor.ruc_dni, proveedor.direccion, proveedor.correo_electronico, proveedor.numero_telefono])
 
     # Guardar el libro de trabajo
-    wb.save(response)
+    wb.save(response) 
 
     return response
 
@@ -789,10 +787,14 @@ def descargar_excel_proveedores(request):
 def historialPage(request):
     histo = historial.objects.all()
     ventas = Venta_Productos_Factura.objects.all()
+    lisventas = [  f" {v.codigo} | {v.factura} | S/ {v.total} | {v.metodo}" for v in ventas]
+    lisventaseli = [  f" {h.venta} | {h.productos} | S/ {h.total} | {h.metodo}" for h in histo]
     
     context={
         'historial_eliminados':histo,
         'ventas_template':ventas,
+        'lisventas':lisventas,
+        'lisventaseli':lisventaseli
         
     }
     return render(request,'historial.html',context)
