@@ -1,281 +1,342 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <!-- seccion de agregar nuevo producto -->
 
 <button class="btn-abrir">
-    <i class="ti ti-plus"></i>
+  <i class="ti ti-plus"></i>
 </button>
 
 <div class="modal">
-    <div class="content-modal modal-productos">
-      <h2>Nuevo Producto</h2>
-      <div class="btn-cambio-formularios">
-        <button  type="button" id="btnForm1" class="active" onclick="mostrarFormulario('formulario1')">Por Unidad</button>
-        <button  type="button" id="btnForm2" class="" onclick="mostrarFormulario('formulario2')">Por Gramos</button>
+  <div class="content-modal modal-productos">
+    <h2>Nuevo Producto</h2>
+    <div class="btn-cambio-formularios">
+      <button
+        type="button"
+        id="btnForm1"
+        class="active"
+        onclick="mostrarFormulario('formulario1')"
+      >
+        Por Unidad
+      </button>
+      <button
+        type="button"
+        id="btnForm2"
+        class=""
+        onclick="mostrarFormulario('formulario2')"
+      >
+        Por Gramos
+      </button>
     </div>
-      <form action="{% url 'crearProductosLink' %}"  method="post" enctype="multipart/form-data" class="form-productos" id="formulario1">
-        {% csrf_token %}
-        <p>
-            {{formulario.codigo_producto}}
-            {{formulario.codigo_barras}}
-            {{formulario.nombre}}
-            {{formulario.precio}}
-            {{formulario.stock}}
-            <label >Categoria:</label>
-            {{formulario.categoria}}
-            <label >Marca:</label>
-            {{formulario.marca}}
-            <label >Proveedor:</label>
-            {{formulario.proveedor}}
-            <label >Imagen:</label>
-            {{formulario.imagen}}
-        </p>
-        <button type="submit"  class="btn-guardar">Guardar Producto</button>
-        <button type="button" id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+    <form
+      action="{% url 'crearProductosLink' %}"
+      method="post"
+      enctype="multipart/form-data"
+      class="form-productos"
+      id="formulario1"
+    >
+      {% csrf_token %}
+      <p>
+        {{formulario.codigo_producto}} {{formulario.codigo_barras}}
+        {{formulario.nombre}} {{formulario.precio}} {{formulario.stock}}
+        <label>Categoria:</label>
+        {{formulario.categoria}}
+        <label>Marca:</label>
+        {{formulario.marca}}
+        <label>Proveedor:</label>
+        {{formulario.proveedor}}
+        <label>Imagen:</label>
+        {{formulario.imagen}}
+      </p>
+      <button type="submit" class="btn-guardar">Guardar Producto</button>
+      <button type="button" id="btn-cerrar" class="btn-cancelar">
+        Cancelar
+      </button>
     </form>
-    <form action="{% url 'crearProductoSinUnidadLink' %}"  method="post" enctype="multipart/form-data" class="form-productos" id="formulario2">
-        {% csrf_token %}
-        <p>
-            {{ formulario2.codigo_producto }}
-            {{ formulario2.codigo_barras }}
-            {{ formulario2.nombre }}
-            {{ formulario2.precio_por_kilo }}
-            {{ formulario2.stock_en_kilos }}
-            <label >Categoria:</label>
-            {{formulario.categoria}}
-            <label >Marca:</label>
-            {{formulario.marca}}
-            <label>Proveedor:</label>
-            {{ formulario2.proveedor }}
-            <label>Imagen:</label>
-            {{ formulario2.imagen }}
-        </p>
-        <button type="submit"  class="btn-guardar">Guardar Producto</button>
-        <button type="button" id="btn-cerrar" class="btn-cancelar ">Cancelar</button>
+    <form
+      action="{% url 'crearProductoSinUnidadLink' %}"
+      method="post"
+      enctype="multipart/form-data"
+      class="form-productos"
+      id="formulario2"
+    >
+      {% csrf_token %}
+      <p>
+        {{ formulario2.codigo_producto }} {{ formulario2.codigo_barras }} {{
+        formulario2.nombre }} {{ formulario2.precio_por_kilo }} {{
+        formulario2.stock_en_kilos }}
+        <label>Categoria:</label>
+        {{formulario.categoria}}
+        <label>Marca:</label>
+        {{formulario.marca}}
+        <label>Proveedor:</label>
+        {{ formulario2.proveedor }}
+        <label>Imagen:</label>
+        {{ formulario2.imagen }}
+      </p>
+      <button type="submit" class="btn-guardar">Guardar Producto</button>
+      <button type="button" id="btn-cerrar" class="btn-cancelar">
+        Cancelar
+      </button>
     </form>
-    </div>
+  </div>
 </div>
 
+<!-- seccion de productos -->
 
-  <!-- seccion de productos -->
+<section class="productos-page">
+  {% include 'includesTemplates/catalogo_productos.html' %}
 
-    <section class="productos-page">
-        
-        {% include 'includesTemplates/catalogo_productos.html' %}
-        
-        <article class="productos-section">
-            <div class="header-table">
-                <h2>Productos</h2>
-                <form action="{% url 'PageProductosLink' %}" method="post" class="buscador">
-                    <input type="search" name="termino_busqueda" id="" placeholder="Buscar">
-                    {% csrf_token %}
-                </form>
-                {% if alerta %}
-                    <a  class="alerta-mostrar-todos" href="{% url 'PageProductosLink' %}">{{alerta}}</a>
-                {% endif %}
-                
-                <div class="descargas">
-                <button id="btn-descargar-excel" class="btn-descargar-excel">Descargar Excel</button>
-                <button onclick="printDiv('printableTable')">Imprimir</button>
-            </div>
-            </div>
-            <div class="box-table-productos">
-                <div class="box-table-productos-scroll">
-                    <table id="printableTable" class="table-productos">
-                        <thead>
-                            <tr>
-                                <th>Cod. Producto</th>
-                                <th>Cod. Barra</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Stok</th>
-                                <th>Categoria</th>
-                                <th>Marca</th>
-                                <th>Proovedor</th>
-                                <!-- <th>Imagen</th> -->
-                                <th>Acciones</th>
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            {% if busqueda %}
-                            {% for prod in busqueda %}
-                            <tr>
-                                <td>{{prod.codigo_producto}}</td>
-                                <td>{{prod.codigo_barras}}</td>
-                                <td>{{prod.nombre}}</td>
-                                <td>{{prod.precio}}</td>
-                                <td>{{prod.stock}}</td>
-                                <td>{{prod.categoria}}</td>
-                                <td>{{prod.marca}}</td>
-                                <td>{{prod.proveedor}}</td>
-                                <td>
-                                    <a href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}" class="icono-editar">
-                                        <i class="ti ti-edit"></i>
-                                    </a>
-                                    <a href="{% url 'eliminarProductoLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
-                                        <i class="ti ti-trash"></i>
-                                    </a>
-                                    <a href="{% url 'detalleProductoLink' codigo_producto=prod.codigo %}" class="icono-detalle">
-                                        <i class="ti ti-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor  %}
-                            {% else %}
-                            {% for prod in productos %}
-                            <tr>
-                                <td>{{prod.codigo_producto}}</td>
-                                <td>{{prod.codigo_barras}}</td>
-                                <td>{{prod.nombre}}</td>
-                                <td>{{prod.precio}}</td>
-                                <td>{{prod.stock}}</td>
-                                <td>{{prod.categoria}}</td>
-                                <td>{{prod.marca}}</td>
-                                <td>{{prod.proveedor}}</td>
-                                <td>
-                                    <a href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}" class="icono-editar">
-                                        <i class="ti ti-edit"></i>
-                                    </a>
-                                    <a href="{% url 'eliminarProductoLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
-                                        <i class="ti ti-trash"></i>
-                                    </a>
-                                    <a href="{% url 'detalleProductoLink' codigo_producto=prod.codigo %}" class="icono-detalle">
-                                        <i class="ti ti-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor  %}
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <article class="productos-section">
+    <div class="header-table">
+      <h2>Productos</h2>
+      <form
+        action="{% url 'PageProductosLink' %}"
+        method="post"
+        class="buscador"
+      >
+        <input
+          type="search"
+          name="termino_busqueda"
+          id=""
+          placeholder="Buscar"
+        />
+        {% csrf_token %}
+      </form>
+      {% if alerta %}
+      <a class="alerta-mostrar-todos" href="{% url 'PageProductosLink' %}"
+        >{{alerta}}</a
+      >
+      {% endif %}
 
-             <div class="box-table-productos">
-
-    <div class="box-table-productos-scroll">
+      <div class="descargas">
+        <button id="btn-descargar-excel" class="btn-descargar-excel">
+          Descargar Excel
+        </button>
+        <button onclick="printDiv('tables-id-boxmain')">Imprimir</button>
+      </div>
+    </div>
+<div class="box-tables" id="tables-id-boxmain">
+    <div class="box-table-productos">
+      <div class="box-table-productos-scroll">
         <table id="printableTable" class="table-productos">
-            <thead>
-                <tr>
-                    <th>Cod. Producto</th>
-                    <th>Cod. Barra</th>
-                    <th>Nombre</th>
-                    <th>Precio por Kilo</th>
-                    <th>Stock en Kilos</th>
-                    <th>Categoria</th>
-                    <th>Marca</th>
-                    <th>Proveedor</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if busqueda2 %}
-                    {% for prod in busqueda2 %}
-                        <tr>
-                            <td>{{ prod.codigo_producto }}</td>
-                            <td>{{ prod.codigo_barras }}</td>
-                            <td>{{ prod.nombre }}</td>
-                            <td>{{ prod.precio_por_kilo }}</td>
-                            <td>{{ prod.stock_en_kilos }}</td>
-                            <td>{{ prod.categoria }}</td>
-                            <td>{{ prod.marca }}</td>
-                            <td>{{ prod.proveedor }}</td>
-                            <td>
-                                <a href="{% url 'editarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-editar">
-                                    <i class="ti ti-edit"></i>
-                                </a>
-                                <a href="{% url 'eliminarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
-                                    <i class="ti ti-trash"></i>
-                                </a>
-                                <a href="{% url 'detalleProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-detalle">
-                                    <i class="ti ti-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    {% for prod in Productosinunidad %}
-                        <tr>
-                            <td>{{ prod.codigo_producto }}</td>
-                            <td>{{ prod.codigo_barras }}</td>
-                            <td>{{ prod.nombre }}</td>
-                            <td>{{ prod.precio_por_kilo }}</td>
-                            <td>{{ prod.stock_en_kilos }}</td>
-                            <td>{{ prod.categoria }}</td>
-                            <td>{{ prod.marca }}</td>
-                            <td>{{ prod.proveedor }}</td>
-                            <td>
-                                <a href="{% url 'editarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-editar">
-                                    <i class="ti ti-edit"></i>
-                                </a>
-                                <a href="{% url 'eliminarProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-borrar enlaceDelete">
-                                    <i class="ti ti-trash"></i>
-                                </a>
-                                <a href="{% url 'detalleProductoSinUnidadLink' codigo_producto=prod.codigo %}" class="icono-detalle">
-                                    <i class="ti ti-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
+          <thead>
+            <tr>
+              <th>Cod. Producto</th>
+              <th>Cod. Barra</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stok</th>
+              <th>Categoria</th>
+              <th>Marca</th>
+              <th>Proovedor</th>
+              <!-- <th>Imagen</th> -->
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if busqueda %} {% for prod in busqueda %}
+            <tr>
+              <td>{{prod.codigo_producto}}</td>
+              <td>{{prod.codigo_barras}}</td>
+              <td>{{prod.nombre}}</td>
+              <td>{{prod.precio}}</td>
+              <td>{{prod.stock}}</td>
+              <td>{{prod.categoria}}</td>
+              <td>{{prod.marca}}</td>
+              <td>{{prod.proveedor}}</td>
+              <td>
+                <a
+                  href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}"
+                  class="icono-editar"
+                >
+                  <i class="ti ti-edit"></i>
+                </a>
+                <a
+                  href="{% url 'eliminarProductoLink' codigo_producto=prod.codigo %}"
+                  class="icono-borrar enlaceDelete"
+                >
+                  <i class="ti ti-trash"></i>
+                </a>
+                <a
+                  href="{% url 'detalleProductoLink' codigo_producto=prod.codigo %}"
+                  class="icono-detalle"
+                >
+                  <i class="ti ti-eye"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %} {% else %} {% for prod in productos %}
+            <tr>
+              <td>{{prod.codigo_producto}}</td>
+              <td>{{prod.codigo_barras}}</td>
+              <td>{{prod.nombre}}</td>
+              <td>{{prod.precio}}</td>
+              <td>{{prod.stock}}</td>
+              <td>{{prod.categoria}}</td>
+              <td>{{prod.marca}}</td>
+              <td>{{prod.proveedor}}</td>
+              <td>
+                <a
+                  href="{% url 'editarProductoLink' codigo_producto=prod.codigo %}"
+                  class="icono-editar"
+                >
+                  <i class="ti ti-edit"></i>
+                </a>
+                <a
+                  href="{% url 'eliminarProductoLink' codigo_producto=prod.codigo %}"
+                  class="icono-borrar enlaceDelete"
+                >
+                  <i class="ti ti-trash"></i>
+                </a>
+                <a
+                  href="{% url 'detalleProductoLink' codigo_producto=prod.codigo %}"
+                  class="icono-detalle"
+                >
+                  <i class="ti ti-eye"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="box-table-productos">
+      <div class="box-table-productos-scroll">
+        <table id="printableTable" class="table-productos">
+          <thead>
+            <tr>
+              <th>Cod. Producto</th>
+              <th>Cod. Barra</th>
+              <th>Nombre</th>
+              <th>Precio por Kilo</th>
+              <th>Stock en Kilos</th>
+              <th>Categoria</th>
+              <th>Marca</th>
+              <th>Proveedor</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if busqueda2 %} {% for prod in busqueda2 %}
+            <tr>
+              <td>{{ prod.codigo_producto }}</td>
+              <td>{{ prod.codigo_barras }}</td>
+              <td>{{ prod.nombre }}</td>
+              <td>{{ prod.precio_por_kilo }}</td>
+              <td>{{ prod.stock_en_kilos }}</td>
+              <td>{{ prod.categoria }}</td>
+              <td>{{ prod.marca }}</td>
+              <td>{{ prod.proveedor }}</td>
+              <td>
+                <a
+                  href="{% url 'editarProductoSinUnidadLink' codigo_producto=prod.codigo %}"
+                  class="icono-editar"
+                >
+                  <i class="ti ti-edit"></i>
+                </a>
+                <a
+                  href="{% url 'eliminarProductoSinUnidadLink' codigo_producto=prod.codigo %}"
+                  class="icono-borrar enlaceDelete"
+                >
+                  <i class="ti ti-trash"></i>
+                </a>
+                <a
+                  href="{% url 'detalleProductoSinUnidadLink' codigo_producto=prod.codigo %}"
+                  class="icono-detalle"
+                >
+                  <i class="ti ti-eye"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %} {% else %} {% for prod in Productosinunidad %}
+            <tr>
+              <td>{{ prod.codigo_producto }}</td>
+              <td>{{ prod.codigo_barras }}</td>
+              <td>{{ prod.nombre }}</td>
+              <td>{{ prod.precio_por_kilo }}</td>
+              <td>{{ prod.stock_en_kilos }}</td>
+              <td>{{ prod.categoria }}</td>
+              <td>{{ prod.marca }}</td>
+              <td>{{ prod.proveedor }}</td>
+              <td>
+                <a
+                  href="{% url 'editarProductoSinUnidadLink' codigo_producto=prod.codigo %}"
+                  class="icono-editar"
+                >
+                  <i class="ti ti-edit"></i>
+                </a>
+                <a
+                  href="{% url 'eliminarProductoSinUnidadLink' codigo_producto=prod.codigo %}"
+                  class="icono-borrar enlaceDelete"
+                >
+                  <i class="ti ti-trash"></i>
+                </a>
+                <a
+                  href="{% url 'detalleProductoSinUnidadLink' codigo_producto=prod.codigo %}"
+                  class="icono-detalle"
+                >
+                  <i class="ti ti-eye"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
+        </table>
+      </div>
     </div>
 </div>
-        </article>
-    </section>
-    <!-- Modal -->
-<div  class="modalDelete">
-    <div class="modal-content">
-      <p>¿Estás seguro de eliminar este registro?</p>
-      <button id="btnSi" class="btn">Sí</button>
-      <button id="btnNo" class="btn">No</button>
-    </div>
+  </article>
+</section>
+<!-- Modal -->
+<div class="modalDelete">
+  <div class="modal-content">
+    <p>¿Estás seguro de eliminar este registro?</p>
+    <button id="btnSi" class="btn">Sí</button>
+    <button id="btnNo" class="btn">No</button>
+  </div>
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document
+      .getElementById("btn-descargar-excel")
+      .addEventListener("click", function () {
+        window.location.href = "{% url 'descargar_excel' %}";
+      });
+  });
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('btn-descargar-excel').addEventListener('click', function() {
-            window.location.href = "{% url 'descargar_excel' %}";
-        });
-    });
+  function printDiv(divName) {
+    var printDiv = document.getElementById(divName);
+    var newWin = window.open("", "", "width=800,height=600");
+    newWin.document.write(printDiv.outerHTML);
+    newWin.document.close();
+    newWin.focus();
+    newWin.print();
+    newWin.close();
+  }
 
-    function printDiv(divName) {
-  var printDiv = document.getElementById(divName);
-  var newWin = window.open('', '', 'width=800,height=600');
-  newWin.document.write(printDiv.outerHTML);
-  newWin.document.close();
-  newWin.focus();
-  newWin.print();
-  newWin.close();
-}
+  function mostrarFormulario(formId) {
+    var form1 = document.getElementById("formulario1");
+    var form2 = document.getElementById("formulario2");
+    var btnForm1 = document.getElementById("btnForm1");
+    var btnForm2 = document.getElementById("btnForm2");
 
-function mostrarFormulario(formId) {
-    var form1 = document.getElementById('formulario1');
-    var form2 = document.getElementById('formulario2');
-    var btnForm1 = document.getElementById('btnForm1');
-    var btnForm2 = document.getElementById('btnForm2');
-
-    if (formId === 'formulario1') {
-      form1.style.display = 'block';
-      form2.style.display = 'none';
-      btnForm1.classList.add('active');
-      btnForm2.classList.remove('active');
+    if (formId === "formulario1") {
+      form1.style.display = "block";
+      form2.style.display = "none";
+      btnForm1.classList.add("active");
+      btnForm2.classList.remove("active");
     } else {
-      form1.style.display = 'none';
-      form2.style.display = 'block';
-      btnForm1.classList.remove('active');
-      btnForm2.classList.add('active');
+      form1.style.display = "none";
+      form2.style.display = "block";
+      btnForm1.classList.remove("active");
+      btnForm2.classList.add("active");
     }
   }
 
   // Por defecto, mostrar el formulario 1
-  mostrarFormulario('formulario1');
-
+  mostrarFormulario("formulario1");
 </script>
-    
+
 {% endblock %}
