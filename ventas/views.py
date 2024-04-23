@@ -707,6 +707,10 @@ def descargar_excel(request):
     for producto in productos:
         ws.append([producto.codigo_producto, producto.codigo_barras, producto.nombre, producto.precio, producto.stock, producto.categoria.nombre_categoria, producto.marca.nombre_marca, producto.proveedor.nombres])
 
+    prodsu = ProductoSinUnidad.objects.all()
+    for producto in prodsu:
+        ws.append([producto.codigo_producto, producto.codigo_barras, producto.nombre, f"{producto.precio_por_kilo} por Kg", f"{producto.stock_en_kilos}  kg", producto.categoria.nombre_categoria, producto.marca.nombre_marca, producto.proveedor.nombres])
+
     # Guardar el libro de trabajo
     wb.save(response)
 
