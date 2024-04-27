@@ -23,6 +23,11 @@
                              {{ error_stock }} <i class="ti ti-alert-circle"></i>
                         </div>
                     {% endif %}
+                    {% if error_producto %}
+                        <div class="alert alert-danger" role="alert">
+                             {{ error_producto }} <i class="ti ti-alert-circle"></i>
+                        </div>
+                    {% endif %}
                     {{form_listado_productos.codigo_factura.label}}
                     {{form_listado_productos.codigo_factura}}
                     <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
@@ -92,7 +97,7 @@
                         
                         {% for prod, sub  in prueba_produc_list_uni %}
                         <tr>
-                            <td>{{prod.producto}}</td>
+                            <td>{{prod.producto.nombre}}</td>
                             <td>{{prod.cantidad_vendida}}</td>
                             <td>{{prod.producto.precio}}</td>
                             <td>{{sub}}</td>
@@ -119,7 +124,7 @@
                         
                         {% for prod, sub  in prueba_produc_list_gra %}
                         <tr>
-                            <td>{{prod.producto}}</td>
+                            <td>{{prod.producto.nombre}}</td>
                             <td>{{prod.cantidad_vendida_gramos}} g</td>
                             <td>{{prod.producto.precio_por_kilo}} Por kg </td>
                             <td>{{sub}}</td>
@@ -227,6 +232,21 @@ form.addEventListener("submit", function(event) {
     event.preventDefault();
   }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  let select = document.querySelector('.inputlistener')
+  select.focus(); // Enfoca el select al cargar la página
+  // Función para enfocar el input
+  function enfocarInput() {
+        select.focus();
+      }
+      
+      // Enfocar el input cuando se carga la página
+      enfocarInput();
+      
+      // Volver a enfocar el input cada vez que pierda el foco
+      select.addEventListener("blur", enfocarInput);
+}); 
 
 </script>
 {% endblock %} 

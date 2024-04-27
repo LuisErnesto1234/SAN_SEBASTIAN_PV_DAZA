@@ -42,7 +42,7 @@ class Producto(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
   
     def __str__(self):
-            return self.nombre
+            return self.codigo_barras
 
 
 
@@ -59,16 +59,15 @@ class ProductoSinUnidad(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
   
     def __str__(self):
-            return f"{self.nombre} "
+            return f"{self.codigo_barras} "
 
 
 class Factura(models.Model):
     codigo = models.AutoField(primary_key=True)
-    nombre_factura = models.CharField(max_length=50)
     fecha_factura = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-            return self.nombre_factura
+            return f"id : {self.codigo}"
         
 class MetodoPago(models.Model):
     codigo = models.AutoField(primary_key=True)
