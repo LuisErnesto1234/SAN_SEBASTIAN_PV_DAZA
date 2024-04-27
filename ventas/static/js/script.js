@@ -90,7 +90,6 @@ const creaSeleccionInabilitada=(id)=>{
 }
 
 try{
-    creaSeleccion('#seleccionar-producto')
     creaSeleccion('#select-metodo-venta')
     creaSeleccion('#seleccionar-producto-form2')
     creaSeleccionInabilitada('#select-codigo-fac-disabled')

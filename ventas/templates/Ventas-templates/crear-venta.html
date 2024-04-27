@@ -23,12 +23,16 @@
                              {{ error_stock }} <i class="ti ti-alert-circle"></i>
                         </div>
                     {% endif %}
+                    {% if error_producto %}
+                        <div class="alert alert-danger" role="alert">
+                             {{ error_producto }} <i class="ti ti-alert-circle"></i>
+                        </div>
+                    {% endif %}
                     {{form_listado_productos.codigo_factura.label}}
                     {{form_listado_productos.codigo_factura}}
                     <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
                     {{form_listado_productos.producto.label}}
                     {{form_listado_productos.producto}}
-                    <input type="number" name="codigo de barras" >
                     {{form_listado_productos.cantidad_vendida.label}}
                     {{form_listado_productos.cantidad_vendida}}
                     <button type="submit" class="btn-guardar" name="formulario1" value="form 1 ">agregar</button>
@@ -229,10 +233,20 @@ form.addEventListener("submit", function(event) {
   }
 });
 
-// document.addEventListener("DOMContentLoaded", function() {
-//   var select = document.querySelector('#seleccionar-producto-ts-control')
-//   select.click(); // Enfoca el select al cargar la página
-// }); 
+document.addEventListener("DOMContentLoaded", function() {
+  let select = document.querySelector('.inputlistener')
+  select.focus(); // Enfoca el select al cargar la página
+  // Función para enfocar el input
+  function enfocarInput() {
+        select.focus();
+      }
+      
+      // Enfocar el input cuando se carga la página
+      enfocarInput();
+      
+      // Volver a enfocar el input cada vez que pierda el foco
+      select.addEventListener("blur", enfocarInput);
+}); 
 
 </script>
 {% endblock %} 

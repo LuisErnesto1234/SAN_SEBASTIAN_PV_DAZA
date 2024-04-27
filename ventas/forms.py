@@ -62,7 +62,7 @@ class ListaProductosFacturaForm(forms.ModelForm):
             'codigo_factura': 'Código de Factura'
         }
         widgets = {
-            'producto': forms.Select(attrs={'class': 'mySelect', 'placeholder': 'Seleccione un producto','id':'seleccionar-producto'}),
+            'producto': forms.TextInput(attrs={'class': 'inputlistener', 'placeholder': 'Seleccione un producto','id':'seleccionar-producto'}),
             'cantidad_vendida': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la cantidad vendida'}),
             'codigo_factura': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccione un código de factura','disabled':'','autocomplete':'off','id':'select-codigo-fac-disabled'}),
         }

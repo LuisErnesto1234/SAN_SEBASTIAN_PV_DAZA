@@ -40,14 +40,14 @@
               <tbody>
                 {% for l in lista_productos %}
                 <tr>
-                  <td>{{l.producto}}</td>
+                  <td>{{l.producto.nombre}}</td>
                   <td>{{l.producto.precio}}</td>
                   <td>{{l.cantidad_vendida}}</td>
                 </tr>
                 {% endfor %}
                 {% for l in lista_productos_2 %}
                 <tr>
-                    <td>{{l.producto}}</td>
+                    <td>{{l.producto.nombre}}</td>
                     <td>{{l.producto.precio_por_kilo}} Por kg </td>
                     <td>{{l.cantidad_vendida_gramos}} g</td>
                     

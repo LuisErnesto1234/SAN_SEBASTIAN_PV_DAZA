@@ -60,9 +60,7 @@
     >
       {% csrf_token %}
       <p>
-        {{ formulario2.codigo_producto }} {{ formulario2.codigo_barras }} {{
-        formulario2.nombre }} {{ formulario2.precio_por_kilo }} {{
-        formulario2.stock_en_kilos }}
+        {{ formulario2.codigo_producto }} {{ formulario2.codigo_barras }} {{formulario2.nombre }} {{ formulario2.precio_por_kilo }} {{ formulario2.stock_en_kilos }}
         <label>Categoria:</label>
         {{formulario.categoria}}
         <label>Marca:</label>

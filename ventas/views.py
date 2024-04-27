@@ -361,30 +361,38 @@ def crearVenta(request,registro):
     total = sum(subtotalUNI + subtotalGRA)
     
     # formulario del listado de productos con un valor inicial de el codigo de fac 
-    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': registro,'cantidad_vendida':1,'producto':1})
+    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': registro,'cantidad_vendida':1})
     # formulario del listado de productos sin unidad con el valor del codigo de fac
     form_listado_productos_sin_unidad = ListaProductoSinUnidadFacturaForm(initial={'codigo_factura': registro,})
     # formulario de venta
     formulario_venta = VentaProductosFacturaForm(initial={'factura': registro,'total':total,'metodo':2})
     #error de stock
     error_stock = ""
+    error_producto = ""
     if request.method == 'POST':
         if 'formulario1' in request.POST:
-            print(request.POST)
-            form = ListaProductosFacturaForm(request.POST)
-            #obtenemos el codigo del producto
-            cod_producto =request.POST.get('producto')
-            #obtenemos el producto
-            prod = Producto.objects.get(codigo=cod_producto)
-            #obtenemos el stock del producto
-            stock_producto = prod.stock
-            cantidad = request.POST.get('cantidad_vendida')   
-            if stock_producto > int(cantidad):
-                if form.is_valid():
-                    form.save()
-                    return redirect(request.path)
-            else:
-                error_stock = "no se puede agregar el producto por falta de stock"
+                #obtenemos la factura
+                fac =request.POST.get('codigo_factura')
+                factu = Factura.objects.get(codigo=fac)
+                #obtenemos la cantidad
+                cantidad = request.POST.get('cantidad_vendida') 
+                #obtenemos el producto
+                produ = request.POST.get('producto')  
+                try:
+                    prod = Producto.objects.get(codigo_barras=produ)
+                    
+                    #obtenemos el stock del producto
+                    stock_producto = prod.stock
+                    if stock_producto > int(cantidad):
+                        Lista_Productos_Factura.objects.create(producto=prod,cantidad_vendida=int(cantidad),codigo_factura=factu)
+                        return redirect(request.path)
+                    else:
+                        error_stock = "no se puede agregar el producto por falta de stock"
+                except Producto.DoesNotExist:
+                    # Si el producto no se encuentra, puedes manejar este caso aquí
+                    error_producto = "El producto no se encontró en la base de datos"
+                
+                
         else :
             # factura instacia
             fac = Factura.objects.get(codigo=registro)
@@ -427,6 +435,7 @@ def crearVenta(request,registro):
         'form_listado_productos':form_listado_productos,
         'formulario_venta':formulario_venta,
         'error_stock':error_stock ,
+        'error_producto':error_producto,
         'form_listado_productos_sin_unidad':form_listado_productos_sin_unidad,
         
         'prueba_produc_list_uni':prueba_produc_list_uni,
