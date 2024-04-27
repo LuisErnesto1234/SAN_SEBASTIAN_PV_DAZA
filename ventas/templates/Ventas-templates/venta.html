@@ -3,14 +3,14 @@
 
 {% block content %}
 
-<button class="btn-abrir" >
+<!-- <button class="btn-abrir" >
     <i class="ti ti-plus"></i>
 </button>
 <div class="modal">
     <div class="content-modal modal-nueva-factura">
       <h2>Nuevo Factura</h2> 
       <br>
-      <form  action="{% url 'PageVentasLink' %}" method="post" class="form-factura">
+      <form  action="" method="post" class="form-factura">
         {% csrf_token %}
         {{form_fac.nombre_factura.label }}
         {{form_fac.nombre_factura }}
@@ -18,7 +18,8 @@
         <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
     </form>
     </div>
-</div>
+</div> -->
+<a href="{% url 'creaFacturaParaVentaLink' %}">crea una factura</a>
 
     <div class="seccion-ventas">
         <h1>ventas</h1>

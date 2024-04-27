@@ -28,6 +28,7 @@
                     <input type="hidden" name="codigo_factura" value="{{form_listado_productos.codigo_factura.value}}">
                     {{form_listado_productos.producto.label}}
                     {{form_listado_productos.producto}}
+                    <input type="number" name="codigo de barras" >
                     {{form_listado_productos.cantidad_vendida.label}}
                     {{form_listado_productos.cantidad_vendida}}
                     <button type="submit" class="btn-guardar" name="formulario1" value="form 1 ">agregar</button>
@@ -92,7 +93,7 @@
                         
                         {% for prod, sub  in prueba_produc_list_uni %}
                         <tr>
-                            <td>{{prod.producto}}</td>
+                            <td>{{prod.producto.nombre}}</td>
                             <td>{{prod.cantidad_vendida}}</td>
                             <td>{{prod.producto.precio}}</td>
                             <td>{{sub}}</td>
@@ -119,7 +120,7 @@
                         
                         {% for prod, sub  in prueba_produc_list_gra %}
                         <tr>
-                            <td>{{prod.producto}}</td>
+                            <td>{{prod.producto.nombre}}</td>
                             <td>{{prod.cantidad_vendida_gramos}} g</td>
                             <td>{{prod.producto.precio_por_kilo}} Por kg </td>
                             <td>{{sub}}</td>
@@ -227,6 +228,11 @@ form.addEventListener("submit", function(event) {
     event.preventDefault();
   }
 });
+
+// document.addEventListener("DOMContentLoaded", function() {
+//   var select = document.querySelector('#seleccionar-producto-ts-control')
+//   select.click(); // Enfoca el select al cargar la página
+// }); 
 
 </script>
 {% endblock %} 

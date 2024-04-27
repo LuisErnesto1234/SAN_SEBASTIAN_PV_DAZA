@@ -18,7 +18,8 @@ urlpatterns = [
     path('historial/',admin_required(views.historialPage), name= "historialPageLink"),
     # SECCION DE VENTAS
     path('ventas/', login_required(views.PageVentas), name="PageVentasLink"),
-    path('crear-ventas/<int:cod_fac>/', login_required(views.crearVenta), name="crearVentaLink"),
+    path('creaFacturaParaVenta/',login_required(views.creaFacturaParaVenta), name='creaFacturaParaVentaLink'),
+    path('crear-ventas/<int:registro>', login_required(views.crearVenta), name="crearVentaLink"),
     path('procesar-ventas/<int:cod_fac>/', login_required(views.procesarVenta), name="procesarVentaLink"),
     path('ventas',views.PageVentas,name="PageVentasLink"),
     path('crear-ventas/<int:cod_fac>',login_required(views.crearVenta),name="crearVentaLink"),

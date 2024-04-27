@@ -78,6 +78,7 @@ const creaSeleccion =(id)=>{
         		direction: "asc"
         	}});
     }
+
     
 }
 
@@ -96,6 +97,8 @@ try{
     creaSeleccionInabilitada('#select-codigo-fac-venta-disabled')
     creaSeleccionInabilitada('#select-total-venta-disabled')
     creaSeleccionInabilitada('#select-codigo-fac-venta-disabled_form2')
+
+
 }catch (error) {
     
 }

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
-from .forms import ProductoForm,ProveedorForm,FacturaForm,ListaProductosFacturaForm,VentaProductosFacturaForm,ListaProductoSinUnidadFacturaForm,ProductoSinUnidadForm
+from .forms import ProductoForm,ProveedorForm,ListaProductosFacturaForm,VentaProductosFacturaForm,ListaProductoSinUnidadFacturaForm,ProductoSinUnidadForm
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -326,27 +326,26 @@ def detalleProductoSinUnidad(request,codigo_producto):
 
 @login_required
 def PageVentas(request): 
-    if request.method == 'POST':
-        factura = FacturaForm(request.POST)
-        if factura.is_valid():
-            # guardamos el codigo de la factura
-            fac = factura.save()
-            # enviamos el codigo a otra vista
-            return redirect('crearVentaLink',fac.codigo)
+    # if request.method == 'POST':
+    #     registro = Factura.objects.create()
+    #     return redirect('crearVentaLink',registro.codigo)
         
     # Obtener todas las facturas que tienen ventas asociadas
     facturas_con_ventas = Factura.objects.filter(venta_productos_factura__isnull=False).distinct()
-    formulario_fac = FacturaForm()
     context={ 
-        'fact':facturas_con_ventas,
-        'form_fac':formulario_fac
+        'fact':facturas_con_ventas
     }
     return render(request,"Ventas-templates/venta.html",context)
 
-def crearVenta(request,cod_fac):
+def creaFacturaParaVenta(request):
+    registro = Factura.objects.create()
+    return redirect('crearVentaLink',registro.codigo)
+
+def crearVenta(request,registro):
+    
     # todos los productos que tiene la misma factura
-    lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=cod_fac)
-    lista_productos_su = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=cod_fac)
+    lista_productos = Lista_Productos_Factura.objects.filter(codigo_factura=registro)
+    lista_productos_su = Lista_ProductoSinUnidad_Factura.objects.filter(codigo_factura=registro)
     
     # subtottal lista productos unidad
     subtotalUNI = [ float(lp.producto.precio * lp.cantidad_vendida) for lp in lista_productos ]
@@ -362,15 +361,16 @@ def crearVenta(request,cod_fac):
     total = sum(subtotalUNI + subtotalGRA)
     
     # formulario del listado de productos con un valor inicial de el codigo de fac 
-    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': cod_fac})
+    form_listado_productos = ListaProductosFacturaForm(initial={'codigo_factura': registro,'cantidad_vendida':1,'producto':1})
     # formulario del listado de productos sin unidad con el valor del codigo de fac
-    form_listado_productos_sin_unidad = ListaProductoSinUnidadFacturaForm(initial={'codigo_factura': cod_fac,})
+    form_listado_productos_sin_unidad = ListaProductoSinUnidadFacturaForm(initial={'codigo_factura': registro,})
     # formulario de venta
-    formulario_venta = VentaProductosFacturaForm(initial={'factura': cod_fac,'total':total})
+    formulario_venta = VentaProductosFacturaForm(initial={'factura': registro,'total':total,'metodo':2})
     #error de stock
     error_stock = ""
     if request.method == 'POST':
         if 'formulario1' in request.POST:
+            print(request.POST)
             form = ListaProductosFacturaForm(request.POST)
             #obtenemos el codigo del producto
             cod_producto =request.POST.get('producto')
@@ -387,7 +387,7 @@ def crearVenta(request,cod_fac):
                 error_stock = "no se puede agregar el producto por falta de stock"
         else :
             # factura instacia
-            fac = Factura.objects.get(codigo=cod_fac)
+            fac = Factura.objects.get(codigo=registro)
             #obtenemos el codigo del producto
             cod_producto =request.POST.get('producto')
             #obtenemos el producto
@@ -398,6 +398,7 @@ def crearVenta(request,cod_fac):
             precio_kilo = prod.precio_por_kilo
               
             if 'cantidad_vendida_gramos' in request.POST: #se vende por gramos
+
                 cant_gramos =request.POST.get('cantidad_vendida_gramos')
                 if stock_producto_su > int(cant_gramos):
 
